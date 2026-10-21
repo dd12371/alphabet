@@ -1,0 +1,2626 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Historisches Kanzleischriften- & Schrifssysteme-Kompendium</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0a0b0e;
+      --bg-card: #13151b;
+      --gold-primary: #d4af37;
+      --gold-light: #f7e089;
+      --gold-glow: rgba(212, 175, 55, 0.25);
+      --border-color: #262933;
+      --border-gold: rgba(212, 175, 55, 0.45);
+      --text-main: #e6e8ed;
+      --text-muted: #9aa0b0;
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      padding: 2rem 1rem;
+      background-image: 
+        radial-gradient(circle at 10% 10%, rgba(212, 175, 55, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 90% 90%, rgba(142, 68, 173, 0.06) 0%, transparent 45%);
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1350px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    header h1 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      color: var(--gold-primary);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 0 0 20px var(--gold-glow);
+      margin-bottom: 0.4rem;
+    }
+
+    header p {
+      color: var(--text-muted);
+      font-family: 'EB Garamond', serif;
+      font-size: 1.25rem;
+    }
+
+    /* Primary Script Navigation Tabs */
+    .script-nav-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0.8rem;
+      margin-bottom: 1.8rem;
+      flex-wrap: wrap;
+    }
+
+    .script-tab-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      font-family: 'Cinzel', serif;
+      font-size: 0.92rem;
+      padding: 0.75rem 1.4rem;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .script-tab-btn:hover {
+      border-color: var(--gold-primary);
+      color: var(--gold-light);
+      transform: translateY(-2px);
+    }
+
+    .script-tab-btn.active {
+      background: rgba(212, 175, 55, 0.15);
+      border-color: var(--gold-primary);
+      color: var(--gold-light);
+      box-shadow: 0 0 20px var(--gold-glow);
+    }
+
+    .glass-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+      padding: 1.75rem;
+      margin-bottom: 2rem;
+      transition: border-color 0.3s;
+    }
+
+    .glass-card:hover {
+      border-color: var(--border-gold);
+    }
+
+    /* Converter Panels */
+    .converter-grid {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 1.5rem;
+      align-items: stretch;
+    }
+
+    @media (max-width: 950px) {
+      .converter-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .panel {
+      display: flex;
+      flex-direction: column;
+      background: rgba(10, 11, 14, 0.7);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+
+    .panel-header {
+      padding: 0.85rem 1.25rem;
+      background: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .panel-title {
+      font-family: 'Cinzel', serif;
+      color: var(--gold-light);
+      font-weight: 700;
+      font-size: 1.05rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .panel-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn-sm {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 0.3rem 0.65rem;
+      font-size: 0.75rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-sm:hover {
+      background: var(--gold-primary);
+      color: #000;
+      border-color: var(--gold-primary);
+    }
+
+    textarea {
+      width: 100%;
+      height: 250px;
+      background: transparent;
+      border: none;
+      color: var(--text-main);
+      padding: 1.1rem 1.25rem;
+      font-size: 1.2rem;
+      line-height: 1.7;
+      resize: vertical;
+      outline: none;
+      font-family: 'EB Garamond', serif;
+    }
+
+    textarea::placeholder {
+      color: #4f5466;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+    }
+
+    .kanzlei-font {
+      font-size: 1.35rem !important;
+      letter-spacing: 0.5px;
+    }
+
+    .arabic-font {
+      font-family: 'Amiri', 'Traditional Arabic', serif !important;
+      font-size: 1.6rem !important;
+      direction: rtl;
+      text-align: right;
+      line-height: 2;
+    }
+
+    .panel-footer {
+      padding: 0.5rem 1.25rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      border-top: 1px solid rgba(255, 255, 255, 0.02);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* Swap button */
+    .swap-col {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .btn-swap {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 1px solid var(--gold-primary);
+      color: var(--gold-primary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      transition: all 0.3s;
+      box-shadow: 0 0 15px var(--gold-glow);
+    }
+
+    .btn-swap:hover {
+      background: var(--gold-primary);
+      color: #0a0b0e;
+      transform: rotate(180deg) scale(1.08);
+    }
+
+    .options-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-top: 1.25rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border-color);
+      font-size: 0.9rem;
+      align-items: center;
+    }
+
+    .option-group {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .option-group select {
+      background: var(--bg-dark);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 0.35rem 0.75rem;
+      border-radius: var(--radius-sm);
+      outline: none;
+      cursor: pointer;
+    }
+
+    /* Virtual Keyboard */
+    .keyboard-title {
+      font-family: 'Cinzel', serif;
+      color: var(--gold-primary);
+      font-size: 1.15rem;
+      margin-bottom: 0.8rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .keyboard-tabs {
+      display: flex;
+      gap: 0.4rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 0.35rem 0.75rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tab-btn.active, .tab-btn:hover {
+      border-color: var(--gold-primary);
+      color: var(--gold-light);
+      background: rgba(212, 175, 55, 0.1);
+    }
+
+    .char-palette {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(68px, 1fr));
+      gap: 0.45rem;
+      max-height: 290px;
+      overflow-y: auto;
+      padding-right: 0.4rem;
+    }
+
+    .char-btn {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 0.45rem 0.15rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .char-btn:hover {
+      background: var(--gold-primary);
+      border-color: var(--gold-primary);
+      transform: translateY(-2px);
+    }
+
+    .char-btn:hover .c-kanzlei, .char-btn:hover .c-desc {
+      color: #000;
+    }
+
+    .char-btn .c-kanzlei {
+      font-size: 1.25rem;
+      font-family: 'EB Garamond', serif;
+      color: var(--gold-light);
+      line-height: 1.2;
+    }
+
+    .char-btn.is-arabic .c-kanzlei {
+      font-family: 'Amiri', serif;
+      font-size: 1.45rem;
+    }
+
+    .char-btn .c-desc {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      margin-top: 0.15rem;
+      text-align: center;
+    }
+
+    /* Documentation Section */
+    .docs-section {
+      margin-top: 3rem;
+    }
+
+    .section-title {
+      font-family: 'Cinzel', serif;
+      color: var(--gold-primary);
+      font-size: 1.6rem;
+      margin-bottom: 1.25rem;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      width: 60%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold-primary), transparent);
+    }
+
+    .rule-box {
+      background: rgba(255, 255, 255, 0.015);
+      border-left: 3px solid var(--gold-primary);
+      padding: 1.25rem;
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      margin-bottom: 1.5rem;
+    }
+
+    .rule-box h3 {
+      font-family: 'Cinzel', serif;
+      color: var(--gold-light);
+      font-size: 1.15rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .rule-box p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .rule-box ul {
+      margin-left: 1.25rem;
+      color: var(--text-main);
+      font-size: 0.95rem;
+    }
+
+    .rule-box li {
+      margin-bottom: 0.4rem;
+    }
+
+    code {
+      background: rgba(212, 175, 55, 0.12);
+      color: var(--gold-light);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+
+    .table-container {
+      overflow-x: auto;
+      margin-top: 1.5rem;
+    }
+
+    .rules-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+      text-align: left;
+    }
+
+    .rules-table th {
+      background: rgba(212, 175, 55, 0.12);
+      color: var(--gold-light);
+      font-family: 'Cinzel', serif;
+      padding: 0.75rem 0.9rem;
+      border: 1px solid var(--border-color);
+      font-weight: 600;
+    }
+
+    .rules-table td {
+      padding: 0.65rem 0.9rem;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+
+    .rules-table tr:nth-child(even) {
+      background: rgba(255, 255, 255, 0.015);
+    }
+
+    .rules-table tr:hover {
+      background: rgba(212, 175, 55, 0.05);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.12rem 0.45rem;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      background: rgba(212, 175, 55, 0.12);
+      color: var(--gold-light);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--gold-primary);
+      color: #0a0b0e;
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(15px);
+      transition: all 0.25s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+      z-index: 9999;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1 id="appHeaderTitle">Wetzel'sche Kanzleischrift</h1>
+    <p id="appHeaderDesc">Bidirektionaler Text- & Zahlenkonverter mit römischem Zahlensystem, Vinculum & Fallback</p>
+  </header>
+
+  <!-- SCRIPT SWITCHER TABS -->
+  <div class="script-nav-tabs">
+    <button class="script-tab-btn active" id="btnScriptWetzel" onclick="switchScript('wetzel')">
+      <span>📜</span> Wetzel'sche Kanzleischrift (Römisches Zahlensystem)
+    </button>
+    <button class="script-tab-btn" id="btnScriptGriechisch" onclick="switchScript('griechisch')">
+      <span>🏛️</span> Griechisches Alphabet (Milesisches System & Persischer Fallback)
+    </button>
+    <button class="script-tab-btn" id="btnScriptKyrillisch" onclick="switchScript('kyrillisch')">
+      <span>☦️</span> Kyrillisches Alphabet (Altkyrillisches System mit Titlo)
+    </button>
+    <button class="script-tab-btn" id="btnScriptArabisch" onclick="switchScript('arabisch')">
+      <span>🌙</span> Arabisch-Persisches Schriftsystem (Arabische Ziffern)
+    </button>
+  </div>
+
+  <!-- CONVERTER -->
+  <div class="glass-card">
+    <div class="converter-grid">
+      <!-- Input Panel -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title" id="sourceTitle">
+            <span>🇩🇪</span> Standard-Deutsch
+          </div>
+          <div class="panel-actions">
+            <button class="btn-sm" onclick="clearInput()">Leeren</button>
+            <button class="btn-sm" onclick="copyText('inputText')">Kopieren</button>
+          </div>
+        </div>
+        <textarea id="inputText" placeholder="Hier tippen oder einfügen..."></textarea>
+        <div class="panel-footer">
+          <span id="sourceCharCount">0 Zeichen</span>
+          <span id="sourceModeHint">Modus: Normalschrift ➔ Kanzlei</span>
+        </div>
+      </div>
+
+      <!-- Swap Action -->
+      <div class="swap-col">
+        <button class="btn-swap" onclick="toggleDirection()" title="Richtung umkehren">⇄</button>
+      </div>
+
+      <!-- Output Panel -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title" id="targetTitle">
+            <span>📜</span> Wetzel'sche Kanzleischrift
+          </div>
+          <div class="panel-actions">
+            <button class="btn-sm" onclick="copyText('outputText')">Kopieren</button>
+          </div>
+        </div>
+        <textarea id="outputText" readonly class="kanzlei-font" placeholder="Konvertierter Text erscheint hier..."></textarea>
+        <div class="panel-footer">
+          <span id="targetCharCount">0 Zeichen</span>
+          <span>Echtzeit-Synchronisiert</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="options-bar">
+      <!-- Options for Greek & Cyrillic Vowels -->
+      <div class="option-group" id="vowelRuleOptions" style="display: none;">
+        <label for="vowelRuleSelect"><strong>Vokal-Längenregel (E / O):</strong></label>
+        <select id="vowelRuleSelect" onchange="runConversion()">
+          <option value="auto">Automatische Heuristik (Offene Silbe / Dehnungs-H)</option>
+          <option value="short">Immer kurz</option>
+          <option value="long">Immer lang</option>
+        </select>
+      </div>
+
+      <!-- Options for Cyrillic V-rule -->
+      <div class="option-group" id="kyrillischVOptions" style="display: none;">
+        <label for="kyrillischVSelect"><strong>V-Differenzierung:</strong></label>
+        <select id="kyrillischVSelect" onchange="runConversion()">
+          <option value="auto">Automatisch (F-Laut ➔ Ф́ / W-Laut ➔ В́)</option>
+          <option value="f">Immer als F-Laut (Ф́ / ф́)</option>
+          <option value="w">Immer als W-Laut (В́ / в́)</option>
+        </select>
+      </div>
+
+      <!-- Info Hint regarding numbers -->
+      <div id="numberRuleHint" style="font-size:0.85rem; color:var(--text-muted); margin-left:auto;">
+        Zahlen 1 bis 3.999.999 ➔ Römisch (mit Vinculum) | Negativ, Dezimal &amp; ab 4.000.000 ➔ Standard Arabisch
+      </div>
+    </div>
+  </div>
+
+  <!-- VIRTUAL KEYBOARD -->
+  <div class="glass-card">
+    <div class="keyboard-title">
+      <span id="keyboardTitleText">Alphabetische Sonderzeichen- & Zifferntastatur</span>
+      <span style="font-size: 0.8rem; color: var(--text-muted); font-family: 'Inter', sans-serif;">
+        Klick fügt Zeichen an Cursorposition ein
+      </span>
+    </div>
+
+    <div class="keyboard-tabs" id="keyboardTabContainer"></div>
+    <div class="char-palette" id="paletteGrid"></div>
+  </div>
+
+  <!-- DETAILED RULES & COMPENDIUM -->
+  <div class="docs-section" id="docsContainer"></div>
+</div>
+
+<div id="toast" class="toast">In Zwischenablage kopiert!</div>
+
+<script>
+/**
+ * =============================================================
+ * SPEZIFIKATIONEN ALLER VIER SCHRIFTSYSTEME
+ * =============================================================
+ */
+
+// 1. WETZEL'SCHE KANZLEISCHRIFT
+const WETZEL_SPEC = [
+  { de: "A", maj: "A", min: "a", group: "A-E", desc: "Beibehalten" },
+  { de: "Ä", maj: "Ä", min: "ä", group: "A-E", desc: "Beibehalten" },
+  { de: "B", maj: "B", min: "b", group: "A-E", desc: "Beibehalten" },
+  { de: "C", maj: "C", min: "c", group: "A-E", desc: "Beibehalten" },
+  { de: "D", maj: "D", min: "d", group: "A-E", desc: "Beibehalten" },
+  { de: "E", maj: "E", min: "e", group: "A-E", desc: "Beibehalten" },
+  { de: "F", maj: "V́", min: "v́", group: "F-L", desc: "Labiodentaler Frikativ mit Akut" },
+  { de: "G", maj: "Ć", min: "ć", group: "F-L", desc: "Palatale Modifikation des Gutturals" },
+  { de: "H", maj: "’", min: "’", group: "F-L", desc: "Spiritus asper / Aspiration (Hauchlaut)" },
+  { de: "I", maj: "I", min: "i", group: "F-L", desc: "Beibehalten" },
+  { de: "IE", maj: "Ï", min: "ï", group: "F-L", desc: "Historisches Dehnungs-Trema" },
+  { de: "J", maj: "Í", min: "í", group: "F-L", desc: "Vokalische Ableitung des I mit Längenzeichen" },
+  { de: "K", maj: "C̀", min: "c̀", group: "F-L", desc: "Hartes C mit Gravis" },
+  { de: "L", maj: "Į", min: "į", group: "F-L", desc: "Paläographisches L mit Abstrich/Ogonek" },
+  { de: "M", maj: "Ń", min: "ń", group: "M-R", desc: "Nasal-Verwandtschaft zu N mit Akut" },
+  { de: "N", maj: "N", min: "n", group: "M-R", desc: "Beibehalten" },
+  { de: "NG", maj: "Ŋ", min: "ŋ", group: "M-R", desc: "Internationales Phonetisches Zeichen" },
+  { de: "O", maj: "O", min: "o", group: "M-R", desc: "Beibehalten" },
+  { de: "Ö", maj: "Ö", min: "ö", group: "M-R", desc: "Beibehalten" },
+  { de: "P", maj: "B́", min: "b́", group: "M-R", desc: "Stimmloses Bilabial mit Akut" },
+  { de: "Qu", maj: "C̆", min: "c̆", group: "M-R", desc: "Historisches K-W-Element mit Breve" },
+  { de: "R", maj: "R", min: "r", group: "M-R", desc: "Beibehalten" },
+  { de: "S", maj: "Ç", min: "ç", group: "S-Z", desc: "Zischlaut-Sibilant mit Cedille" },
+  { de: "Sch", maj: "I̧", min: "i̧", group: "S-Z", desc: "Postalveolarer Zischlaut auf Spiritusbasis" },
+  { de: "ẞ / ß", maj: "ẞ", min: "ß", group: "S-Z", desc: "Beibehalten" },
+  { de: "T", maj: "D́", min: "d́", group: "S-Z", desc: "Stimmloser Dental mit Akut" },
+  { de: "U", maj: "V̆", min: "v̆", group: "S-Z", desc: "Historische U/V-Wurzel mit Breve" },
+  { de: "Ü", maj: "Ü", min: "ü", group: "S-Z", desc: "Beibehalten" },
+  { de: "V", maj: "V", min: "v", group: "S-Z", desc: "Beibehalten" },
+  { de: "W", maj: "V̀", min: "v̀", group: "S-Z", desc: "Weiches V mit Gravis" },
+  { de: "X", maj: "Ĉ", min: "ĉ", group: "S-Z", desc: "Konsonantencluster mit Zirkumflex" },
+  { de: "Y", maj: "Ì", min: "ì", group: "S-Z", desc: "Griechisches I-Pendant mit Gravis" },
+  { de: "Z", maj: "D̀", min: "d̀", group: "S-Z", desc: "Affrikate / Dentalverbindung mit Gravis" }
+];
+
+// Römische Zahlenzeichen für Tastatur
+const ROMAN_NUMS_SPEC = [
+  { sym: "I", val: 1, name: "Unus (1)" },
+  { sym: "V", val: 5, name: "Quinque (5)" },
+  { sym: "X", val: 10, name: "Decem (10)" },
+  { sym: "L", val: 50, name: "Quinquaginta (50)" },
+  { sym: "C", val: 100, name: "Centum (100)" },
+  { sym: "D", val: 500, name: "Quingenti (500)" },
+  { sym: "M", val: 1000, name: "Mille (1.000)" },
+  { sym: "V̅", val: 5000, name: "Vinculum (5.000)" },
+  { sym: "X̅", val: 10000, name: "Vinculum (10.000)" },
+  { sym: "L̅", val: 50000, name: "Vinculum (50.000)" },
+  { sym: "C̅", val: 100000, name: "Vinculum (100.000)" },
+  { sym: "D̅", val: 500000, name: "Vinculum (500.000)" },
+  { sym: "M̅", val: 1000000, name: "Vinculum (1.000.000)" }
+];
+
+// 2. GRIECHISCHES ALPHABET SPEZIFIKATION
+const GRIECHISCH_SPEC = [
+  { de: "A", maj: "Α", min: "α", group: "A-E", desc: "Alpha" },
+  { de: "Ä", maj: "'A", min: "ά", group: "A-E", desc: "Alpha mit Akzent / Spiritus" },
+  { de: "B", maj: "Β", min: "β", group: "A-E", desc: "Beta" },
+  { de: "C [als k]", maj: "Κ́", min: "κ́", group: "A-E", desc: "Vor a, o, u und Konsonanten" },
+  { de: "C [als ts]", maj: "Τσ", min: "τσ", group: "A-E", desc: "Vor e, i, ä, ö, ü, y" },
+  { de: "Ch", maj: "Χ", min: "χ", group: "A-E", desc: "Chi" },
+  { de: "D", maj: "Δ", min: "δ", group: "A-E", desc: "Delta" },
+  { de: "E [kurz]", maj: "Ε", min: "ε", group: "A-E", desc: "Epsilon (kurz / geschlossene Silbe)" },
+  { de: "E [lang]", maj: "Η", min: "η", group: "A-E", desc: "Eta (vor eh+m/n/l/r, offene Silbe)" },
+  { de: "F", maj: "Φ", min: "φ", group: "F-L", desc: "Phi" },
+  { de: "G", maj: "Γ", min: "γ", group: "F-L", desc: "Gamma" },
+  { de: "H", maj: "Ͱ", min: "ͱ", group: "F-L", desc: "Heta (archaisches deutsches Hauch-H)" },
+  { de: "I", maj: "Ι", min: "ι", group: "F-L", desc: "Iota" },
+  { de: "J", maj: "Ί", min: "ί", group: "F-L", desc: "Iota mit Akzent" },
+  { de: "K", maj: "Κ", min: "κ", group: "F-L", desc: "Kappa" },
+  { de: "L", maj: "Λ", min: "λ", group: "F-L", desc: "Lambda" },
+  { de: "M", maj: "Μ", min: "μ", group: "M-R", desc: "My" },
+  { de: "N", maj: "Ν", min: "ν", group: "M-R", desc: "Ny" },
+  { de: "O [kurz]", maj: "Ο", min: "ο", group: "M-R", desc: "Omikron (kurz)" },
+  { de: "O [lang]", maj: "Ω", min: "ω", group: "M-R", desc: "Omega (lang / offene Silbe)" },
+  { de: "Ö", maj: "Ó", min: "ó", group: "M-R", desc: "Omikron mit Akut" },
+  { de: "P", maj: "Π", min: "π", group: "M-R", desc: "Pi" },
+  { de: "Ph", maj: "Ψ", min: "ψ", group: "M-R", desc: "Psi für Ph" },
+  { de: "Q / Qu", maj: "Ϙ", min: "ϙ", group: "M-R", desc: "Koppa" },
+  { de: "R", maj: "Ρ", min: "ρ", group: "M-R", desc: "Rho" },
+  { de: "S [Anlaut/Inlaut]", maj: "Σ", min: "σ", group: "S-Z", desc: "Sigma medialis" },
+  { de: "S [Auslaut]", maj: "Σ", min: "ς", group: "S-Z", desc: "Schluss-Sigma am Wortende" },
+  { de: "Ss", maj: "Ϻ", min: "ϻ", group: "S-Z", desc: "San (archaisches Doppel-S)" },
+  { de: "ẞ / ß", maj: "Ϡ", min: "ϡ", group: "S-Z", desc: "Sampi für Eszett" },
+  { de: "St", maj: "Ϛ", min: "ϛ", group: "S-Z", desc: "Stigma-Ligatur für ST" },
+  { de: "T", maj: "Τ", min: "τ", group: "S-Z", desc: "Tau" },
+  { de: "Th", maj: "Θ", min: "θ", group: "S-Z", desc: "Theta" },
+  { de: "U", maj: "ΟΥ", min: "ου", group: "S-Z", desc: "Omikron-Ypsilon" },
+  { de: "Ü", maj: "Υ", min: "υ", group: "S-Z", desc: "Ypsilon" },
+  { de: "V", maj: "Φ́", min: "φ́", group: "S-Z", desc: "Phi mit Akut" },
+  { de: "W", maj: "Ϝ", min: "ϝ", group: "S-Z", desc: "Digamma" },
+  { de: "X", maj: "Ξ", min: "ξ", group: "S-Z", desc: "Xi" },
+  { de: "Y", maj: "Ý", min: "ý", group: "S-Z", desc: "Ypsilon mit Akut" },
+  { de: "Z", maj: "Ζ", min: "ζ", group: "S-Z", desc: "Zeta" }
+];
+
+// Griechische Ziffern & Persische Ziffern
+const GREEK_NUMS_SPEC = [
+  { val: 1, sym: "α´", name: "1 (Alpha)" },
+  { val: 2, sym: "β´", name: "2 (Beta)" },
+  { val: 3, sym: "γ´", name: "3 (Gamma)" },
+  { val: 4, sym: "δ´", name: "4 (Delta)" },
+  { val: 5, sym: "ε´", name: "5 (Epsilon)" },
+  { val: 6, sym: "ϛ´", name: "6 (Stigma)" },
+  { val: 7, sym: "ζ´", name: "7 (Zeta)" },
+  { val: 8, sym: "η´", name: "8 (Eta)" },
+  { val: 9, sym: "θ´", name: "9 (Theta)" },
+  { val: 10, sym: "ι´", name: "10 (Iota)" },
+  { val: 20, sym: "κ´", name: "20 (Kappa)" },
+  { val: 30, sym: "λ´", name: "30 (Lambda)" },
+  { val: 40, sym: "μ´", name: "40 (My)" },
+  { val: 50, sym: "ν´", name: "50 (Ny)" },
+  { val: 60, sym: "ξ´", name: "60 (Xi)" },
+  { val: 70, sym: "ο´", name: "70 (Omikron)" },
+  { val: 80, sym: "π´", name: "80 (Pi)" },
+  { val: 90, sym: "ϟ´", name: "90 (Koppa)" },
+  { val: 100, sym: "ρ´", name: "100 (Rho)" },
+  { val: 200, sym: "σ´", name: "200 (Sigma)" },
+  { val: 300, sym: "τ´", name: "300 (Tau)" },
+  { val: 400, sym: "υ´", name: "400 (Ypsilon)" },
+  { val: 500, sym: "φ´", name: "500 (Phi)" },
+  { val: 600, sym: "χ´", name: "600 (Chi)" },
+  { val: 700, sym: "ψ´", name: "700 (Psi)" },
+  { val: 800, sym: "ω´", name: "800 (Omega)" },
+  { val: 900, sym: "ϡ´", name: "900 (Sampi)" },
+  { val: 1000, sym: ",α", name: "1.000" },
+  { val: 10000, sym: "Μ", name: "Myriade (×10.000)" },
+  { val: 0, sym: "⊖", name: "Negativ-Präfix" },
+  { val: 0, sym: "·", name: "Dezimaltrenner" }
+];
+
+// 3. KYRILLISCHES ALPHABET SPEZIFIKATION
+const KYRILLISCH_SPEC = [
+  { de: "A", maj: "A", min: "а", group: "A-E", desc: "As" },
+  { de: "Ä", maj: "Ѣ", min: "ѣ", group: "A-E", desc: "Jat" },
+  { de: "B", maj: "Б", min: "б", group: "A-E", desc: "Buki" },
+  { de: "C [als k]", maj: "Κ́", min: "ќ", group: "A-E", desc: "Vor a, o, u und Konsonanten" },
+  { de: "C [als ts]", maj: "Ц́", min: "ц́", group: "A-E", desc: "Vor e, i, ä, ö, ü, y" },
+  { de: "Ch", maj: "Х", min: "х", group: "A-E", desc: "Cher" },
+  { de: "D", maj: "Д", min: "д", group: "A-E", desc: "Dobro" },
+  { de: "E [kurz]", maj: "Э", min: "э", group: "A-E", desc: "Kurzes offenes E" },
+  { de: "E [lang]", maj: "É", min: "é", group: "A-E", desc: "Langes E mit Akzent" },
+  { de: "F", maj: "Ф", min: "ф", group: "F-L", desc: "Fert" },
+  { de: "G", maj: "Г", min: "г", group: "F-L", desc: "Glagol" },
+  { de: "H [Anlaut/Vokal]", maj: "Х́", min: "х́", group: "F-L", desc: "Wortanfang & vor Vokalen" },
+  { de: "H [Inlaut/Ende]", maj: "Ѓ", min: "ѓ", group: "F-L", desc: "Gje für H in allen anderen Fällen" },
+  { de: "I", maj: "И", min: "и", group: "F-L", desc: "Ische" },
+  { de: "J", maj: "Й", min: "й", group: "F-L", desc: "I kratkoje" },
+  { de: "Ja", maj: "Я", min: "я", group: "F-L", desc: "Ja" },
+  { de: "Je", maj: "Е", min: "е", group: "F-L", desc: "Je" },
+  { de: "Jo", maj: "Ё", min: "ё", group: "F-L", desc: "Jo" },
+  { de: "Ju", maj: "Ю", min: "ю", group: "F-L", desc: "Ju" },
+  { de: "K", maj: "К", min: "к", group: "F-L", desc: "Kako" },
+  { de: "L", maj: "Л", min: "л", group: "F-L", desc: "Ljudi" },
+  { de: "M", maj: "М", min: "м", group: "M-R", desc: "Myslite" },
+  { de: "N", maj: "Н", min: "н", group: "M-R", desc: "Nasch" },
+  { de: "O", maj: "О", min: "о", group: "M-R", desc: "On" },
+  { de: "Ö", maj: "Ө", min: "ө", group: "M-R", desc: "Fita/Ö-Pendant" },
+  { de: "P", maj: "П", min: "п", group: "M-R", desc: "Pokoi" },
+  { de: "Q", maj: "Ҁ", min: "ҁ", group: "M-R", desc: "Koppa" },
+  { de: "Qu", maj: "ҀВ", min: "ҁв", group: "M-R", desc: "Koppa-Wedi" },
+  { de: "R", maj: "Р", min: "р", group: "M-R", desc: "Rzi" },
+  { de: "S [stimmhaft]", maj: "З", min: "з", group: "S-Z", desc: "Semlja (Silbenanfang vor Vokal)" },
+  { de: "S [stimmlos]", maj: "С", min: "с", group: "S-Z", desc: "Slowo (vor Konsonant & Auslaut)" },
+  { de: "ẞ / ß", maj: "Ж", min: "ж", group: "S-Z", desc: "Shiwete für Eszett" },
+  { de: "Sch", maj: "Ш", min: "ш", group: "S-Z", desc: "Scha" },
+  { de: "St", maj: "Щ", min: "щ", group: "S-Z", desc: "Schtscha für St" },
+  { de: "T", maj: "Т", min: "т", group: "S-Z", desc: "Twerdo" },
+  { de: "Tsch", maj: "Ч", min: "ч", group: "S-Z", desc: "Tschern" },
+  { de: "U", maj: "У", min: "у", group: "S-Z", desc: "Uk" },
+  { de: "Ü", maj: "Ӱ", min: "ӱ", group: "S-Z", desc: "U mit Trema" },
+  { de: "V [als f]", maj: "Ф́", min: "ф́", group: "S-Z", desc: "Fert mit Akut" },
+  { de: "V [als w]", maj: "В́", min: "в́", group: "S-Z", desc: "Wedi mit Akut" },
+  { de: "W", maj: "В", min: "в", group: "S-Z", desc: "Wedi" },
+  { de: "X", maj: "Ѯ", min: "ѯ", group: "S-Z", desc: "Ksi" },
+  { de: "Y", maj: "Ы", min: "ы", group: "S-Z", desc: "Jery" },
+  { de: "Z", maj: "Ц", min: "ц", group: "S-Z", desc: "Tsi" }
+];
+
+// Kyrillische Ziffern mit Titlo
+const CYRILLIC_NUMS_SPEC = [
+  { val: 1, sym: "А҃", name: "1 (А)" },
+  { val: 2, sym: "В҃", name: "2 (В)" },
+  { val: 3, sym: "Г҃", name: "3 (Г)" },
+  { val: 4, sym: "Д҃", name: "4 (Д)" },
+  { val: 5, sym: "Є҃", name: "5 (Є)" },
+  { val: 6, sym: "Ѕ҃", name: "6 (Ѕ)" },
+  { val: 7, sym: "З҃", name: "7 (З)" },
+  { val: 8, sym: "И҃", name: "8 (И)" },
+  { val: 9, sym: "Ѳ҃", name: "9 (Ѳ)" },
+  { val: 10, sym: "І҃", name: "10 (І)" },
+  { val: 20, sym: "К҃", name: "20 (К)" },
+  { val: 30, sym: "Л҃", name: "30 (Л)" },
+  { val: 40, sym: "М҃", name: "40 (М)" },
+  { val: 50, sym: "Н҃", name: "50 (Н)" },
+  { val: 60, sym: "Ѯ҃", name: "60 (Ѯ)" },
+  { val: 70, sym: "О҃", name: "70 (О)" },
+  { val: 80, sym: "П҃", name: "80 (П)" },
+  { val: 90, sym: "Ч҃", name: "90 (Ч)" },
+  { val: 100, sym: "Р҃", name: "100 (Р)" },
+  { val: 200, sym: "С҃", name: "200 (С)" },
+  { val: 300, sym: "Т҃", name: "300 (Т)" },
+  { val: 400, sym: "У҃", name: "400 (У)" },
+  { val: 500, sym: "Ф҃", name: "500 (Ф)" },
+  { val: 600, sym: "Х҃", name: "600 (Х)" },
+  { val: 700, sym: "Ѵ҃", name: "700 (Ѵ)" },
+  { val: 800, sym: "Ѡ҃", name: "800 (Ѡ)" },
+  { val: 900, sym: "Ц҃", name: "900 (Ц)" },
+  { val: 1000, sym: "҂А҃", name: "1.000 (҂А)" },
+  { val: 0, sym: "҂", name: "Tausenderzeichen (҂)" },
+  { val: 0, sym: "҃", name: "Titlo ( ҃ )" }
+];
+
+// 4. ARABISCH-PERSISCHES SCHRIFTSYSTEM SPEZIFIKATION
+const ARABISCH_SPEC = [
+  { de: "A", maj: "ا", min: "ا", name: "Alif", iso: "ا", ini: "ا*", med: "ـا*", fin: "ـا", group: "A-E", desc: "Standard für langes/offenes [a/aː]" },
+  { de: "Ä", maj: "أ", min: "أ", name: "Alif-Hamza", iso: "أ", ini: "أ*", med: "ـأ*", fin: "ـأ", group: "A-E", desc: "Alif mit Hamza für [ɛː/ɛ]" },
+  { de: "B", maj: "ب", min: "ب", name: "Bā'", iso: "ب", ini: "بـ", med: "ـبـ", fin: "ـب", group: "A-E", desc: "Klassisches [b]" },
+  { de: "C", maj: "چ", min: "چ", name: "Che", iso: "چ", ini: "چـ", med: "ـچـ", fin: "ـچ", group: "A-E", desc: "Persisches Che für C/[ts]/[tʃ]" },
+  { de: "D", maj: "د", min: "د", name: "Dāl", iso: "د", ini: "د*", med: "ـد*", fin: "ـد", group: "A-E", desc: "Klassisches [d]" },
+  { de: "E", maj: "ع", min: "ع", name: "ʿAin / He", iso: "ع", ini: "عـ", med: "ـعـ", fin: "ـع", group: "A-E", desc: "Arebica-Standard für [ɛ/eː]" },
+  { de: "F", maj: "ف", min: "ف", name: "Fā'", iso: "ف", ini: "فـ", med: "ـفـ", fin: "ـف", group: "F-L", desc: "Klassisches [f]" },
+  { de: "G", maj: "گ", min: "گ", name: "Gāf", iso: "گ", ini: "گـ", med: "ـگـ", fin: "ـگ", group: "F-L", desc: "Persisches Gāf für stimmhaftes [ɡ]" },
+  { de: "H", maj: "ه", min: "ه", name: "Hā'", iso: "ه", ini: "هـ", med: "ـهـ", fin: "ـه", group: "F-L", desc: "Leichtes deutsches Hauchlaut-[h]" },
+  { de: "I", maj: "ی", min: "ی", name: "Yā'", iso: "ی", ini: "یـ", med: "ـیـ", fin: "ـی", group: "F-L", desc: "Persische Form des Yā' für [i/iː]" },
+  { de: "J", maj: "ژ", min: "ژ", name: "Že", iso: "ژ", ini: "ژ*", med: "ـژ*", fin: "ـژ", group: "F-L", desc: "Persisches Že für [ʒ] / Gleitlaut [j]" },
+  { de: "K", maj: "ک", min: "ک", name: "Kāf", iso: "ک", ini: "کـ", med: "ـکـ", fin: "ـک", group: "F-L", desc: "Persische K-Form für [k]" },
+  { de: "L", maj: "ل", min: "ل", name: "Lām", iso: "ل", ini: "لـ", med: "ـلـ", fin: "ـل", group: "F-L", desc: "Klassisches [l]" },
+  { de: "M", maj: "م", min: "م", name: "Mīm", iso: "م", ini: "مـ", med: "ـمـ", fin: "ـم", group: "M-R", desc: "Klassisches [m]" },
+  { de: "N", maj: "ن", min: "ن", name: "Nūn", iso: "ن", ini: "نـ", med: "ـنـ", fin: "ـن", group: "M-R", desc: "Klassisches [n]" },
+  { de: "O", maj: "ۆ", min: "ۆ", name: "Wāw mit V", iso: "ۆ", ini: "ۆ*", med: "ـۆ*", fin: "ـۆ", group: "M-R", desc: "Kurdisch/Uigurisch für [o/oː]" },
+  { de: "Ö", maj: "ۏ", min: "ۏ", name: "Wāw-Strich", iso: "ۏ", ini: "ۏ*", med: "ـۏ*", fin: "ـۏ", group: "M-R", desc: "Uigurisch/Malaiisch für [ø/œ]" },
+  { de: "P", maj: "پ", min: "پ", name: "Pe", iso: "پ", ini: "پـ", med: "ـپـ", fin: "ـپ", group: "M-R", desc: "Persisches Pe für [p]" },
+  { de: "Q", maj: "ق", min: "ق", name: "Qāf", iso: "ق", ini: "قـ", med: "ـقـ", fin: "ـق", group: "M-R", desc: "Klassisches Qāf" },
+  { de: "R", maj: "ر", min: "ر", name: "Rā'", iso: "ر", ini: "ر*", med: "ـر*", fin: "ـر", group: "M-R", desc: "Klassisches Zungen-/Gaumen-[r]" },
+  { de: "S", maj: "س", min: "س", name: "Sīn", iso: "س", ini: "سـ", med: "ـسـ", fin: "ـس", group: "S-Z", desc: "Standard-S (stimmlos/stimmhaft)" },
+  { de: "ẞ / ß", maj: "ص", min: "ص", name: "Ṣād", iso: "ص", ini: "صـ", med: "ـصـ", fin: "ـص", group: "S-Z", desc: "Emphatisches S für scharfes S" },
+  { de: "T", maj: "ت", min: "ت", name: "Tā'", iso: "ت", ini: "تـ", med: "ـتـ", fin: "ـت", group: "S-Z", desc: "Klassisches [t]" },
+  { de: "U", maj: "و", min: "و", name: "Wāw", iso: "و", ini: "و*", med: "ـو*", fin: "ـو", group: "S-Z", desc: "Klassisches langes [u/uː]" },
+  { de: "Ü", maj: "ۊ", min: "ۊ", name: "Wāw-Doppelpunkt", iso: "ۊ", ini: "ۊ*", med: "ـۊ*", fin: "ـۊ", group: "S-Z", desc: "Uigurisch/Kurdisch für [y/ʏ]" },
+  { de: "V", maj: "ڤ", min: "ڤ", name: "Ve", iso: "ڤ", ini: "ڤـ", med: "ـڤـ", fin: "ـڤ", group: "S-Z", desc: "Zwischenlaut [v]/[f]" },
+  { de: "W", maj: "و", min: "و", name: "Vāv", iso: "و", ini: "و*", med: "ـو*", fin: "ـو", group: "S-Z", desc: "Im Persischen für [v] artikuliert" },
+  { de: "X", maj: "کس", min: "کس", name: "Kāf-Sīn", iso: "کس", ini: "کسـ", med: "ـکسـ", fin: "ـکس", group: "S-Z", desc: "Kombination [ks]" },
+  { de: "Y", maj: "ئ", min: "ئ", name: "Ypsilon", iso: "ئ", ini: "ئـ", med: "ـئـ", fin: "ـئ", group: "S-Z", desc: "Trägerform/konsonantisch-vokalisches Y" },
+  { de: "Z", maj: "ز", min: "ز", name: "Zāy", iso: "ز", ini: "ز*", med: "ـز*", fin: "ـز", group: "S-Z", desc: "Klassisches Zāy" }
+];
+
+// Arabische Standard-Ziffern (nicht persisch!)
+const ARABIC_NUMS_SPEC = [
+  { val: 0, sym: "٠", name: "Sifr (0)" },
+  { val: 1, sym: "١", name: "Wahid (1)" },
+  { val: 2, sym: "٢", name: "Ithnan (2)" },
+  { val: 3, sym: "٣", name: "Thalatha (3)" },
+  { val: 4, sym: "٤", name: "Arba'a (4)" },
+  { val: 5, sym: "٥", name: "Khamsa (5)" },
+  { val: 6, sym: "٦", name: "Sitta (6)" },
+  { val: 7, sym: "٧", name: "Sab'a (7)" },
+  { val: 8, sym: "٨", name: "Thamaniya (8)" },
+  { val: 9, sym: "٩", name: "Tis'a (9)" },
+  { val: 0, sym: "٫", name: "Fasila (Dezimalkomma)" }
+];
+
+/**
+ * =============================================================
+ * APP CONTROLLER & STATE
+ * =============================================================
+ */
+let currentScript = "wetzel"; // 'wetzel', 'griechisch', 'kyrillisch', 'arabisch'
+let currentMode = "de-to-target"; // 'de-to-target' oder 'target-to-de'
+
+// DOM Elements
+const inputEl = document.getElementById("inputText");
+const outputEl = document.getElementById("outputText");
+const sourceTitle = document.getElementById("sourceTitle");
+const targetTitle = document.getElementById("targetTitle");
+const sourceHint = document.getElementById("sourceModeHint");
+const srcCount = document.getElementById("sourceCharCount");
+const tgtCount = document.getElementById("targetCharCount");
+const appHeaderTitle = document.getElementById("appHeaderTitle");
+const appHeaderDesc = document.getElementById("appHeaderDesc");
+const numberRuleHint = document.getElementById("numberRuleHint");
+
+const vowelRuleOptions = document.getElementById("vowelRuleOptions");
+const kyrillischVOptions = document.getElementById("kyrillischVOptions");
+const vowelRuleSelect = document.getElementById("vowelRuleSelect");
+const kyrillischVSelect = document.getElementById("kyrillischVSelect");
+
+inputEl.addEventListener("input", runConversion);
+
+function runConversion() {
+  const text = inputEl.value;
+  srcCount.innerText = `${text.length} Zeichen`;
+
+  if (currentMode === "de-to-target") {
+    if (currentScript === "wetzel") outputEl.value = convertDeToWetzel(text);
+    else if (currentScript === "griechisch") outputEl.value = convertDeToGriechisch(text);
+    else if (currentScript === "kyrillisch") outputEl.value = convertDeToKyrillisch(text);
+    else if (currentScript === "arabisch") outputEl.value = convertDeToArabisch(text);
+  } else {
+    if (currentScript === "wetzel") outputEl.value = convertWetzelToDe(text);
+    else if (currentScript === "griechisch") outputEl.value = convertGriechischToDe(text);
+    else if (currentScript === "kyrillisch") outputEl.value = convertKyrillischToDe(text);
+    else if (currentScript === "arabisch") outputEl.value = convertArabischToDe(text);
+  }
+
+  tgtCount.innerText = `${outputEl.value.length} Zeichen`;
+}
+
+/**
+ * =============================================================
+ * 1. WETZEL'SCHE KANZLEISCHRIFT CONVERTER
+ * =============================================================
+ */
+function convertDeToWetzel(text) {
+  if (!text) return "";
+
+  // Zahlenbehandlung & Wortbehandlung in einem Durchlauf, damit römische Zahlen von Buchstaben-Regeln ausgenommen bleiben!
+  const tokenRegex = /((?<![\w.])-?\d{1,3}(?:\.\d{3})*(?:,\d+)?(?![\w])|-?\d+(?:,\d+)?)|([a-zA-ZäöüÄÖÜß]+)|([^a-zA-Z0-9äöüÄÖÜß]+)/g;
+
+  return text.replace(tokenRegex, (match, numGroup, wordGroup, otherGroup) => {
+    if (numGroup !== undefined && numGroup !== "") {
+      return toRomanNumber(numGroup);
+    }
+    if (wordGroup !== undefined && wordGroup !== "") {
+      return convertWetzelWord(wordGroup);
+    }
+    return otherGroup || match;
+  });
+}
+
+function convertWetzelWord(w) {
+  let res = "";
+  let i = 0;
+  const len = w.length;
+
+  while (i < len) {
+    const rem = w.slice(i);
+    const matchCl = (rgx) => {
+      const m = rem.match(rgx);
+      return m && m.index === 0 ? m[0] : null;
+    };
+
+    // 1. Sch / sch
+    let m = matchCl(/^sch/i);
+    if (m) {
+      res += preserveCase(m, "I̧", "i̧");
+      i += 3;
+      continue;
+    }
+
+    // 2. Qu / qu
+    m = matchCl(/^qu/i);
+    if (m) {
+      res += preserveCase(m, "C̆", "c̆");
+      i += 2;
+      continue;
+    }
+
+    // 3. NG / ng
+    m = matchCl(/^ng/i);
+    if (m) {
+      res += preserveCase(m, "Ŋ", "ŋ");
+      i += 2;
+      continue;
+    }
+
+    // 4. IE / ie
+    m = matchCl(/^ie/i);
+    if (m) {
+      res += preserveCase(m, "Ï", "ï");
+      i += 2;
+      continue;
+    }
+
+    const ch = w[i];
+    const low = ch.toLowerCase();
+    const isUp = (ch === ch.toUpperCase());
+
+    const map = {
+      'a': { maj: "A", min: "a" },
+      'ä': { maj: "Ä", min: "ä" },
+      'b': { maj: "B", min: "b" },
+      'c': { maj: "C", min: "c" },
+      'd': { maj: "D", min: "d" },
+      'e': { maj: "E", min: "e" },
+      'f': { maj: "V́", min: "v́" },
+      'g': { maj: "Ć", min: "ć" },
+      'h': { maj: "’", min: "’" },
+      'i': { maj: "I", min: "i" },
+      'j': { maj: "Í", min: "í" },
+      'k': { maj: "C̀", min: "c̀" },
+      'l': { maj: "Į", min: "į" },
+      'm': { maj: "Ń", min: "ń" },
+      'n': { maj: "N", min: "n" },
+      'o': { maj: "O", min: "o" },
+      'ö': { maj: "Ö", min: "ö" },
+      'p': { maj: "B́", min: "b́" },
+      'r': { maj: "R", min: "r" },
+      's': { maj: "Ç", min: "ç" },
+      'ß': { maj: "ẞ", min: "ß" },
+      't': { maj: "D́", min: "d́" },
+      'u': { maj: "V̆", min: "v̆" },
+      'ü': { maj: "Ü", min: "ü" },
+      'v': { maj: "V", min: "v" },
+      'w': { maj: "V̀", min: "v̀" },
+      'x': { maj: "Ĉ", min: "ĉ" },
+      'y': { maj: "Ì", min: "ì" },
+      'z': { maj: "D̀", min: "d̀" }
+    };
+
+    if (map[low]) {
+      res += isUp ? map[low].maj : map[low].min;
+    } else {
+      res += ch;
+    }
+    i++;
+  }
+  return res;
+}
+
+function convertWetzelToDe(text) {
+  if (!text) return "";
+
+  // Römische Zahlen rückübersetzen (inkl. Vinculum \u0305)
+  let processed = text.replace(/(?<![\w\u0305])(-?[MDCLXVI\u0305]+(?:,[MDCLXVI\u03050-9]+)?)(?![\w\u0305])/g, (m) => {
+    const arab = romanToArabic(m);
+    return arab !== null ? arab : m;
+  });
+
+  const rev = [
+    { k: "I̧", d: "Sch", allUp: "SCH" }, { k: "i̧", d: "sch" },
+    { k: "C̆", d: "Qu", allUp: "QU" }, { k: "c̆", d: "qu" },
+    { k: "Ŋ", d: "Ng", allUp: "NG" }, { k: "ŋ", d: "ng" },
+    { k: "Ï", d: "Ie", allUp: "IE" }, { k: "ï", d: "ie" },
+    { k: "V́", d: "F" }, { k: "v́", d: "f" },
+    { k: "Ć", d: "G" }, { k: "ć", d: "g" },
+    { k: "Í", d: "J" }, { k: "í", d: "j" },
+    { k: "C̀", d: "K" }, { k: "c̀", d: "k" },
+    { k: "Į", d: "L" }, { k: "į", d: "l" },
+    { k: "Ń", d: "M" }, { k: "ń", d: "m" },
+    { k: "B́", d: "P" }, { k: "b́", d: "p" },
+    { k: "Ç", d: "S" }, { k: "ç", d: "s" },
+    { k: "D́", d: "T" }, { k: "d́", d: "t" },
+    { k: "V̆", d: "U" }, { k: "v̆", d: "u" },
+    { k: "V̀", d: "W" }, { k: "v̀", d: "w" },
+    { k: "Ĉ", d: "X" }, { k: "ĉ", d: "x" },
+    { k: "Ì", d: "Y" }, { k: "ì", d: "y" },
+    { k: "D̀", d: "Z" }, { k: "d̀", d: "z" },
+    { k: "’", d: "h" }, { k: "'", d: "h" }
+  ];
+
+  return applyReverseRules(processed, rev);
+}
+
+/**
+ * =============================================================
+ * 2. GRIECHISCHES ALPHABET CONVERTER
+ * =============================================================
+ */
+function convertDeToGriechisch(text) {
+  if (!text) return "";
+
+  let processed = text.replace(/(?<![\w.])-?\d{1,3}(?:\.\d{3})*(?:,\d+)?(?![\w])|-?\d+(?:,\d+)?/g, (match) => {
+    return toGreekNumberSystem(match);
+  });
+
+  return processed.replace(/([a-zA-ZäöüÄÖÜß]+|[^a-zA-ZäöüÄÖÜß]+)/g, (seg) => {
+    if (!/^[a-zA-ZäöüÄÖÜß]+$/.test(seg)) return seg;
+    return convertGriechischWord(seg);
+  });
+}
+
+function convertGriechischWord(w) {
+  let res = "";
+  let i = 0;
+  const len = w.length;
+  const vRule = vowelRuleSelect.value;
+
+  while (i < len) {
+    const rem = w.slice(i);
+    const isEnd = (pos, clusterLen) => (pos + clusterLen >= len);
+    const matchCl = (rgx) => {
+      const m = rem.match(rgx);
+      return m && m.index === 0 ? m[0] : null;
+    };
+
+    // 1. Ph / ph -> Ψ / ψ
+    let m = matchCl(/^ph/i);
+    if (m) {
+      res += preserveCase(m, "Ψ", "ψ");
+      i += 2;
+      continue;
+    }
+
+    // 2. Ch / ch -> Χ / χ
+    m = matchCl(/^ch/i);
+    if (m) {
+      res += preserveCase(m, "Χ", "χ");
+      i += 2;
+      continue;
+    }
+
+    // 3. St / st -> Ϛ / ϛ
+    m = matchCl(/^st/i);
+    if (m) {
+      res += preserveCase(m, "Ϛ", "ϛ");
+      i += 2;
+      continue;
+    }
+
+    // 4. Ss / ss -> Ϻ / ϻ
+    m = matchCl(/^ss/i);
+    if (m) {
+      res += preserveCase(m, "Ϻ", "ϻ");
+      i += 2;
+      continue;
+    }
+
+    // 5. ẞ / ß -> Ϡ / ϡ
+    if (w[i] === 'ß') {
+      res += "ϡ";
+      i++;
+      continue;
+    }
+    if (w[i] === 'ẞ') {
+      res += "Ϡ";
+      i++;
+      continue;
+    }
+
+    // 6. Th / th -> Θ / θ
+    m = matchCl(/^th/i);
+    if (m) {
+      res += preserveCase(m, "Θ", "θ");
+      i += 2;
+      continue;
+    }
+
+    // 7. Q / Qu -> Ϙ / ϙ
+    m = matchCl(/^qu/i);
+    if (m) {
+      res += preserveCase(m, "Ϙ", "ϙ");
+      i += 2;
+      continue;
+    }
+    if (w[i].toLowerCase() === 'q') {
+      res += (w[i] === w[i].toUpperCase()) ? "Ϙ" : "ϙ";
+      i++;
+      continue;
+    }
+
+    // 8. C / c (vor e, i, ä, ö, ü, y als Τσ/τσ; sonst als Κ́/κ́)
+    if (w[i].toLowerCase() === 'c') {
+      const nextC = (i + 1 < len) ? w[i + 1].toLowerCase() : "";
+      const isTs = /[eiäöüy]/.test(nextC);
+      const isUp = (w[i] === w[i].toUpperCase());
+      if (isTs) {
+        res += isUp ? "Τσ" : "τσ";
+      } else {
+        res += isUp ? "Κ́" : "κ́";
+      }
+      i++;
+      continue;
+    }
+
+    // 9. E-Längenregel
+    if (w[i].toLowerCase() === 'e') {
+      const isUp = (w[i] === w[i].toUpperCase());
+      let isLong = false;
+
+      if (vRule === "long") {
+        isLong = true;
+      } else if (vRule === "short") {
+        isLong = false;
+      } else {
+        isLong = checkVowelLength(w, i);
+      }
+
+      if (checkDehnungsH(w, i)) {
+        isLong = true; // Eta wählen, aber h NICHT schlucken für 100% Rückübersetzung!
+      }
+
+      res += isLong ? (isUp ? "Η" : "η") : (isUp ? "Ε" : "ε");
+      i++;
+      continue;
+    }
+
+    // 10. O-Längenregel
+    if (w[i].toLowerCase() === 'o') {
+      const isUp = (w[i] === w[i].toUpperCase());
+      let isLong = false;
+
+      if (vRule === "long") {
+        isLong = true;
+      } else if (vRule === "short") {
+        isLong = false;
+      } else {
+        isLong = checkVowelLength(w, i);
+      }
+
+      if (checkDehnungsH(w, i)) {
+        isLong = true;
+      }
+
+      res += isLong ? (isUp ? "Ω" : "ω") : (isUp ? "Ο" : "ο");
+      i++;
+      continue;
+    }
+
+    // 11. S / s (Auslaut ς vs Anlaut/Inlaut σ)
+    if (w[i].toLowerCase() === 's') {
+      const isUp = (w[i] === w[i].toUpperCase());
+      if (isEnd(i, 1)) {
+        res += isUp ? "Σ" : "ς";
+      } else {
+        res += isUp ? "Σ" : "σ";
+      }
+      i++;
+      continue;
+    }
+
+    // 12. Grundbuchstaben
+    const ch = w[i];
+    const low = ch.toLowerCase();
+    const isUp = (ch === ch.toUpperCase());
+
+    const greekMap = {
+      'a': { maj: "Α", min: "α" },
+      'ä': { maj: "'A", min: "ά" },
+      'b': { maj: "Β", min: "β" },
+      'd': { maj: "Δ", min: "δ" },
+      'f': { maj: "Φ", min: "φ" },
+      'g': { maj: "Γ", min: "γ" },
+      'h': { maj: "Ͱ", min: "ͱ" },
+      'i': { maj: "Ι", min: "ι" },
+      'j': { maj: "Ί", min: "ί" },
+      'k': { maj: "Κ", min: "κ" },
+      'l': { maj: "Λ", min: "λ" },
+      'm': { maj: "Μ", min: "μ" },
+      'n': { maj: "Ν", min: "ν" },
+      'ö': { maj: "Ó", min: "ó" },
+      'p': { maj: "Π", min: "π" },
+      'r': { maj: "Ρ", min: "ρ" },
+      't': { maj: "Τ", min: "τ" },
+      'u': { maj: "ΟΥ", min: "ου" },
+      'ü': { maj: "Υ", min: "υ" },
+      'v': { maj: "Φ́", min: "φ́" },
+      'w': { maj: "Ϝ", min: "ϝ" },
+      'x': { maj: "Ξ", min: "ξ" },
+      'y': { maj: "Ý", min: "ý" },
+      'z': { maj: "Ζ", min: "ζ" }
+    };
+
+    if (greekMap[low]) {
+      res += isUp ? greekMap[low].maj : greekMap[low].min;
+    } else {
+      res += ch;
+    }
+    i++;
+  }
+  return res;
+}
+
+function convertGriechischToDe(text) {
+  if (!text) return "";
+
+  // Persische Zahlen erkennen & rückwandeln
+  let processed = text.replace(/[۰-۹]/g, d => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d)));
+
+  // Griechische Zahlen erkennen (alle Zeichen der Milesischen Zahlenschrift)
+  processed = processed.replace(/(⊖)?([͵,]?[α-ωϛϟϡ]+Μ(?:\s*[͵,]?[α-ωϛϟϡ]+)?´|[͵,]?[α-ωϛϟϡ]+´)(?:·([͵,]?[α-ωϛϟϡ]+´|\d+))?/g, (match, neg, mainPart, decPart) => {
+    let val = parseGreekNumber(mainPart);
+    if (val === null) return match;
+    let out = (neg ? "-" : "") + val;
+    if (decPart) {
+      let decVal = parseGreekNumber(decPart);
+      out += "," + (decVal !== null ? decVal : decPart);
+    }
+    return out;
+  });
+
+  const rev = [
+    { k: "ΟΥ", d: "U" }, { k: "ου", d: "u" }, { k: "Ου", d: "U" },
+    { k: "Τσ", d: "C", allUp: "C" }, { k: "τσ", d: "c" },
+    { k: "Κ́", d: "C" }, { k: "κ́", d: "c" },
+    { k: "Φ́", d: "V" }, { k: "φ́", d: "v" },
+    { k: "'A", d: "Ä" }, { k: "ά", d: "ä" },
+    { k: "Ó", d: "Ö" }, { k: "ó", d: "ö" },
+    { k: "Ý", d: "Y" }, { k: "ý", d: "y" },
+    { k: "Ί", d: "J" }, { k: "ί", d: "j" },
+    { k: "Ϛ", d: "St", allUp: "ST" }, { k: "ϛ", d: "st" },
+    { k: "Ϻ", d: "Ss", allUp: "SS" }, { k: "ϻ", d: "ss" },
+    { k: "Ϡ", d: "ẞ" }, { k: "ϡ", d: "ß" },
+    { k: "Ψ", d: "Ph", allUp: "PH" }, { k: "ψ", d: "ph" },
+    { k: "Χ", d: "Ch", allUp: "CH" }, { k: "χ", d: "ch" },
+    { k: "Θ", d: "Th", allUp: "TH" }, { k: "θ", d: "th" },
+    { k: "Ϙ", d: "Qu", allUp: "QU" }, { k: "ϙ", d: "qu" },
+    { k: "Ϝ", d: "W" }, { k: "ϝ", d: "w" },
+    { k: "Ͱ", d: "H" }, { k: "ͱ", d: "h" },
+    { k: "Α", d: "A" }, { k: "α", d: "a" },
+    { k: "Β", d: "B" }, { k: "β", d: "b" },
+    { k: "Δ", d: "D" }, { k: "δ", d: "d" },
+    { k: "Ε", d: "E" }, { k: "ε", d: "e" },
+    { k: "Η", d: "E" }, { k: "η", d: "e" },
+    { k: "Γ", d: "G" }, { k: "γ", d: "g" },
+    { k: "Ι", d: "I" }, { k: "ι", d: "i" },
+    { k: "Κ", d: "K" }, { k: "κ", d: "k" },
+    { k: "Λ", d: "L" }, { k: "λ", d: "l" },
+    { k: "Μ", d: "M" }, { k: "μ", d: "m" },
+    { k: "Ν", d: "N" }, { k: "ν", d: "n" },
+    { k: "Ο", d: "O" }, { k: "ο", d: "o" },
+    { k: "Ω", d: "O" }, { k: "ω", d: "o" },
+    { k: "Π", d: "P" }, { k: "π", d: "p" },
+    { k: "Ρ", d: "R" }, { k: "ρ", d: "r" },
+    { k: "Σ", d: "S" }, { k: "σ", d: "s" }, { k: "ς", d: "s" },
+    { k: "Τ", d: "T" }, { k: "τ", d: "t" },
+    { k: "Υ", d: "Ü" }, { k: "υ", d: "ü" },
+    { k: "Φ", d: "F" }, { k: "φ", d: "f" },
+    { k: "Ξ", d: "X" }, { k: "ξ", d: "x" },
+    { k: "Ζ", d: "Z" }, { k: "ζ", d: "z" }
+  ];
+
+  return applyReverseRules(processed, rev);
+}
+
+/**
+ * =============================================================
+ * 3. KYRILLISCHES ALPHABET CONVERTER
+ * =============================================================
+ */
+function convertDeToKyrillisch(text) {
+  if (!text) return "";
+
+  let processed = text.replace(/(?<![\w.])-?\d{1,3}(?:\.\d{3})*(?:,\d+)?(?![\w])|-?\d+(?:,\d+)?/g, (match) => {
+    return toCyrillicNumberSystem(match);
+  });
+
+  return processed.replace(/([a-zA-ZäöüÄÖÜß]+|[^a-zA-ZäöüÄÖÜß]+)/g, (seg) => {
+    if (!/^[a-zA-ZäöüÄÖÜß]+$/.test(seg)) return seg;
+    return convertKyrillischWord(seg);
+  });
+}
+
+function convertKyrillischWord(w) {
+  let res = "";
+  let i = 0;
+  const len = w.length;
+  const vRule = vowelRuleSelect.value;
+  const vMode = kyrillischVSelect.value;
+
+  while (i < len) {
+    const rem = w.slice(i);
+    const isAtStart = (i === 0);
+    const matchCl = (rgx) => {
+      const m = rem.match(rgx);
+      return m && m.index === 0 ? m[0] : null;
+    };
+
+    // 1. Tsch / tsch -> Ч / ч
+    let m = matchCl(/^tsch/i);
+    if (m) {
+      res += preserveCase(m, "Ч", "ч");
+      i += 4;
+      continue;
+    }
+
+    // 2. Sch / sch -> Ш / ш
+    m = matchCl(/^sch/i);
+    if (m) {
+      res += preserveCase(m, "Ш", "ш");
+      i += 3;
+      continue;
+    }
+
+    // 3. St / st -> Щ / щ
+    m = matchCl(/^st/i);
+    if (m) {
+      res += preserveCase(m, "Щ", "щ");
+      i += 2;
+      continue;
+    }
+
+    // 4. Ch / ch -> Х / х
+    m = matchCl(/^ch/i);
+    if (m) {
+      res += preserveCase(m, "Х", "х");
+      i += 2;
+      continue;
+    }
+
+    // 5. Qu / qu -> ҀВ / ҁв
+    m = matchCl(/^qu/i);
+    if (m) {
+      res += preserveCase(m, "ҀВ", "ҁв");
+      i += 2;
+      continue;
+    }
+    if (w[i].toLowerCase() === 'q') {
+      res += (w[i] === w[i].toUpperCase()) ? "Ҁ" : "ҁ";
+      i++;
+      continue;
+    }
+
+    // 6. Ja, Je, Jo, Ju
+    m = matchCl(/^ja/i);
+    if (m) {
+      res += preserveCase(m, "Я", "я");
+      i += 2;
+      continue;
+    }
+    m = matchCl(/^je/i);
+    if (m) {
+      res += preserveCase(m, "Е", "е");
+      i += 2;
+      continue;
+    }
+    m = matchCl(/^jo/i);
+    if (m) {
+      res += preserveCase(m, "Ё", "ё");
+      i += 2;
+      continue;
+    }
+    m = matchCl(/^ju/i);
+    if (m) {
+      res += preserveCase(m, "Ю", "ю");
+      i += 2;
+      continue;
+    }
+
+    // 7. C / c (vor e, i, ä, ö, ü, y als Ц́ / ц́; sonst als Κ́ / ќ)
+    if (w[i].toLowerCase() === 'c') {
+      const nextC = (i + 1 < len) ? w[i + 1].toLowerCase() : "";
+      const isTs = /[eiäöüy]/.test(nextC);
+      const isUp = (w[i] === w[i].toUpperCase());
+      res += isTs ? (isUp ? "Ц́" : "ц́") : (isUp ? "Κ́" : "ќ");
+      i++;
+      continue;
+    }
+
+    // 8. H / h (Х́ / х́ am Wortanfang und vor Vokal; sonst Ѓ / ѓ)
+    if (w[i].toLowerCase() === 'h') {
+      const nextC = (i + 1 < len) ? w[i + 1].toLowerCase() : "";
+      const isUp = (w[i] === w[i].toUpperCase());
+      const isVorVokal = /[aeiouäöü]/.test(nextC);
+
+      if (isAtStart || isVorVokal) {
+        res += isUp ? "Х́" : "х́";
+      } else {
+        res += isUp ? "Ѓ" : "ѓ";
+      }
+      i++;
+      continue;
+    }
+
+    // 9. E-Laut (Э/э kurz vs. É/é lang)
+    if (w[i].toLowerCase() === 'e') {
+      const isUp = (w[i] === w[i].toUpperCase());
+      let isLong = false;
+      if (vRule === "long") isLong = true;
+      else if (vRule === "short") isLong = false;
+      else isLong = checkVowelLength(w, i);
+
+      if (checkDehnungsH(w, i)) {
+        isLong = true; // Langes É, aber h regulär stehen lassen für 100% Rückübersetzung!
+      }
+      res += isLong ? (isUp ? "É" : "é") : (isUp ? "Э" : "э");
+      i++;
+      continue;
+    }
+
+    // 10. S-Laut (З/з stimmhaft vor Vokal im Silbenanlaut; С/с stimmlos)
+    if (w[i].toLowerCase() === 's') {
+      const isUp = (w[i] === w[i].toUpperCase());
+      const nextC = (i + 1 < len) ? w[i + 1].toLowerCase() : "";
+      const prevC = (i > 0) ? w[i - 1].toLowerCase() : "";
+      const nextIsVowel = /[aeiouäöü]/.test(nextC);
+
+      if (nextIsVowel && (isAtStart || /[aeiouäöüllrrnmm]/.test(prevC))) {
+        res += isUp ? "З" : "з";
+      } else {
+        res += isUp ? "С" : "с";
+      }
+      i++;
+      continue;
+    }
+
+    // 11. V-Laut (Ф́/ф́ als f vs. В́/в́ als w)
+    if (w[i].toLowerCase() === 'v') {
+      const isUp = (w[i] === w[i].toUpperCase());
+      let useW = false;
+      if (vMode === "w") useW = true;
+      else if (vMode === "f") useW = false;
+      else {
+        const rest = w.slice(i).toLowerCase();
+        if (/^(vogel|vater|viel|voll|vier|von|vor|volk)/.test(rest)) useW = false;
+        else if (i > 0 && /[aeiouäöü]/.test(w[i - 1].toLowerCase())) useW = true;
+        else useW = false;
+      }
+      res += useW ? (isUp ? "В́" : "в́") : (isUp ? "Ф́" : "ф́");
+      i++;
+      continue;
+    }
+
+    // 12. Eszett (ẞ / ß -> Ж / ж)
+    if (w[i] === 'ß') {
+      res += "ж";
+      i++;
+      continue;
+    }
+    if (w[i] === 'ẞ') {
+      res += "Ж";
+      i++;
+      continue;
+    }
+
+    const ch = w[i];
+    const low = ch.toLowerCase();
+    const isUp = (ch === ch.toUpperCase());
+
+    const kyrMap = {
+      'a': { maj: "A", min: "а" },
+      'ä': { maj: "Ѣ", min: "ѣ" },
+      'b': { maj: "Б", min: "б" },
+      'd': { maj: "Д", min: "д" },
+      'f': { maj: "Ф", min: "ф" },
+      'g': { maj: "Г", min: "г" },
+      'i': { maj: "И", min: "и" },
+      'j': { maj: "Й", min: "й" },
+      'k': { maj: "К", min: "к" },
+      'l': { maj: "Л", min: "л" },
+      'm': { maj: "М", min: "м" },
+      'n': { maj: "Н", min: "н" },
+      'o': { maj: "О", min: "о" },
+      'ö': { maj: "Ө", min: "ө" },
+      'p': { maj: "П", min: "п" },
+      'r': { maj: "Р", min: "р" },
+      't': { maj: "Т", min: "т" },
+      'u': { maj: "У", min: "у" },
+      'ü': { maj: "Ӱ", min: "ӱ" },
+      'w': { maj: "В", min: "в" },
+      'x': { maj: "Ѯ", min: "ѯ" },
+      'y': { maj: "Ы", min: "ы" },
+      'z': { maj: "Ц", min: "ц" }
+    };
+
+    if (kyrMap[low]) {
+      res += isUp ? kyrMap[low].maj : kyrMap[low].min;
+    } else {
+      res += ch;
+    }
+    i++;
+  }
+  return res;
+}
+
+function convertKyrillischToDe(text) {
+  if (!text) return "";
+
+  // Persische Ziffern rückwandeln falls vorhanden
+  let processed = text.replace(/[۰-۹]/g, d => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d)));
+
+  // Altkyrillische Zahlen erkennen (unter Einschluss aller historischen Zeichen Є, Ѕ, І, Ѳ, Ѯ, Ѵ, Ѡ)
+  processed = processed.replace(/(⊖)?(҂*[А-ЦЄЅІѲѮѴѠ]+҃)(?:·([А-ЦЄЅІѲѮѴѠ]+҃|\d+))?/g, (m, neg, mainPart, decPart) => {
+    let arabVal = parseCyrillicNumber(mainPart);
+    if (arabVal === null) return m;
+    let out = (neg ? "-" : "") + arabVal;
+    if (decPart) {
+      let decVal = parseCyrillicNumber(decPart);
+      out += "," + (decVal !== null ? decVal : decPart);
+    }
+    return out;
+  });
+
+  const rev = [
+    { k: "ҀВ", d: "Qu", allUp: "QU" }, { k: "ҁв", d: "qu" },
+    { k: "Ц́", d: "C" }, { k: "ц́", d: "c" },
+    { k: "Κ́", d: "C" }, { k: "ќ", d: "c" },
+    { k: "Х́", d: "H" }, { k: "х́", d: "h" },
+    { k: "Ѓ", d: "H" }, { k: "ѓ", d: "h" },
+    { k: "Ф́", d: "V" }, { k: "ф́", d: "v" },
+    { k: "В́", d: "V" }, { k: "в́", d: "v" },
+    { k: "É", d: "E" }, { k: "é", d: "e" },
+    { k: "Э", d: "E" }, { k: "э", d: "e" },
+    { k: "Ч", d: "Tsch", allUp: "TSCH" }, { k: "ч", d: "tsch" },
+    { k: "Ш", d: "Sch", allUp: "SCH" }, { k: "ш", d: "sch" },
+    { k: "Щ", d: "St", allUp: "ST" }, { k: "щ", d: "st" },
+    { k: "Х", d: "Ch", allUp: "CH" }, { k: "х", d: "ch" },
+    { k: "Я", d: "Ja", allUp: "JA" }, { k: "я", d: "ja" },
+    { k: "Ё", d: "Jo", allUp: "JO" }, { k: "ё", d: "jo" },
+    { k: "Ю", d: "Ju", allUp: "JU" }, { k: "ю", d: "ju" },
+    { k: "Е", d: "Je", allUp: "JE" }, { k: "е", d: "je" },
+    { k: "Ж", d: "ẞ" }, { k: "ж", d: "ß" },
+    { k: "Ҁ", d: "Q" }, { k: "ҁ", d: "q" },
+    { k: "A", d: "A" }, { k: "а", d: "a" },
+    { k: "Ѣ", d: "Ä" }, { k: "ѣ", d: "ä" },
+    { k: "Б", d: "B" }, { k: "б", d: "b" },
+    { k: "Д", d: "D" }, { k: "д", d: "d" },
+    { k: "Ф", d: "F" }, { k: "ф", d: "f" },
+    { k: "Г", d: "G" }, { k: "г", d: "g" },
+    { k: "И", d: "I" }, { k: "и", d: "i" },
+    { k: "Й", d: "J" }, { k: "й", d: "j" },
+    { k: "К", d: "K" }, { k: "к", d: "k" },
+    { k: "Л", d: "L" }, { k: "л", d: "l" },
+    { k: "М", d: "M" }, { k: "м", d: "m" },
+    { k: "Н", d: "N" }, { k: "н", d: "n" },
+    { k: "О", d: "O" }, { k: "о", d: "o" },
+    { k: "Ө", d: "Ö" }, { k: "ө", d: "ö" },
+    { k: "П", d: "P" }, { k: "п", d: "p" },
+    { k: "Р", d: "R" }, { k: "р", d: "r" },
+    { k: "З", d: "S" }, { k: "з", d: "s" },
+    { k: "С", d: "S" }, { k: "с", d: "s" },
+    { k: "Т", d: "T" }, { k: "т", d: "t" },
+    { k: "У", d: "U" }, { k: "у", d: "u" },
+    { k: "Ӱ", d: "Ü" }, { k: "ӱ", d: "ü" },
+    { k: "В", d: "W" }, { k: "в", d: "w" },
+    { k: "Ѯ", d: "X" }, { k: "ѯ", d: "x" },
+    { k: "Ы", d: "Y" }, { k: "ы", d: "y" },
+    { k: "Ц", d: "Z" }, { k: "ц", d: "z" }
+  ];
+
+  return applyReverseRules(processed, rev);
+}
+
+/**
+ * =============================================================
+ * 4. ARABISCH-PERSISCHES SCHRIFTSYSTEM CONVERTER
+ * =============================================================
+ */
+function convertDeToArabisch(text) {
+  if (!text) return "";
+
+  let processed = text.replace(/(?<![\w.])-?\d{1,3}(?:\.\d{3})*(?:,\d+)?(?![\w])|-?\d+(?:,\d+)?/g, (match) => {
+    return toArabicNumerals(match);
+  });
+
+  return processed.replace(/([a-zA-ZäöüÄÖÜß]+|[^a-zA-ZäöüÄÖÜß]+)/g, (seg) => {
+    if (!/^[a-zA-ZäöüÄÖÜß]+$/.test(seg)) return seg;
+    return convertArabischWord(seg);
+  });
+}
+
+function convertArabischWord(w) {
+  let res = "";
+  let i = 0;
+  const len = w.length;
+
+  while (i < len) {
+    if (w[i].toLowerCase() === 'x') {
+      res += "کس";
+      i++;
+      continue;
+    }
+
+    if (w[i] === 'ß' || w[i] === 'ẞ') {
+      res += "ص";
+      i++;
+      continue;
+    }
+
+    const low = w[i].toLowerCase();
+
+    const arMap = {
+      'a': "ا",
+      'ä': "أ",
+      'b': "ب",
+      'c': "چ",
+      'd': "د",
+      'e': "ع",
+      'f': "ف",
+      'g': "گ",
+      'h': "ه",
+      'i': "ی",
+      'j': "ژ",
+      'k': "ک",
+      'l': "ل",
+      'm': "م",
+      'n': "ن",
+      'o': "ۆ",
+      'ö': "ۏ",
+      'p': "پ",
+      'q': "ق",
+      'r': "ر",
+      's': "س",
+      't': "ت",
+      'u': "و",
+      'ü': "ۊ",
+      'v': "ڤ",
+      'w': "و",
+      'y': "ئ",
+      'z': "ز"
+    };
+
+    if (arMap[low]) {
+      res += arMap[low];
+    } else {
+      res += w[i];
+    }
+    i++;
+  }
+  return res;
+}
+
+function convertArabischToDe(text) {
+  if (!text) return "";
+
+  // Arabische Ziffern rückübersetzen
+  let processed = text.replace(/[٠-٩]/g, d => String('٠١٢٣٤٥٦٧٨٩'.indexOf(d)));
+  processed = processed.replace(/٫/g, ",");
+
+  // Kontextuelle Differenzierung von و (Wāw/Vāv): w vs. u
+  // Vor Vokal am Wortanfang oder nach z/sch -> w; sonst -> u
+  processed = processed.replace(/(^|[\s\b.,!?;:"'«»()\[\]])و([اأعۆۏیۊ])/gi, '$1w_ph_$2');
+  processed = processed.replace(/([ز]|(سچ))و([اأعۆۏیۊ])/gi, '$1w_ph_$2');
+  processed = processed.replace(/([اأعۆۏیۊ])و([اأعۆۏیۊ])/gi, '$1w_ph_$2');
+
+  const rev = [
+    { k: "w_ph_", d: "w" },
+    { k: "کس", d: "x" },
+    { k: "ا", d: "a" },
+    { k: "أ", d: "ä" },
+    { k: "ب", d: "b" },
+    { k: "چ", d: "c" },
+    { k: "د", d: "d" },
+    { k: "ع", d: "e" },
+    { k: "ف", d: "f" },
+    { k: "گ", d: "g" },
+    { k: "ه", d: "h" },
+    { k: "ی", d: "i" },
+    { k: "ژ", d: "j" },
+    { k: "ک", d: "k" },
+    { k: "ل", d: "l" },
+    { k: "م", d: "m" },
+    { k: "ن", d: "n" },
+    { k: "ۆ", d: "o" },
+    { k: "ۏ", d: "ö" },
+    { k: "پ", d: "p" },
+    { k: "ق", d: "q" },
+    { k: "ر", d: "r" },
+    { k: "س", d: "s" },
+    { k: "ص", d: "ß" },
+    { k: "ت", d: "t" },
+    { k: "ۊ", d: "ü" },
+    { k: "ڤ", d: "v" },
+    { k: "و", d: "u" },
+    { k: "ئ", d: "y" },
+    { k: "ز", d: "z" }
+  ];
+
+  let rawGerman = applyReverseRules(processed, rev);
+
+  // Da Arabisch keine Großbuchstaben kennt: Satzanfänge automatisch großschreiben!
+  return capitalizeSentences(rawGerman);
+}
+
+/**
+ * =============================================================
+ * ZAHLENSYSTEME ALGORITHMEN
+ * =============================================================
+ */
+
+// --- 1. RÖMISCHES ZAHLENSYSTEM MIT VINCULUM (1 bis 3.999.999) ---
+function toRomanNumber(numStr) {
+  let isNeg = numStr.startsWith("-");
+  let cleanStr = numStr.replace(/^-/, '').replace(/\./g, '');
+  let parts = cleanStr.split(',');
+
+  let intVal = parseInt(parts[0], 10);
+  if (isNaN(intVal) || intVal < 1 || intVal > 3999999) {
+    return numStr; // Fallback auf arabische Ziffern
+  }
+
+  let romanInt = intToRoman(intVal);
+  let res = (isNeg ? "-" : "") + romanInt;
+
+  if (parts.length > 1 && parts[1].length > 0) {
+    let decVal = parseInt(parts[1], 10);
+    if (!isNaN(decVal) && decVal > 0 && decVal <= 3999 && !parts[1].startsWith("0")) {
+      res += "," + intToRoman(decVal);
+    } else {
+      res += "," + parts[1];
+    }
+  }
+  return res;
+}
+
+function intToRoman(num) {
+  const map = [
+    { val: 1000000, sym: "M\u0305" },
+    { val: 900000, sym: "C\u0305M\u0305" },
+    { val: 500000, sym: "D\u0305" },
+    { val: 400000, sym: "C\u0305D\u0305" },
+    { val: 100000, sym: "C\u0305" },
+    { val: 90000, sym: "X\u0305C\u0305" },
+    { val: 50000, sym: "L\u0305" },
+    { val: 40000, sym: "X\u0305L\u0305" },
+    { val: 10000, sym: "X\u0305" },
+    { val: 9000, sym: "I\u0305X\u0305" },
+    { val: 5000, sym: "V\u0305" },
+    { val: 4000, sym: "I\u0305V\u0305" },
+    { val: 1000, sym: "M" },
+    { val: 900, sym: "CM" },
+    { val: 500, sym: "D" },
+    { val: 400, sym: "CD" },
+    { val: 100, sym: "C" },
+    { val: 90, sym: "XC" },
+    { val: 50, sym: "L" },
+    { val: 40, sym: "XL" },
+    { val: 10, sym: "X" },
+    { val: 9, sym: "IX" },
+    { val: 5, sym: "V" },
+    { val: 4, sym: "IV" },
+    { val: 1, sym: "I" }
+  ];
+
+  let res = "";
+  for (const item of map) {
+    while (num >= item.val) {
+      res += item.sym;
+      num -= item.val;
+    }
+  }
+  return res;
+}
+
+function romanToArabic(romanStr) {
+  let isNeg = romanStr.startsWith("-");
+  let s = romanStr.replace(/^-/, '');
+  let parts = s.split(',');
+
+  let intPart = parseRomanPart(parts[0]);
+  if (intPart === null) return null;
+  // Validierung: Nur echte, wohlgeformte römische Zahlen rückwandeln!
+  if (intToRoman(intPart) !== parts[0]) return null;
+
+  let out = (isNeg ? "-" : "") + intPart;
+
+  if (parts.length > 1) {
+    let decPart = parseRomanPart(parts[1]);
+    if (decPart !== null && intToRoman(decPart) === parts[1]) {
+      out += "," + decPart;
+    } else {
+      out += "," + parts[1];
+    }
+  }
+  return out;
+}
+
+function parseRomanPart(str) {
+  if (!str) return null;
+  const values = [
+    { sym: "C\u0305M\u0305", val: 900000 }, { sym: "C\u0305D\u0305", val: 400000 },
+    { sym: "X\u0305C\u0305", val: 90000 }, { sym: "X\u0305L\u0305", val: 40000 },
+    { sym: "I\u0305X\u0305", val: 9000 }, { sym: "I\u0305V\u0305", val: 4000 },
+    { sym: "CM", val: 900 }, { sym: "CD", val: 400 },
+    { sym: "XC", val: 90 }, { sym: "XL", val: 40 },
+    { sym: "IX", val: 9 }, { sym: "IV", val: 4 },
+    { sym: "M\u0305", val: 1000000 }, { sym: "D\u0305", val: 500000 },
+    { sym: "C\u0305", val: 100000 }, { sym: "L\u0305", val: 50000 },
+    { sym: "X\u0305", val: 10000 }, { sym: "V\u0305", val: 5000 },
+    { sym: "M", val: 1000 }, { sym: "D", val: 500 },
+    { sym: "C", val: 100 }, { sym: "L", val: 50 },
+    { sym: "X", val: 10 }, { sym: "V", val: 5 }, { sym: "I", val: 1 }
+  ];
+
+  let total = 0;
+  let i = 0;
+  while (i < str.length) {
+    let matched = false;
+    for (const item of values) {
+      if (str.startsWith(item.sym, i)) {
+        total += item.val;
+        i += item.sym.length;
+        matched = true;
+        break;
+      }
+    }
+    if (!matched) return null;
+  }
+  return total > 0 ? total : null;
+}
+
+// --- 2. GRIECHISCHES ZAHLENSYSTEM & PERSISCHER FALLBACK ---
+const G_ONES = ["", "α", "β", "γ", "δ", "ε", "ϛ", "ζ", "η", "θ"];
+const G_TENS = ["", "ι", "κ", "λ", "μ", "ν", "ξ", "ο", "π", "ϟ"];
+const G_HUND = ["", "ρ", "σ", "τ", "υ", "φ", "χ", "ψ", "ω", "ϡ"];
+
+function toPersianDigits(str) {
+  const pMap = { '0':'۰', '1':'۱', '2':'۲', '3':'۳', '4':'۴', '5':'۵', '6':'۶', '7':'۷', '8':'۸', '9':'۹' };
+  return String(str).replace(/[0-9]/g, d => pMap[d]);
+}
+
+function toGreekNumberSystem(numStr) {
+  let isNeg = numStr.startsWith("-");
+  let cleanStr = numStr.replace(/^-/, '').replace(/\./g, '');
+  let parts = cleanStr.split(',');
+
+  let intVal = parseInt(parts[0], 10);
+  if (isNaN(intVal)) return numStr;
+
+  if (intVal >= 100000000) {
+    return (isNeg ? "-" : "") + toPersianDigits(cleanStr);
+  }
+
+  if (intVal === 0) {
+    return (isNeg ? "⊖" : "") + "۰";
+  }
+
+  let greekInt = encodeGreekInt(intVal);
+  let res = (isNeg ? "⊖" : "") + greekInt;
+
+  if (parts.length > 1 && parts[1].length > 0) {
+    let decVal = parseInt(parts[1], 10);
+    if (!isNaN(decVal) && decVal > 0 && decVal < 10000) {
+      res += "·" + encodeSub10kGreek(decVal, true);
+    } else {
+      res += "·" + toPersianDigits(parts[1]);
+    }
+  }
+  return res;
+}
+
+function encodeGreekInt(n) {
+  if (n >= 10000) {
+    const myr = Math.floor(n / 10000);
+    const rem = n % 10000;
+    const myrSym = encodeSub10kGreek(myr, false) + "Μ";
+    if (rem === 0) return myrSym + "´";
+    return myrSym + " " + encodeSub10kGreek(rem, true);
+  }
+  return encodeSub10kGreek(n, true);
+}
+
+function encodeSub10kGreek(n, withKeraia) {
+  let s = "";
+  const th = Math.floor(n / 1000);
+  const hu = Math.floor((n % 1000) / 100);
+  const te = Math.floor((n % 100) / 10);
+  const on = n % 10;
+
+  if (th > 0) s += "," + G_ONES[th];
+  if (hu > 0) s += G_HUND[hu];
+  if (te > 0) s += G_TENS[te];
+  if (on > 0) s += G_ONES[on];
+  if (withKeraia) s += "´";
+  return s;
+}
+
+function parseGreekNumber(str) {
+  if (!str) return null;
+  str = str.trim();
+  if (str.includes("Μ")) {
+    const p = str.split("Μ");
+    const mVal = parseSub10kGreek(p[0]);
+    const rVal = parseSub10kGreek(p[1] || "");
+    if (mVal !== null) {
+      return mVal * 10000 + (rVal || 0);
+    }
+  }
+  return parseSub10kGreek(str);
+}
+
+function parseSub10kGreek(s) {
+  if (!s) return null;
+  s = s.replace(/[´'΄]/g, '').trim();
+  if (!s) return null;
+
+  let total = 0;
+  let i = 0;
+  if (s[i] === ',' || s[i] === '͵') {
+    i++;
+    if (i < s.length) {
+      const idx = G_ONES.indexOf(s[i]);
+      if (idx > 0) { total += idx * 1000; i++; }
+    }
+  }
+  if (i < s.length) {
+    const h = G_HUND.indexOf(s[i]);
+    if (h > 0) { total += h * 100; i++; }
+  }
+  if (i < s.length) {
+    const t = G_TENS.indexOf(s[i]);
+    if (t > 0) { total += t * 10; i++; }
+  }
+  if (i < s.length) {
+    let c = s[i];
+    if (c === 'ϝ') c = 'ϛ';
+    const o = G_ONES.indexOf(c);
+    if (o > 0) { total += o; i++; }
+  }
+  return total > 0 ? total : null;
+}
+
+// --- 3. KYRILLISCHES ZAHLENSYSTEM MIT TITLO ---
+const C_ONES = ["", "А", "В", "Г", "Д", "Є", "Ѕ", "З", "И", "Ѳ"];
+const C_TEENS = ["І", "АІ", "ВІ", "ГІ", "ДІ", "ЄІ", "ЅІ", "ЗІ", "ИІ", "ѲІ"];
+const C_TENS = ["", "І", "К", "Л", "М", "Н", "Ѯ", "О", "П", "Ч"];
+const C_HUND = ["", "Р", "С", "Т", "У", "Ф", "Х", "Ѵ", "Ѡ", "Ц"];
+
+function toCyrillicNumberSystem(numStr) {
+  let isNeg = numStr.startsWith("-");
+  let cleanStr = numStr.replace(/^-/, '').replace(/\./g, '');
+  let parts = cleanStr.split(',');
+
+  let intVal = parseInt(parts[0], 10);
+  if (isNaN(intVal)) return numStr;
+
+  if (intVal >= 1000000) {
+    return (isNeg ? "-" : "") + toPersianDigits(cleanStr);
+  }
+  if (intVal === 0) {
+    return (isNeg ? "⊖" : "") + "۰";
+  }
+
+  let cyrInt = encodeCyrillicInt(intVal);
+  let res = (isNeg ? "⊖" : "") + cyrInt;
+
+  if (parts.length > 1 && parts[1].length > 0) {
+    let decVal = parseInt(parts[1], 10);
+    if (!isNaN(decVal) && decVal > 0 && decVal < 1000) {
+      res += "·" + encodeSub1kCyrillic(decVal) + "҃";
+    } else {
+      res += "·" + toPersianDigits(parts[1]);
+    }
+  }
+  return res;
+}
+
+function encodeCyrillicInt(n) {
+  let th = Math.floor(n / 1000);
+  let rem = n % 1000;
+  let res = "";
+
+  if (th > 0) {
+    let thStr = encodeSub1kCyrillic(th);
+    res += thStr.split('').map(ch => "҂" + ch).join('');
+  }
+  if (rem > 0) {
+    res += encodeSub1kCyrillic(rem);
+  }
+  return res + "҃";
+}
+
+function encodeSub1kCyrillic(n) {
+  let hu = Math.floor(n / 100);
+  let te = Math.floor((n % 100) / 10);
+  let on = n % 10;
+  let s = "";
+
+  if (hu > 0) s += C_HUND[hu];
+
+  if (te === 1) {
+    s += C_TEENS[on];
+  } else {
+    if (te > 0) s += C_TENS[te];
+    if (on > 0) s += C_ONES[on];
+  }
+  return s;
+}
+
+function parseCyrillicNumber(str) {
+  if (!str) return null;
+  let s = str.replace(/҃/g, '').trim();
+  if (!s) return null;
+
+  let total = 0;
+  let mult = 1;
+  let i = 0;
+
+  while (i < s.length) {
+    if (s[i] === '҂') {
+      mult = 1000;
+      i++;
+      continue;
+    }
+    let hIdx = C_HUND.indexOf(s[i]);
+    if (hIdx > 0) {
+      total += hIdx * 100 * mult;
+      mult = 1;
+      i++;
+      continue;
+    }
+    let tIdx = C_TENS.indexOf(s[i]);
+    if (tIdx > 0) {
+      total += tIdx * 10 * mult;
+      mult = 1;
+      i++;
+      continue;
+    }
+    let oIdx = C_ONES.indexOf(s[i]);
+    if (oIdx > 0) {
+      if (i + 1 < s.length && s[i + 1] === 'І') {
+        total += (10 + oIdx) * mult;
+        mult = 1;
+        i += 2;
+        continue;
+      }
+      total += oIdx * mult;
+      mult = 1;
+      i++;
+      continue;
+    }
+    i++;
+  }
+  return total > 0 ? total : null;
+}
+
+// --- 4. ARABISCHE ZIFFERN (Standard ٠-٩) ---
+function toArabicNumerals(str) {
+  const map = {
+    '0': '٠', '1': '١', '2': '٢', '3': '٣', '4': '٤',
+    '5': '٥', '6': '٦', '7': '٧', '8': '٨', '9': '٩'
+  };
+  let isNeg = str.startsWith("-");
+  let clean = str.replace(/^-/, '').replace(/\./g, '');
+  let replaced = clean.replace(/[0-9]/g, d => map[d]).replace(/,/g, '٫');
+  return (isNeg ? "-" : "") + replaced;
+}
+
+/**
+ * =============================================================
+ * ALLGEMEINE HILFSFUNKTIONEN
+ * =============================================================
+ */
+function checkVowelLength(word, idx) {
+  const rest = word.slice(idx + 1).toLowerCase();
+  if (/^[bcdfghjklmnpqrstvwxyz][aeiouäöü]/.test(rest)) return true;
+  if (/^[aeiouäöü]/.test(rest)) return true;
+  return false;
+}
+
+function checkDehnungsH(word, idx) {
+  const next1 = (idx + 1 < word.length) ? word[idx + 1].toLowerCase() : "";
+  const next2 = (idx + 2 < word.length) ? word[idx + 2].toLowerCase() : "";
+  return (next1 === 'h' && /[mnlr]/.test(next2));
+}
+
+function preserveCase(orig, maj, min) {
+  if (orig === orig.toUpperCase()) return maj;
+  if (orig[0] === orig[0].toUpperCase()) {
+    return maj[0] + min.slice(1);
+  }
+  return min;
+}
+
+function applyReverseRules(str, ruleList) {
+  ruleList.sort((a, b) => b.k.length - a.k.length);
+  let out = "";
+  let i = 0;
+  const len = str.length;
+
+  while (i < len) {
+    let matched = false;
+    for (const r of ruleList) {
+      if (str.startsWith(r.k, i)) {
+        if (r.allUp && i + r.k.length < len && /^[A-ZÄÖÜ]/.test(str[i + r.k.length])) {
+          out += r.allUp;
+        } else {
+          out += r.d;
+        }
+        i += r.k.length;
+        matched = true;
+        break;
+      }
+    }
+    if (!matched) {
+      out += str[i];
+      i++;
+    }
+  }
+  return out;
+}
+
+function capitalizeSentences(str) {
+  if (!str) return "";
+  let res = str.replace(/^(\s*["'„»«(]*)([a-zäöü])/i, (m, p1, p2) => p1 + p2.toUpperCase());
+  res = res.replace(/([.!?\n]\s*["'„»«(]*)([a-zäöü])/gi, (m, p1, p2) => p1 + p2.toUpperCase());
+  return res;
+}
+
+/**
+ * =============================================================
+ * UI INTERAKTIONEN & REITER-WECHSEL
+ * =============================================================
+ */
+function switchScript(scriptKey) {
+  currentScript = scriptKey;
+
+  document.querySelectorAll(".script-tab-btn").forEach(b => b.classList.remove("active"));
+  if (scriptKey === "wetzel") document.getElementById("btnScriptWetzel").classList.add("active");
+  if (scriptKey === "griechisch") document.getElementById("btnScriptGriechisch").classList.add("active");
+  if (scriptKey === "kyrillisch") document.getElementById("btnScriptKyrillisch").classList.add("active");
+  if (scriptKey === "arabisch") document.getElementById("btnScriptArabisch").classList.add("active");
+
+  vowelRuleOptions.style.display = (scriptKey === "griechisch" || scriptKey === "kyrillisch") ? "flex" : "none";
+  kyrillischVOptions.style.display = (scriptKey === "kyrillisch") ? "flex" : "none";
+
+  updateTextareaClasses();
+
+  if (scriptKey === "wetzel") {
+    appHeaderTitle.innerText = "Wetzel'sche Kanzleischrift";
+    appHeaderDesc.innerText = "Bidirektionaler Text- & Zahlenkonverter mit römischem Zahlensystem, Vinculum & Fallback";
+    numberRuleHint.innerText = "Zahlen 1 bis 3.999.999 ➔ Römisch (mit Vinculum V̅, X̅...) | Ab 4 Mio. ➔ Indisch-Arabisch";
+    setPanelsTitles("Standard-Deutsch", "Wetzel'sche Kanzleischrift");
+  } else if (scriptKey === "griechisch") {
+    appHeaderTitle.innerText = "Griechisches Schriftsystem";
+    appHeaderDesc.innerText = "Klassisch-antike Transkription mit milesischem Zahlensystem & persischem Fallback";
+    numberRuleHint.innerText = "Zahlen 1 bis 99.999.999 ➔ Milesisch mit Keraia & Myriaden | Ab 100 Mio. ➔ Persisch (۰۱۲۳...)";
+    setPanelsTitles("Standard-Deutsch", "Griechische Schrift");
+  } else if (scriptKey === "kyrillisch") {
+    appHeaderTitle.innerText = "Kyrillisches Schriftsystem";
+    appHeaderDesc.innerText = "Historische Schrifttypologie mit altkyrillischem Zahlensystem, Titlo & Tausenderzeichen";
+    numberRuleHint.innerText = "Zahlen 1 bis 999.999 ➔ Altkyrillisch mit Titlo ( ҃ ) und ҂ | Ab 1 Mio. ➔ Persischer Fallback";
+    setPanelsTitles("Standard-Deutsch", "Kyrillische Schrift");
+  } else if (scriptKey === "arabisch") {
+    appHeaderTitle.innerText = "Arabisch-Persisches Schriftsystem";
+    appHeaderDesc.innerText = "Deutsche Arebica-Transkription mit 30 Spezialbuchstaben & arabischen Standardziffern";
+    numberRuleHint.innerText = "Zahlensystem: Arabische Standard-Ziffern (٠١٢٣٤٥٦٧٨٩, Dezimalkomma ٫)";
+    setPanelsTitles("Standard-Deutsch", "Arabisch-Persische Arebica");
+  }
+
+  buildKeyboardTabs();
+  buildPalette();
+  renderDocumentation();
+  runConversion();
+}
+
+function setPanelsTitles(deTitle, targetTitleText) {
+  if (currentMode === "de-to-target") {
+    sourceTitle.innerHTML = `<span>🇩🇪</span> ${deTitle}`;
+    targetTitle.innerHTML = `<span>📜</span> ${targetTitleText}`;
+  } else {
+    sourceTitle.innerHTML = `<span>📜</span> ${targetTitleText}`;
+    targetTitle.innerHTML = `<span>🇩🇪</span> ${deTitle}`;
+  }
+}
+
+function updateTextareaClasses() {
+  outputEl.classList.remove("kanzlei-font", "arabic-font");
+  inputEl.classList.remove("kanzlei-font", "arabic-font");
+
+  if (currentScript === "arabisch") {
+    if (currentMode === "de-to-target") {
+      outputEl.classList.add("arabic-font");
+    } else {
+      inputEl.classList.add("arabic-font");
+    }
+  } else {
+    if (currentMode === "de-to-target") {
+      outputEl.classList.add("kanzlei-font");
+    } else {
+      inputEl.classList.add("kanzlei-font");
+    }
+  }
+}
+
+function toggleDirection() {
+  if (currentMode === "de-to-target") {
+    currentMode = "target-to-de";
+    sourceHint.innerText = "Modus: Fremdschrift / Kanzlei ➔ Deutsch";
+  } else {
+    currentMode = "de-to-target";
+    sourceHint.innerText = "Modus: Normalschrift ➔ Fremdschrift / Kanzlei";
+  }
+
+  const tmp = inputEl.value;
+  inputEl.value = outputEl.value;
+  outputEl.value = tmp;
+
+  switchScript(currentScript);
+}
+
+/**
+ * =============================================================
+ * VIRTUELLE TASTATUR INITIALISIEREN
+ * =============================================================
+ */
+function buildKeyboardTabs() {
+  const container = document.getElementById("keyboardTabContainer");
+  let numLabel = "";
+  if (currentScript === "wetzel") numLabel = "Römische Ziffern";
+  else if (currentScript === "griechisch") numLabel = "Griechische Zahlen";
+  else if (currentScript === "kyrillisch") numLabel = "Kyrillische Zahlen (Titlo)";
+  else numLabel = "Arabische Ziffern";
+
+  container.innerHTML = `
+    <button class="tab-btn active" onclick="filterPalette('all', this)">Alle Zeichen</button>
+    <button class="tab-btn" onclick="filterPalette('A-E', this)">A – E (inkl. Ä)</button>
+    <button class="tab-btn" onclick="filterPalette('F-L', this)">F – L</button>
+    <button class="tab-btn" onclick="filterPalette('M-R', this)">M – R (inkl. Ö)</button>
+    <button class="tab-btn" onclick="filterPalette('S-Z', this)">S – Z (inkl. Ü & ẞ)</button>
+    <button class="tab-btn" onclick="filterPalette('numbers', this)">${numLabel}</button>
+  `;
+}
+
+function buildPalette() {
+  const container = document.getElementById("paletteGrid");
+  container.innerHTML = "";
+  let spec = [];
+
+  if (currentScript === "wetzel") spec = WETZEL_SPEC;
+  else if (currentScript === "griechisch") spec = GRIECHISCH_SPEC;
+  else if (currentScript === "kyrillisch") spec = KYRILLISCH_SPEC;
+  else spec = ARABISCH_SPEC;
+
+  const seen = new Set();
+
+  spec.forEach(item => {
+    if (item.maj && !seen.has(item.maj)) {
+      seen.add(item.maj);
+      const btn = document.createElement("button");
+      btn.className = "char-btn" + (currentScript === "arabisch" ? " is-arabic" : "");
+      btn.dataset.cat = item.group;
+      btn.innerHTML = `<span class="c-kanzlei">${item.maj}</span><span class="c-desc">${item.de || item.name}</span>`;
+      btn.onclick = () => insertAtCursor(item.maj);
+      container.appendChild(btn);
+    }
+    if (item.min && item.min !== item.maj && !seen.has(item.min)) {
+      seen.add(item.min);
+      const btnMin = document.createElement("button");
+      btnMin.className = "char-btn" + (currentScript === "arabisch" ? " is-arabic" : "");
+      btnMin.dataset.cat = item.group;
+      btnMin.innerHTML = `<span class="c-kanzlei">${item.min}</span><span class="c-desc">${(item.de || item.name).toLowerCase()}</span>`;
+      btnMin.onclick = () => insertAtCursor(item.min);
+      container.appendChild(btnMin);
+    }
+  });
+
+  let numSpec = [];
+  if (currentScript === "wetzel") numSpec = ROMAN_NUMS_SPEC;
+  else if (currentScript === "griechisch") numSpec = GREEK_NUMS_SPEC;
+  else if (currentScript === "kyrillisch") numSpec = CYRILLIC_NUMS_SPEC;
+  else numSpec = ARABIC_NUMS_SPEC;
+
+  numSpec.forEach(num => {
+    const btnN = document.createElement("button");
+    btnN.className = "char-btn" + (currentScript === "arabisch" ? " is-arabic" : "");
+    btnN.dataset.cat = "numbers";
+    btnN.innerHTML = `<span class="c-kanzlei">${num.sym}</span><span class="c-desc">${num.name || num.val}</span>`;
+    btnN.onclick = () => insertAtCursor(num.sym);
+    container.appendChild(btnN);
+  });
+}
+
+function filterPalette(cat, btn) {
+  document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+
+  document.querySelectorAll(".char-btn").forEach(el => {
+    if (cat === "all" || el.dataset.cat === cat) {
+      el.style.display = "flex";
+    } else {
+      el.style.display = "none";
+    }
+  });
+}
+
+function insertAtCursor(charText) {
+  if (currentMode === "de-to-target") {
+    currentMode = "target-to-de";
+    sourceHint.innerText = "Modus: Fremdschrift / Kanzlei ➔ Deutsch";
+    const tmp = inputEl.value;
+    inputEl.value = outputEl.value;
+    outputEl.value = tmp;
+    setPanelsTitles("Standard-Deutsch", appHeaderTitle.innerText);
+    updateTextareaClasses();
+  }
+
+  const start = inputEl.selectionStart;
+  const end = inputEl.selectionEnd;
+  const val = inputEl.value;
+
+  inputEl.value = val.substring(0, start) + charText + val.substring(end);
+  inputEl.selectionStart = inputEl.selectionEnd = start + charText.length;
+  inputEl.focus();
+  runConversion();
+}
+
+/**
+ * =============================================================
+ * DOKUMENTATION & REGELWERK DYNAMISCH RENDERN
+ * =============================================================
+ */
+function renderDocumentation() {
+  const container = document.getElementById("docsContainer");
+
+  if (currentScript === "wetzel") {
+    container.innerHTML = `
+      <h2 class="section-title">Ausführliches Regelwerk: Wetzel'sche Kanzleischrift</h2>
+      <div class="rule-box" style="border-left-color: #f7e089;">
+        <h3>Römisches Zahlensystem & Vinculum (1 bis 3.999.999)</h3>
+        <p>In der Wetzel'schen Kanzleischrift werden Zahlenwerte durch das klassische römische Zahlensystem wiedergegeben. Für große Zahlenwerte über 3.999 kommt das historische <strong>Vinculum (Überstrich)</strong> zum Einsatz:</p>
+        <ul>
+          <li><strong>Grundziffern:</strong> <code>I</code> (1), <code>V</code> (5), <code>X</code> (10), <code>L</code> (50), <code>C</code> (100), <code>D</code> (500), <code>M</code> (1.000).</li>
+          <li><strong>Vinculum-Multiplikator (× 1.000):</strong> Ein Überstrich multipliziert den Zahlenwert mit 1.000: <code>V̅</code> = 5.000, <code>X̅</code> = 10.000, <code>L̅</code> = 50.000, <code>C̅</code> = 100.000, <code>D̅</code> = 500.000, <code>M̅</code> = 1.000.000. Beispiel: <code>1.425.210</code> = <code>M̅C̅D̅X̅X̅V̅CCX</code>.</li>
+          <li><strong>Negative Zahlen & Dezimalstellen:</strong> Negative Werte erhalten ein vorangestelltes Minuszeichen (z.&nbsp;B. <code>-14</code> ➔ <code>-XIV</code>). Dezimalstellen werden nach dem Komma präzise umgewandelt (z.&nbsp;B. <code>14,5</code> ➔ <code>XIV,V</code>).</li>
+          <li><strong>Fallback-Regel:</strong> Werte ab <code>4.000.000</code> weichen automatisch auf das indisch-arabische Standardsystem (0–9) aus.</li>
+        </ul>
+      </div>
+
+      <div class="rule-box">
+        <h3>Paläographische & Phonetische Glyphenregeln</h3>
+        <ul>
+          <li><strong>V́ / v́ (F):</strong> Labiodentaler Frikativ als V mit Akut.</li>
+          <li><strong>Ć / ć (G):</strong> Palatale Modifikation des gutturalen Stammkonsonanten.</li>
+          <li><strong>’ (H):</strong> Spiritus asper (Aspiration) als Hauchlaut.</li>
+          <li><strong>Ï / ï (IE):</strong> Dehnungs-Trema zur Vokalverschmelzung.</li>
+          <li><strong>I̧ / i̧ (SCH) & Ç / ç (S):</strong> Phonetische Zischlaut-Differenzierung mit Cedille.</li>
+          <li><strong>B́ / b́ (P) & D́ / d́ (T):</strong> Stimmlose Pendants zu B und D mit Akut.</li>
+          <li><strong>V̆ / v̆ (U) & V̀ / v̀ (W):</strong> Historische U/V-Wurzel mit Breve bzw. Gravis.</li>
+        </ul>
+      </div>
+
+      <div class="table-container">
+        <table class="rules-table">
+          <thead>
+            <tr><th>Deutsch</th><th>Groß</th><th>Klein</th><th>Herkunft / Lautwert</th><th>Systematische Begründung</th></tr>
+          </thead>
+          <tbody id="rulesTableBody"></tbody>
+        </table>
+      </div>
+    `;
+    renderRulesTable(WETZEL_SPEC);
+  } else if (currentScript === "griechisch") {
+    container.innerHTML = `
+      <h2 class="section-title">Ausführliches Regelwerk: Griechisches Schriftsystem</h2>
+      <div class="rule-box" style="border-left-color: #f7e089;">
+        <h3>Milesisches Zahlensystem & Persischer Fallback</h3>
+        <p>Das griechische Zahlensystem verwendet die 24 klassischen Buchstaben sowie 3 archaische Zeichen (<em>Stigma ϛ, Koppa ϟ, Sampi ϡ</em>):</p>
+        <ul>
+          <li><strong>Zahlakzent Dexia Keraia (´):</strong> Kennzeichnet Buchstaben als Zahlen (z.&nbsp;B. <code>α´</code> = 1, <code>ι´</code> = 10, <code>ρ´</code> = 100).</li>
+          <li><strong>Tausender-Präfix Aristeri Keraia (,):</strong> <code>,α</code> = 1.000, <code>,β</code> = 2.000, <code>,θ</code> = 9.000.</li>
+          <li><strong>Myriaden (Μ):</strong> Für Werte von 10.000 bis 99.999.999 (z.&nbsp;B. <code>10.000</code> = <code>αΜ´</code>, <code>50.000</code> = <code>εΜ´</code>).</li>
+          <li><strong>Negative Zahlen & Dezimalstellen:</strong> Negative Werte werden durch <strong>⊖</strong> markiert (z.&nbsp;B. <code>-15</code> ➔ <code>⊖ιε´</code>). Dezimalstellen werden mit Mittelpunkt (<code>·</code>) angefügt.</li>
+          <li><strong>Persischer Fallback:</strong> Werte ab <code>100.000.000</code> werden in <strong>persischen Ziffern</strong> (<code>۰۱۲۳۴۵۶۷۸۹</code>) notiert.</li>
+        </ul>
+      </div>
+
+      <div class="rule-box">
+        <h3>Lautregeln & Vokal-Längen im Griechischen</h3>
+        <ul>
+          <li><strong>C / c:</strong> Vor hellen Vokalen (<code>e, i, ä, ö, ü, y</code>) als Affrikate <strong>Τσ / τσ</strong>; vor dunklen Vokalen und Konsonanten als <strong>Κ́ / κ́</strong>.</li>
+          <li><strong>E & O Vokallängen:</strong> Vor Dehnungs-H vor <code>m, n, l, r</code> sowie in offenen Silben lang: <strong>Η / η</strong> (Eta) bzw. <strong>Ω / ω</strong> (Omega); in geschlossenen Silben kurz: <strong>Ε / ε</strong> (Epsilon) bzw. <strong>Ο / ο</strong> (Omikron).</li>
+          <li><strong>S-Laute:</strong> Wort-/Silbenanlaut & Inlaut <strong>Σ / σ</strong>, absolutes Wortende <strong>ς</strong>, Doppel-SS <strong>Ϻ / ϻ</strong> (San), Eszett <strong>Ϡ / ϡ</strong> (Sampi), ST <strong>Ϛ / ϛ</strong> (Stigma).</li>
+        </ul>
+      </div>
+
+      <div class="table-container">
+        <table class="rules-table">
+          <thead>
+            <tr><th>Deutsch</th><th>Groß</th><th>Klein</th><th>Griechisches Pendant</th><th>Phonetische Regel</th></tr>
+          </thead>
+          <tbody id="rulesTableBody"></tbody>
+        </table>
+      </div>
+    `;
+    renderRulesTable(GRIECHISCH_SPEC);
+  } else if (currentScript === "kyrillisch") {
+    container.innerHTML = `
+      <h2 class="section-title">Ausführliches Regelwerk: Kyrillisches Schriftsystem</h2>
+      <div class="rule-box" style="border-left-color: #f7e089;">
+        <h3>Altkyrillisches Zahlensystem mit Titlo ( ҃ ) & Tausendersymbol ( ҂ )</h3>
+        <p>Das altkyrillische Zahlensystem basiert auf 27 Buchstaben mit dem Zahl-Titlo ( ҃ ):</p>
+        <ul>
+          <li><strong>Einer (1–9):</strong> А, В, Г, Д, Є, Ѕ (Dzelo), З, И, Ѳ (Fita).</li>
+          <li><strong>Zehner (10–90):</strong> І, К, Л, М, Н, Ѯ (Ksi), О, П, Ч (Tschern).</li>
+          <li><strong>Hunderter (100–900):</strong> Р, С, Т, У, Ф, Х, Ѵ (Ischiza), Ѡ (Omega), Ц.</li>
+          <li><strong>Besonderheit bei 11–19:</strong> Nach der altkirchenslawischen Sprechweise „Einer auf Zehn“ stehen die Einer vor dem Zehner: <code>11</code> = <strong>АІ҃</strong>, <code>12</code> = <strong>ВІ҃</strong>, <code>15</code> = <strong>ЄІ҃</strong>.</li>
+          <li><strong>Tausenderzeichen ( ҂ ):</strong> Multipliziert den Buchstaben mit 1.000 (z.&nbsp;B. <code>҂А҃</code> = 1.000, <code>҂В҃</code> = 2.000).</li>
+          <li><strong>Fallback:</strong> Ab <code>1.000.000</code> wird auf persische Ziffern ausgewichen. Negative Zahlen erhalten das Präfix <strong>⊖</strong>.</li>
+        </ul>
+      </div>
+
+      <div class="rule-box">
+        <h3>Buchstaben- & Lautregeln</h3>
+        <ul>
+          <li><strong>H / h:</strong> Am Wortanfang und vor Vokalen als <strong>Х́ / х́</strong>; in allen anderen Fällen (vor Konsonanten, Wortende) als <strong>Ѓ / ѓ</strong>.</li>
+          <li><strong>C / c:</strong> Vor <code>e, i, ä, ö, ü, y</code> als <strong>Ц́ / ц́</strong>; sonst als <strong>Κ́ / ќ</strong>.</li>
+          <li><strong>S / s:</strong> Stimmhaft im Silbenanlaut vor Vokal als <strong>З / з</strong>; stimmlos als <strong>С / с</strong>.</li>
+          <li><strong>Iotierte Vokale & Ligaturen:</strong> <em>Ja</em> ➔ <strong>Я</strong>, <em>Je</em> ➔ <strong>Е</strong>, <em>Jo</em> ➔ <strong>Ё</strong>, <em>Ju</em> ➔ <strong>Ю</strong>, <em>Tsch</em> ➔ <strong>Ч</strong>, <em>Sch</em> ➔ <strong>Ш</strong>, <em>St</em> ➔ <strong>Щ</strong>.</li>
+        </ul>
+      </div>
+
+      <div class="table-container">
+        <table class="rules-table">
+          <thead>
+            <tr><th>Deutsch</th><th>Groß</th><th>Klein</th><th>Kyrillisches Zeichen</th><th>Regel & Lautwert</th></tr>
+          </thead>
+          <tbody id="rulesTableBody"></tbody>
+        </table>
+      </div>
+    `;
+    renderRulesTable(KYRILLISCH_SPEC);
+  } else if (currentScript === "arabisch") {
+    container.innerHTML = `
+      <h2 class="section-title">Ausführliches Regelwerk: Arabisch-Persisches Schriftsystem</h2>
+      <div class="rule-box" style="border-left-color: #f7e089;">
+        <h3>Die 30 deutschen Buchstaben in der Arebica & Arabische Ziffern</h3>
+        <p>Dieses System überträgt das deutsche Phonemsystem vollständig in die erweiterte arabisch-persische Schrift:</p>
+        <ul>
+          <li><strong>Arabisches Zahlensystem:</strong> Es werden die originalen <strong>östlich-arabischen Standardziffern</strong> (<code>٠ ,١ ,٢ ,٣ ,٤ ,٥ ,٦ ,٧ ,٨ ,٩</code>) verwendet. Das Dezimaltrennzeichen ist das Fasila (<code>٫</code>).</li>
+          <li><strong>Umlaute:</strong> Ä = <strong>أ</strong> (Alif mit Hamza), Ö = <strong>ۏ</strong> (Wāw mit Strich), Ü = <strong>ۊ</strong> (Wāw mit 2 Punkten).</li>
+          <li><strong>Konsonanten & Sonderlaute:</strong> P = <strong>پ</strong>, G = <strong>گ</strong>, C = <strong>چ</strong>, V = <strong>ڤ</strong>, W = <strong>و</strong>, J = <strong>ژ</strong>, X = <strong>کس</strong>, ß = <strong>ص</strong>.</li>
+          <li><strong>Satzanfangs-Automatik:</strong> Da das arabische Alphabet keine Groß- und Kleinschreibung kennt, stellt der Konverter bei der Rückübersetzung automatisch die Großschreibung am Satzanfang und nach Interpunktion her.</li>
+        </ul>
+      </div>
+
+      <div class="table-container">
+        <table class="rules-table">
+          <thead>
+            <tr><th>Dt.</th><th>Buchstabe</th><th>Name</th><th>Isoliert</th><th>Initial</th><th>Medial</th><th>Final</th><th>Laut / Begründung</th></tr>
+          </thead>
+          <tbody id="rulesTableBody"></tbody>
+        </table>
+      </div>
+    `;
+    renderArabicRulesTable(ARABISCH_SPEC);
+  }
+}
+
+function renderRulesTable(specList) {
+  const tbody = document.getElementById("rulesTableBody");
+  if (!tbody) return;
+  tbody.innerHTML = "";
+
+  specList.forEach(rule => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td><strong>${rule.de}</strong></td>
+      <td style="font-size:1.25rem; font-family:'EB Garamond', serif; color:var(--gold-light);">${rule.maj || '-'}</td>
+      <td style="font-size:1.25rem; font-family:'EB Garamond', serif; color:var(--gold-light);">${rule.min || '-'}</td>
+      <td><span class="badge">${rule.group}</span></td>
+      <td style="color:var(--text-muted);">${rule.desc}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function renderArabicRulesTable(specList) {
+  const tbody = document.getElementById("rulesTableBody");
+  if (!tbody) return;
+  tbody.innerHTML = "";
+
+  specList.forEach(item => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td><strong>${item.de}</strong></td>
+      <td style="font-family:'Amiri', serif; font-size:1.4rem; color:var(--gold-light);">${item.maj}</td>
+      <td>${item.name}</td>
+      <td style="font-family:'Amiri', serif; font-size:1.3rem;">${item.iso}</td>
+      <td style="font-family:'Amiri', serif; font-size:1.3rem;">${item.ini}</td>
+      <td style="font-family:'Amiri', serif; font-size:1.3rem;">${item.med}</td>
+      <td style="font-family:'Amiri', serif; font-size:1.3rem;">${item.fin}</td>
+      <td style="color:var(--text-muted); font-size:0.88rem;">${item.desc}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+/**
+ * =============================================================
+ * HELFER: KOPIEREN, LEEREN & TOAST
+ * =============================================================
+ */
+function copyText(id) {
+  const el = document.getElementById(id);
+  if (!el.value) return;
+
+  navigator.clipboard.writeText(el.value).then(() => {
+    showToast("In Zwischenablage kopiert!");
+  }).catch(() => {
+    el.select();
+    document.execCommand("copy");
+    showToast("In Zwischenablage kopiert!");
+  });
+}
+
+function clearInput() {
+  inputEl.value = "";
+  outputEl.value = "";
+  srcCount.innerText = "0 Zeichen";
+  tgtCount.innerText = "0 Zeichen";
+  inputEl.focus();
+}
+
+function showToast(msg) {
+  const toast = document.getElementById("toast");
+  toast.innerText = msg;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 2000);
+}
+
+// Initialer Start
+window.addEventListener("DOMContentLoaded", () => {
+  switchScript("wetzel");
+  clearInput();
+});
+</script>
+</body>
+</html>
