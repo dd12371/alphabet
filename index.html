@@ -578,13 +578,13 @@
         </select>
       </div>
 
-      <!-- Options for Cyrillic V-rule -->
-      <div class="option-group" id="kyrillischVOptions" style="display: none;">
-        <label for="kyrillischVSelect"><strong>V-Differenzierung:</strong></label>
-        <select id="kyrillischVSelect" onchange="runConversion()">
-          <option value="auto">Automatisch (F-Laut ➔ Ф́ / W-Laut ➔ В́)</option>
-          <option value="f">Immer als F-Laut (Ф́ / ф́)</option>
-          <option value="w">Immer als W-Laut (В́ / в́)</option>
+      <!-- Options for V-rule (Greek & Cyrillic) -->
+      <div class="option-group" id="vRuleOptions" style="display: none;">
+        <label for="vRuleSelect"><strong>V-Differenzierung:</strong></label>
+        <select id="vRuleSelect" onchange="runConversion()">
+          <option value="auto">Automatisch (Morphologische Heuristik)</option>
+          <option value="f">Immer als F-Laut (Griech: Φ́ / Kyrill: Ф́)</option>
+          <option value="w">Immer als W-Laut (Griech: Ϝ́ / Kyrill: В́)</option>
         </select>
       </div>
 
@@ -696,7 +696,8 @@ const GRIECHISCH_SPEC = [
   { de: "Hü / hü", maj: "Ὑ", min: "ὑ", group: "S-Z", desc: "Anlautendes Hü (Spiritus asper)" },
   { de: "Üh / üh", maj: "Υ͂", min: "ῦ", group: "S-Z", desc: "Dehnungs-h Üh (Zirkumflex)" },
   { de: "Ü [Hiatus]", maj: "Ϋ", min: "ϋ", group: "S-Z", desc: "Hiatus Ü (Trema)" },
-  { de: "V", maj: "Φ́", min: "φ́", group: "S-Z", desc: "Phi mit Akut" },
+  { de: "V [als f]", maj: "Φ́", min: "φ́", group: "S-Z", desc: "Phi mit Akut (germanische Erbwörter & Auslaut)" },
+  { de: "V [als w]", maj: "Ϝ́", min: "ϝ́", group: "S-Z", desc: "Digamma mit Akut (Lehnwörter wie Vase, Klavier)" },
   { de: "W", maj: "Ϝ", min: "ϝ", group: "S-Z", desc: "Digamma" },
   { de: "X", maj: "Ξ", min: "ξ", group: "S-Z", desc: "Xi" },
   { de: "Y", maj: "Ύ", min: "ύ", group: "S-Z", desc: "Ypsilon mit Akut" },
@@ -889,9 +890,9 @@ const appHeaderDesc = document.getElementById("appHeaderDesc");
 const numberRuleHint = document.getElementById("numberRuleHint");
 
 const vowelRuleOptions = document.getElementById("vowelRuleOptions");
-const kyrillischVOptions = document.getElementById("kyrillischVOptions");
+const vRuleOptions = document.getElementById("vRuleOptions");
 const vowelRuleSelect = document.getElementById("vowelRuleSelect");
-const kyrillischVSelect = document.getElementById("kyrillischVSelect");
+const vRuleSelect = document.getElementById("vRuleSelect");
 
 inputEl.addEventListener("input", runConversion);
 
@@ -910,6 +911,47 @@ function runConversion() {
   }
 
   tgtCount.innerText = `${outputEl.value.length} Zeichen`;
+}
+
+/**
+ * Gemeinsame morphologische Heuristik zur V-Erkennung für Griechisch & Kyrillisch
+ */
+function determineVIsW(w, i, len, vMode) {
+  if (vMode === "w") return true;
+  if (vMode === "f") return false;
+
+  const fullLower = w.toLowerCase();
+  const rest = fullLower.slice(i);
+  const isWordEnd = (i === len - 1) || /^[.,!?;:"'»«\-]/.test(w.slice(i + 1));
+  const followedByConsonant = (i + 1 < len) && !/[aeiouäöüj]/i.test(w[i + 1]);
+
+  // 1. Auslautverhärtung: V am Wortende oder vor stimmlosen Konsonanten (z. B. brav, aktiv, naiv, nervt) -> immer F-Laut
+  if (isWordEnd || (followedByConsonant && !/^l|^r/i.test(rest.slice(1)))) {
+    return false;
+  }
+
+  // 2. Schutz vor Fehlalarm bei Lehnwörtern auf -vier/-vieren (Klavier, Revier, Brevier, servieren, oliv)
+  if (/^(kla|re|bre|ser)vier/i.test(fullLower) || /^oliv/i.test(fullLower)) {
+    return true; // Echter W-Laut [v]
+  }
+
+  // 3. Deutsche Erbwörter mit V im Stamminneren (z. B. Frevel, frevelhaft)
+  if (fullLower.includes("frevel")) {
+    return false; // F-Laut
+  }
+
+  // 4. Vollständige Liste aller deutschen Erbwörter & Vorsilben mit V (inkl. von, vom, Väter, Vlies, Vogt)
+  if (!/^verb/i.test(rest) && /^(ver|vor|von|vom|vater|väter|vogel|vögel|viel|vier|voll|völl|volk|völk|vieh|vetter|viertel|vlies|vogt|vögte)/i.test(rest)) {
+    return false; // F-Laut
+  }
+
+  // 5. Erbwörter als zweiter Teil von Komposita (z. B. Großvater, Großväter, Zugvogel, Raubvögel, sinnVOLL)
+  if (/(vater|väter|vogel|vögel|viel|vier|voll|völl|volk|völk|vieh|vetter)$/i.test(fullLower.slice(0, i + 5))) {
+    return false; // F-Laut
+  }
+
+  // 6. Alle anderen Wörter sind Lehn- und Fremdwörter (Vase, Verb, Vulkan, Villa, November, Klavier, privat) -> W-Laut [v]
+  return true;
 }
 
 /**
@@ -1179,6 +1221,16 @@ function convertGriechischWord(w) {
       continue;
     }
 
+    // V-Regel (Differenzierung F-Laut Φ́ vs. W-Laut Ϝ́)
+    if (w[i].toLowerCase() === 'v') {
+      const isUp = (w[i] === w[i].toUpperCase());
+      const vMode = vRuleSelect ? vRuleSelect.value : "auto";
+      const useW = determineVIsW(w, i, len, vMode);
+      res += useW ? (isUp ? "Ϝ́" : "ϝ́") : (isUp ? "Φ́" : "φ́");
+      i++;
+      continue;
+    }
+
     // R-Regel
     if (w[i].toLowerCase() === 'r') {
       const isUp = (w[i] === w[i].toUpperCase());
@@ -1272,7 +1324,7 @@ function convertGriechischWord(w) {
       'g': { maj: "Γ", min: "γ" }, 'j': { maj: "Ί", min: "ί" }, 'k': { maj: "Κ", min: "κ" },
       'l': { maj: "Λ", min: "λ" }, 'm': { maj: "Μ", min: "μ" }, 'n': { maj: "Ν", min: "ν" },
       'p': { maj: "Π", min: "π" }, 'q': { maj: "Ϙ", min: "ϙ" }, 't': { maj: "Τ", min: "τ" },
-      'v': { maj: "Φ́", min: "φ́" }, 'w': { maj: "Ϝ", min: "ϝ" }, 'x': { maj: "Ξ", min: "ξ" },
+      'w': { maj: "Ϝ", min: "ϝ" }, 'x': { maj: "Ξ", min: "ξ" },
       'y': { maj: "Ύ", min: "ύ" }, 'z': { maj: "Ζ", min: "ζ" }
     };
 
@@ -1349,11 +1401,12 @@ function convertGriechischToDe(text) {
     { k: "Χ", d: "Ch" }, { k: "χ", d: "ch" },
     { k: "Θ", d: "Th" }, { k: "θ", d: "th" },
     { k: "Ϛ", d: "St" }, { k: "ϛ", d: "st" },
-    { k: "Ϻ", d: "Ss" }, { k: "ϻ", d: "ss" },
-    { k: "Ϡ", d: "ẞ" }, { k: "ϡ", d: "ß" },
+    { k: "Ϻ", d: "Ss", allUp: "SS" }, { k: "ϻ", d: "ss" },
+    { k: "Ϡ", d: "ẞ", allUp: "SS" }, { k: "ϡ", d: "ß" },
     { k: "ῤῥ", d: "rr" }, { k: "Ῥ", d: "R" }, { k: "ῥ", d: "r" },
     { k: "Ͱ", d: "H" }, { k: "ͱ", d: "h" },
     { k: "ΟΥ", d: "U" }, { k: "Ου", d: "U" }, { k: "ου", d: "u" },
+    { k: "Ϝ́", d: "V" }, { k: "ϝ́", d: "v" },
     { k: "Φ́", d: "V" }, { k: "φ́", d: "v" },
     { k: "Ϝ", d: "W" }, { k: "ϝ", d: "w" },
     { k: "Ύ", d: "Y" }, { k: "ύ", d: "y" },
@@ -1407,7 +1460,7 @@ function convertKyrillischWord(w) {
   let i = 0;
   const len = w.length;
   const vRule = vowelRuleSelect.value;
-  const vMode = kyrillischVSelect.value;
+  const vMode = vRuleSelect ? vRuleSelect.value : "auto";
 
   while (i < len) {
     const rem = w.slice(i);
@@ -1534,35 +1587,7 @@ function convertKyrillischWord(w) {
 
     if (w[i].toLowerCase() === 'v') {
       const isUp = (w[i] === w[i].toUpperCase());
-      let useW = false;
-      if (vMode === "w") {
-        useW = true;
-      } else if (vMode === "f") {
-        useW = false;
-      } else {
-        // Morphologische Heuristik zur Auflösung der V-Mehrdeutigkeit:
-        const fullLower = w.toLowerCase();
-        const rest = fullLower.slice(i);
-        const isWordEnd = (i === len - 1) || /^[.,!?;:"'»«\-]/.test(w.slice(i + 1));
-        const followedByConsonant = (i + 1 < len) && !/[aeiouäöüj]/i.test(w[i + 1]);
-
-        // 1. Auslautverhärtung: V am Wortende oder vor stimmlosem Konsonanten (z. B. brav, aktiv, naiv, nervt) -> immer F-Laut
-        if (isWordEnd || (followedByConsonant && !/^l|^r/.test(rest.slice(1)))) {
-          useW = false;
-        }
-        // 2. Deutsche Erbwörter & Vorsilben (ver-, vor-, vater, vogel, viel, vier, voll, volk, vieh, vetter etc.; 'verb' ausgenommen) -> immer F-Laut
-        else if (!/^verb/i.test(rest) && /^(ver|vor|vater|vögel|vogel|viel|vier|voll|völl|volk|völk|vieh|vetter|frevel|viertel|frevelhaft)/i.test(rest)) {
-          useW = false;
-        }
-        // 3. Deutsche Erbwörter als zweiter Teil von Komposita (z. B. Großvater, Zugvogel, unvollständig, viereckig)
-        else if (/(vater|vögel|vogel|viel|vier|voll|völl|volk|völk|vieh|vetter)$/i.test(fullLower.slice(0, i + 5))) {
-          useW = false;
-        }
-        // 4. Alle anderen Fälle sind Lehnwörter im Anlaut oder Inlaut (z. B. Vase, Verb, Vulkan, Villa, November, Klavier, privat) -> W-Laut [v]
-        else {
-          useW = true;
-        }
-      }
+      const useW = determineVIsW(w, i, len, vMode);
       res += useW ? (isUp ? "В́" : "в́") : (isUp ? "Ф́" : "ф́");
       i++;
       continue;
@@ -1720,9 +1745,12 @@ function convertArabischToDe(text) {
   let processed = text.replace(/[٠-٩]/g, d => String('٠١٢٣٤٥٦٧٨٩'.indexOf(d)));
   processed = processed.replace(/٫/g, ",");
 
+  // 1. W am Wortanfang vor Vokal (z. B. wo, wie, wer, was)
   processed = processed.replace(/(^|[\s\b.,!?;:"'«»()\[\]])و([اأعۆۏیۊ])/gi, '$1w_ph_$2');
-  processed = processed.replace(/([ز]|(سچ))و([اأعۆۏیۊ])/gi, '$1w_ph_$2');
-  processed = processed.replace(/([اأعۆۏیۊ])و([اأعۆۏیۊ])/gi, '$1w_ph_$2');
+  // 2. W nach typischen Konsonanten wie Zw-, Schw- (z. B. zwei, schwer)
+  processed = processed.replace(/([زسچت])و([اأعۆۏیۊ])/gi, '$1w_ph_$2');
+  // 3. W zwischen zwei Vokalen NUR wenn der erste Vokal kein 'a' oder 'e' ist (verhindert 'au' -> 'aw')
+  processed = processed.replace(/([ۆۏیۊ])و([اأعۆۏیۊ])/gi, '$1w_ph_$2');
 
   const rev = [
     { k: "w_ph_", d: "w" },
@@ -1969,6 +1997,13 @@ function parseCyrillicNumber(str) {
       i++;
       continue;
     }
+    let oIdx = C_ONES.indexOf(s[i]);
+    if (oIdx > 0 && i + 1 < s.length && s[i + 1] === 'І') {
+      total += (10 + oIdx) * mult;
+      mult = 1;
+      i += 2;
+      continue;
+    }
     let tIdx = C_TENS.indexOf(s[i]);
     if (tIdx > 0) {
       total += tIdx * 10 * mult;
@@ -1976,14 +2011,7 @@ function parseCyrillicNumber(str) {
       i++;
       continue;
     }
-    let oIdx = C_ONES.indexOf(s[i]);
     if (oIdx > 0) {
-      if (i + 1 < s.length && s[i + 1] === 'І') {
-        total += (10 + oIdx) * mult;
-        mult = 1;
-        i += 2;
-        continue;
-      }
       total += oIdx * mult;
       mult = 1;
       i++;
@@ -2075,7 +2103,7 @@ function switchScript(scriptKey) {
   if (scriptKey === "arabisch") document.getElementById("btnScriptArabisch").classList.add("active");
 
   vowelRuleOptions.style.display = (scriptKey === "griechisch" || scriptKey === "kyrillisch") ? "flex" : "none";
-  kyrillischVOptions.style.display = (scriptKey === "kyrillisch") ? "flex" : "none";
+  vRuleOptions.style.display = (scriptKey === "griechisch" || scriptKey === "kyrillisch") ? "flex" : "none";
 
   updateTextareaClasses();
 
@@ -2291,7 +2319,17 @@ function renderDocumentation() {
           <li><strong>Die C-Regel:</strong> Vor hellen Vokalen (<code>e, i, ä, ö, ü, y</code>) wird C affriziert als <strong>Τ́σ / τ́σ</strong> (Tau mit Akut + Sigma) artikuliert; vor dunklen Vokalen (<code>a, o, u</code>) sowie Konsonanten bleibt es velar als <strong>Κ́ / κ́</strong>.</li>
           <li><strong>Die R-Regeln:</strong> Anlautendes R wird aspiriert als <strong>Ῥ / ῥ</strong> geschrieben (schluckt auch anlautendes Rh wie in <em>Rhein</em>). Im In-/Auslaut steht <strong>Ρ / ρ</strong>; doppelter Inlaut wird als <strong>ῤῥ</strong> (Lenis auf erstem, Asper auf zweitem Rho) realisiert.</li>
           <li><strong>Sigma-Differenzierung:</strong> <code>Σ / σ</code> im An- und Inlaut, <code>ς</code> ausschließlich am absoluten Wortende. Doppel-SS wird zu <strong>Ϻ / ϻ (San)</strong>, ST zur klassischen Ligatur <strong>Ϛ / ϛ (Stigma)</strong> und Eszett zu <strong>Ϡ / ϡ (Sampi)</strong>.</li>
-          <li><strong>Historische Äquivalente:</strong> <code>V</code> ➔ <strong>Φ́ / φ́</strong> (Phi mit Akut), <code>W</code> ➔ <strong>Ϝ / ϝ (Digamma)</strong>, <code>Ph</code> ➔ <strong>Φ̀ / φ̀</strong>, <code>Ps</code> ➔ <strong>Ψ / ψ</strong>, <code>Qu</code> ➔ <strong>Ϙυ / ϙυ</strong>, <code>Th</code> ➔ <strong>Θ / θ</strong>, <code>Ch</code> ➔ <strong>Χ / χ</strong>, <code>X</code> ➔ <strong>Ξ / ξ</strong>.</li>
+          <li><strong>V-Differenzierung & Frikative (F, Ph, W, V):</strong>
+            <ul>
+              <li><strong>F / f ➔ Φ / φ:</strong> Klassisches stimmloses Grundzeichen.</li>
+              <li><strong>Ph / ph ➔ Φ̀ / φ̀:</strong> Erhält den Gravis zur klaren Trennung von F und V.</li>
+              <li><strong>W / w ➔ Ϝ / ϝ:</strong> Klassisches Digamma für den stimmhaften Gleit-/W-Laut.</li>
+              <li><strong>V [als F-Laut] ➔ Φ́ / φ́:</strong> Steht für germanische Erbwörter (<em>Vater, Vogel, vier, voll</em>), Vorsilben <em>ver-, vor-</em> und im Wortauslaut (<em>brav, naiv</em>).</li>
+              <li><strong>V [als W-Laut] ➔ Ϝ́ / ϝ́:</strong> Digamma mit Akut für alle Lehn- und Fremdwörter (<em>Vase, Verb, Vulkan, Klavier, November</em>).</li>
+              <li><strong>Bijektivität:</strong> Beide V-Zeichen tragen einen Akut und werden bei der Rückkonvertierung ohne Doppeldeutigkeit exakt wieder zu <strong>V / v</strong>.</li>
+            </ul>
+          </li>
+          <li><strong>Weitere Sonderkonsonanten:</strong> <code>Ps</code> ➔ <strong>Ψ / ψ</strong>, <code>Qu</code> ➔ <strong>Ϙυ / ϙυ</strong>, <code>Q</code> ➔ <strong>Ϙ / ϙ</strong>, <code>Th</code> ➔ <strong>Θ / θ</strong>, <code>Ch</code> ➔ <strong>Χ / χ</strong>, <code>X</code> ➔ <strong>Ξ / ξ</strong>, <code>Y</code> ➔ <strong>Ύ / ύ</strong>, <code>J</code> ➔ <strong>Ί / ί</strong>.</li>
         </ul>
       </div>
 
