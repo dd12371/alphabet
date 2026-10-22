@@ -321,7 +321,7 @@
 
     .char-palette {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(68px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
       gap: 0.45rem;
       max-height: 290px;
       overflow-y: auto;
@@ -575,9 +575,9 @@
       <div class="option-group" id="vowelRuleOptions" style="display: none;">
         <label for="vowelRuleSelect"><strong>Vokal-Längenregel (E / O):</strong></label>
         <select id="vowelRuleSelect" onchange="runConversion()">
-          <option value="auto">Automatische Heuristik (Offene Silbe / Dehnungs-H)</option>
-          <option value="short">Immer kurz</option>
-          <option value="long">Immer lang</option>
+          <option value="auto">Automatische Heuristik (Offene Silbe ➔ Lang / Geschlossen ➔ Kurz)</option>
+          <option value="short">Immer kurz (Epsilon Ε / Omikron Ο)</option>
+          <option value="long">Immer lang (Eta Η / Omega Ω)</option>
         </select>
       </div>
 
@@ -661,7 +661,6 @@ const WETZEL_SPEC = [
   { de: "Z", maj: "D̀", min: "d̀", group: "S-Z", desc: "Affrikate / Dentalverbindung mit Gravis" }
 ];
 
-// Römische Zahlenzeichen für Tastatur
 const ROMAN_NUMS_SPEC = [
   { sym: "I", val: 1, name: "Unus (1)" },
   { sym: "V", val: 5, name: "Quinque (5)" },
@@ -678,50 +677,88 @@ const ROMAN_NUMS_SPEC = [
   { sym: "M̅", val: 1000000, name: "Vinculum (1.000.000)" }
 ];
 
-// 2. GRIECHISCHES ALPHABET SPEZIFIKATION
+// 2. GRIECHISCHES ALPHABET SPEZIFIKATION (SYSTEM 4)
 const GRIECHISCH_SPEC = [
-  { de: "A", maj: "Α", min: "α", group: "A-E", desc: "Alpha" },
-  { de: "Ä", maj: "'A", min: "ά", group: "A-E", desc: "Alpha mit Akzent / Spiritus" },
+  { de: "A [Grundwert]", maj: "Α", min: "α", group: "A-E", desc: "Grundwert Alpha" },
+  { de: "A [Anlaut]", maj: "Ἀ", min: "ἀ", group: "A-E", desc: "Wortanlaut ohne H (Spiritus lenis)" },
+  { de: "Ha / ha", maj: "Ἁ", min: "ἁ", group: "A-E", desc: "Anlautendes Ha mit Spiritus asper" },
+  { de: "Ah / ah", maj: "Α͂", min: "ᾶ", group: "A-E", desc: "Dehnungs-h mit Zirkumflex" },
+  { de: "Aa / aa", maj: "ᾼ", min: "ᾳ", group: "A-E", desc: "Vokaldopplung (Iota subscriptum)" },
+  { de: "Ä [Grundwert]", maj: "Α̈", min: "α̈", group: "A-E", desc: "Umlaut Ä mit Trema" },
+  { de: "Ä [Anlaut]", maj: "Ἀ̈", min: "ἀ̈", group: "A-E", desc: "Wortanlaut Ä ohne H (Lenis + Trema)" },
+  { de: "Hä / hä", maj: "Ἁ̈", min: "ἁ̈", group: "A-E", desc: "Anlautendes Hä (Asper + Trema)" },
+  { de: "Äh / äh", maj: "Α̈͂", min: "α̈͂", group: "A-E", desc: "Dehnungs-h Äh (Trema + Zirkumflex)" },
   { de: "B", maj: "Β", min: "β", group: "A-E", desc: "Beta" },
-  { de: "C [als k]", maj: "Κ́", min: "κ́", group: "A-E", desc: "Vor a, o, u und Konsonanten" },
-  { de: "C [als ts]", maj: "Τσ", min: "τσ", group: "A-E", desc: "Vor e, i, ä, ö, ü, y" },
+  { de: "C [als k]", maj: "Κ́", min: "κ́", group: "A-E", desc: "Vor a, o, u und Konsonanten (Kappa mit Akut)" },
+  { de: "C [als ts]", maj: "Τ́σ", min: "τ́σ", group: "A-E", desc: "Vor e, i, ä, ö, ü, y (Tau mit Akut + Sigma)" },
   { de: "Ch", maj: "Χ", min: "χ", group: "A-E", desc: "Chi" },
   { de: "D", maj: "Δ", min: "δ", group: "A-E", desc: "Delta" },
-  { de: "E [kurz]", maj: "Ε", min: "ε", group: "A-E", desc: "Epsilon (kurz / geschlossene Silbe)" },
-  { de: "E [lang]", maj: "Η", min: "η", group: "A-E", desc: "Eta (vor eh+m/n/l/r, offene Silbe)" },
+  { de: "E [kurz]", maj: "Ε", min: "ε", group: "A-E", desc: "Epsilon (kurz in geschlossener Silbe)" },
+  { de: "E [kurz Anlaut]", maj: "Ἐ", min: "ἐ", group: "A-E", desc: "Kurzer Wortanlaut ohne H (Lenis)" },
+  { de: "He [kurz]", maj: "Ἑ", min: "ἑ", group: "A-E", desc: "Anlautendes kurzes He (Asper)" },
+  { de: "E [lang]", maj: "Η", min: "η", group: "A-E", desc: "Eta (lang in offener Silbe)" },
+  { de: "E [lang Anlaut]", maj: "Ἠ", min: "ἠ", group: "A-E", desc: "Langer Wortanlaut ohne H (Lenis)" },
+  { de: "He [lang]", maj: "Ἡ", min: "ἡ", group: "A-E", desc: "Anlautendes langes He (Asper)" },
+  { de: "Eh / eh", maj: "Η͂", min: "ῆ", group: "A-E", desc: "Dehnungs-h Eh mit Zirkumflex" },
+  { de: "Ee / ee", maj: "ῌ", min: "ῃ", group: "A-E", desc: "Vokaldopplung Ee (Iota subscriptum)" },
   { de: "F", maj: "Φ", min: "φ", group: "F-L", desc: "Phi" },
   { de: "G", maj: "Γ", min: "γ", group: "F-L", desc: "Gamma" },
-  { de: "H", maj: "Ͱ", min: "ͱ", group: "F-L", desc: "Heta (archaisches deutsches Hauch-H)" },
-  { de: "I", maj: "Ι", min: "ι", group: "F-L", desc: "Iota" },
-  { de: "J", maj: "Ί", min: "ί", group: "F-L", desc: "Iota mit Akzent" },
+  { de: "H [Inlaut]", maj: "Ͱ", min: "ͱ", group: "F-L", desc: "Heta (nur isoliert im Inlaut vor Vokal)" },
+  { de: "I [Grundwert]", maj: "Ι", min: "ι", group: "F-L", desc: "Iota" },
+  { de: "I [Anlaut]", maj: "Ἰ", min: "ἰ", group: "F-L", desc: "Wortanlaut ohne H (Spiritus lenis)" },
+  { de: "Hi / hi", maj: "Ἱ", min: "ἱ", group: "F-L", desc: "Anlautendes Hi (Spiritus asper)" },
+  { de: "Ih / ih", maj: "Ι͂", min: "ῖ", group: "F-L", desc: "Dehnungs-h Ih (Zirkumflex)" },
+  { de: "Ie / ie", maj: "Ῑ", min: "ῑ", group: "F-L", desc: "Dehnungs-e Ie (Makron)" },
+  { de: "I [Hiatus]", maj: "Ϊ", min: "ϊ", group: "F-L", desc: "Getrennte Aussprache (Trema)" },
+  { de: "J", maj: "Ί", min: "ί", group: "F-L", desc: "Iota mit Akut" },
   { de: "K", maj: "Κ", min: "κ", group: "F-L", desc: "Kappa" },
   { de: "L", maj: "Λ", min: "λ", group: "F-L", desc: "Lambda" },
   { de: "M", maj: "Μ", min: "μ", group: "M-R", desc: "My" },
   { de: "N", maj: "Ν", min: "ν", group: "M-R", desc: "Ny" },
-  { de: "O [kurz]", maj: "Ο", min: "ο", group: "M-R", desc: "Omikron (kurz)" },
-  { de: "O [lang]", maj: "Ω", min: "ω", group: "M-R", desc: "Omega (lang / offene Silbe)" },
-  { de: "Ö", maj: "Ó", min: "ó", group: "M-R", desc: "Omikron mit Akut" },
+  { de: "O [kurz]", maj: "Ο", min: "ο", group: "M-R", desc: "Omikron (kurz in geschlossener Silbe)" },
+  { de: "O [kurz Anlaut]", maj: "Ὀ", min: "ὀ", group: "M-R", desc: "Kurzer Wortanlaut ohne H (Lenis)" },
+  { de: "Ho [kurz]", maj: "Ὁ", min: "ὁ", group: "M-R", desc: "Anlautendes kurzes Ho (Asper)" },
+  { de: "O [lang]", maj: "Ω", min: "ω", group: "M-R", desc: "Omega (lang in offener Silbe)" },
+  { de: "O [lang Anlaut]", maj: "Ὠ", min: "ὠ", group: "M-R", desc: "Langer Wortanlaut ohne H (Lenis)" },
+  { de: "Ho [lang]", maj: "Ὡ", min: "ὡ", group: "M-R", desc: "Anlautendes langes Ho (Asper)" },
+  { de: "Oh / oh", maj: "Ω͂", min: "ῶ", group: "M-R", desc: "Dehnungs-h Oh (Zirkumflex)" },
+  { de: "Oo / oo", maj: "ῼ", min: "ῳ", group: "M-R", desc: "Vokaldopplung Oo (Iota subscriptum)" },
+  { de: "Ö [Grundwert]", maj: "Ο̈", min: "ο̈", group: "M-R", desc: "Umlaut Ö mit Trema" },
+  { de: "Ö [Anlaut]", maj: "Ὀ̈", min: "ὀ̈", group: "M-R", desc: "Wortanlaut Ö ohne H (Lenis + Trema)" },
+  { de: "Hö / hö", maj: "Ὁ̈", min: "ὁ̈", group: "M-R", desc: "Anlautendes Hö (Asper + Trema)" },
+  { de: "Öh / öh", maj: "Ο̈͂", min: "ο̈͂", group: "M-R", desc: "Dehnungs-h Öh (Trema + Zirkumflex)" },
   { de: "P", maj: "Π", min: "π", group: "M-R", desc: "Pi" },
-  { de: "Ph", maj: "Ψ", min: "ψ", group: "M-R", desc: "Psi für Ph" },
-  { de: "Q / Qu", maj: "Ϙ", min: "ϙ", group: "M-R", desc: "Koppa" },
-  { de: "R", maj: "Ρ", min: "ρ", group: "M-R", desc: "Rho" },
-  { de: "S [Anlaut/Inlaut]", maj: "Σ", min: "σ", group: "S-Z", desc: "Sigma medialis" },
-  { de: "S [Auslaut]", maj: "Σ", min: "ς", group: "S-Z", desc: "Schluss-Sigma am Wortende" },
-  { de: "Ss", maj: "Ϻ", min: "ϻ", group: "S-Z", desc: "San (archaisches Doppel-S)" },
+  { de: "Ph", maj: "Φ̀", min: "φ̀", group: "M-R", desc: "Phi mit Gravis" },
+  { de: "Ps", maj: "Ψ", min: "ψ", group: "M-R", desc: "Psi für Ps" },
+  { de: "Q", maj: "Ϙ", min: "ϙ", group: "M-R", desc: "Koppa" },
+  { de: "Qu", maj: "Ϙυ", min: "ϙυ", group: "M-R", desc: "Koppa mit Upsilon" },
+  { de: "R [In-/Auslaut]", maj: "Ρ", min: "ρ", group: "M-R", desc: "Rho im In- und Auslaut" },
+  { de: "R [Anlaut]", maj: "Ῥ", min: "ῥ", group: "M-R", desc: "Anlautendes R mit Spiritus asper" },
+  { de: "rr [Inlaut]", maj: "Ῥῤ", min: "ῤῥ", group: "M-R", desc: "Doppel-R (erstes Lenis, zweites Asper)" },
+  { de: "S [An-/Inlaut]", maj: "Σ", min: "σ", group: "S-Z", desc: "Sigma medialis" },
+  { de: "S [Auslaut]", maj: "Σ", min: "ς", group: "S-Z", desc: "Schluss-Sigma am absoluten Wortende" },
+  { de: "Ss / ss", maj: "Ϻ", min: "ϻ", group: "S-Z", desc: "San (archaisches Doppel-S)" },
   { de: "ẞ / ß", maj: "Ϡ", min: "ϡ", group: "S-Z", desc: "Sampi für Eszett" },
   { de: "St", maj: "Ϛ", min: "ϛ", group: "S-Z", desc: "Stigma-Ligatur für ST" },
   { de: "T", maj: "Τ", min: "τ", group: "S-Z", desc: "Tau" },
   { de: "Th", maj: "Θ", min: "θ", group: "S-Z", desc: "Theta" },
-  { de: "U", maj: "ΟΥ", min: "ου", group: "S-Z", desc: "Omikron-Ypsilon" },
-  { de: "Ü", maj: "Υ", min: "υ", group: "S-Z", desc: "Ypsilon" },
+  { de: "U [Grundwert]", maj: "ΟΥ", min: "ου", group: "S-Z", desc: "Omikron-Ypsilon" },
+  { de: "U [Anlaut]", maj: "Οὐ", min: "οὐ", group: "S-Z", desc: "Wortanlaut ohne H (Lenis auf 2. Vokal)" },
+  { de: "Hu / hu", maj: "Οὑ", min: "οὑ", group: "S-Z", desc: "Anlautendes Hu (Asper auf 2. Vokal)" },
+  { de: "Uh / uh", maj: "ΟΥ͂", min: "οῦ", group: "S-Z", desc: "Dehnungs-h Uh (Zirkumflex auf 2. Vokal)" },
+  { de: "U [Hiatus]", maj: "ΟΫ", min: "οϋ", group: "S-Z", desc: "Hiatus U (Trema auf 2. Vokal)" },
+  { de: "Ü [Grundwert]", maj: "Υ", min: "υ", group: "S-Z", desc: "Ypsilon" },
+  { de: "Ü [Anlaut]", maj: "Υ̓", min: "ὐ", group: "S-Z", desc: "Wortanlaut ohne H (Spiritus lenis)" },
+  { de: "Hü / hü", maj: "Ὑ", min: "ὑ", group: "S-Z", desc: "Anlautendes Hü (Spiritus asper)" },
+  { de: "Üh / üh", maj: "Υ͂", min: "ῦ", group: "S-Z", desc: "Dehnungs-h Üh (Zirkumflex)" },
+  { de: "Ü [Hiatus]", maj: "Ϋ", min: "ϋ", group: "S-Z", desc: "Hiatus Ü (Trema)" },
   { de: "V", maj: "Φ́", min: "φ́", group: "S-Z", desc: "Phi mit Akut" },
   { de: "W", maj: "Ϝ", min: "ϝ", group: "S-Z", desc: "Digamma" },
   { de: "X", maj: "Ξ", min: "ξ", group: "S-Z", desc: "Xi" },
-  { de: "Y", maj: "Ý", min: "ý", group: "S-Z", desc: "Ypsilon mit Akut" },
+  { de: "Y", maj: "Ύ", min: "ύ", group: "S-Z", desc: "Ypsilon mit Akut" },
   { de: "Z", maj: "Ζ", min: "ζ", group: "S-Z", desc: "Zeta" }
 ];
 
-// Griechische Ziffern & Persische Ziffern
 const GREEK_NUMS_SPEC = [
   { val: 1, sym: "α´", name: "1 (Alpha)" },
   { val: 2, sym: "β´", name: "2 (Beta)" },
@@ -750,10 +787,12 @@ const GREEK_NUMS_SPEC = [
   { val: 700, sym: "ψ´", name: "700 (Psi)" },
   { val: 800, sym: "ω´", name: "800 (Omega)" },
   { val: 900, sym: "ϡ´", name: "900 (Sampi)" },
-  { val: 1000, sym: ",α", name: "1.000" },
+  { val: 1000, sym: ",α", name: "1.000 (,α)" },
   { val: 10000, sym: "Μ", name: "Myriade (×10.000)" },
   { val: 0, sym: "⊖", name: "Negativ-Präfix" },
-  { val: 0, sym: "·", name: "Dezimaltrenner" }
+  { val: 0, sym: "·", name: "Dezimaltrenner" },
+  { val: 0, sym: "۰", name: "Persische Null (۰)" },
+  { val: 1, sym: "۱", name: "Persische Eins (۱)" }
 ];
 
 // 3. KYRILLISCHES ALPHABET SPEZIFIKATION
@@ -804,7 +843,6 @@ const KYRILLISCH_SPEC = [
   { de: "Z", maj: "Ц", min: "ц", group: "S-Z", desc: "Tsi" }
 ];
 
-// Kyrillische Ziffern mit Titlo
 const CYRILLIC_NUMS_SPEC = [
   { val: 1, sym: "А҃", name: "1 (А)" },
   { val: 2, sym: "В҃", name: "2 (В)" },
@@ -872,7 +910,6 @@ const ARABISCH_SPEC = [
   { de: "Z", maj: "ز", min: "ز", name: "Zāy", iso: "ز", ini: "ز*", med: "ـز*", fin: "ـز", group: "S-Z", desc: "Klassisches Zāy" }
 ];
 
-// Arabische Standard-Ziffern (nicht persisch!)
 const ARABIC_NUMS_SPEC = [
   { val: 0, sym: "٠", name: "Sifr (0)" },
   { val: 1, sym: "١", name: "Wahid (1)" },
@@ -892,8 +929,8 @@ const ARABIC_NUMS_SPEC = [
  * APP CONTROLLER & STATE
  * =============================================================
  */
-let currentScript = "wetzel"; // 'wetzel', 'griechisch', 'kyrillisch', 'arabisch'
-let currentMode = "de-to-target"; // 'de-to-target' oder 'target-to-de'
+let currentScript = "wetzel";
+let currentMode = "de-to-target";
 
 // DOM Elements
 const inputEl = document.getElementById("inputText");
@@ -941,7 +978,6 @@ function runConversion() {
 function convertDeToWetzel(text) {
   if (!text) return "";
 
-  // Zahlenbehandlung & Wortbehandlung in einem Durchlauf, damit römische Zahlen von Buchstaben-Regeln ausgenommen bleiben!
   const tokenRegex = /((?<![\w.])-?\d{1,3}(?:\.\d{3})*(?:,\d+)?(?![\w])|-?\d+(?:,\d+)?)|([a-zA-ZäöüÄÖÜß]+)|([^a-zA-Z0-9äöüÄÖÜß]+)/g;
 
   return text.replace(tokenRegex, (match, numGroup, wordGroup, otherGroup) => {
@@ -967,7 +1003,6 @@ function convertWetzelWord(w) {
       return m && m.index === 0 ? m[0] : null;
     };
 
-    // 1. Sch / sch
     let m = matchCl(/^sch/i);
     if (m) {
       res += preserveCase(m, "I̧", "i̧");
@@ -975,7 +1010,6 @@ function convertWetzelWord(w) {
       continue;
     }
 
-    // 2. Qu / qu
     m = matchCl(/^qu/i);
     if (m) {
       res += preserveCase(m, "C̆", "c̆");
@@ -983,7 +1017,6 @@ function convertWetzelWord(w) {
       continue;
     }
 
-    // 3. NG / ng
     m = matchCl(/^ng/i);
     if (m) {
       res += preserveCase(m, "Ŋ", "ŋ");
@@ -991,7 +1024,6 @@ function convertWetzelWord(w) {
       continue;
     }
 
-    // 4. IE / ie
     m = matchCl(/^ie/i);
     if (m) {
       res += preserveCase(m, "Ï", "ï");
@@ -1048,7 +1080,6 @@ function convertWetzelWord(w) {
 function convertWetzelToDe(text) {
   if (!text) return "";
 
-  // Römische Zahlen rückübersetzen (inkl. Vinculum \u0305)
   let processed = text.replace(/(?<![\w\u0305])(-?[MDCLXVI\u0305]+(?:,[MDCLXVI\u03050-9]+)?)(?![\w\u0305])/g, (m) => {
     const arab = romanToArabic(m);
     return arab !== null ? arab : m;
@@ -1081,16 +1112,18 @@ function convertWetzelToDe(text) {
 
 /**
  * =============================================================
- * 2. GRIECHISCHES ALPHABET CONVERTER
+ * 2. GRIECHISCHES ALPHABET CONVERTER (SYSTEM 4)
  * =============================================================
  */
 function convertDeToGriechisch(text) {
   if (!text) return "";
 
+  // 1. Ziffern konvertieren
   let processed = text.replace(/(?<![\w.])-?\d{1,3}(?:\.\d{3})*(?:,\d+)?(?![\w])|-?\d+(?:,\d+)?/g, (match) => {
     return toGreekNumberSystem(match);
   });
 
+  // 2. Wörter konvertieren
   return processed.replace(/([a-zA-ZäöüÄÖÜß]+|[^a-zA-ZäöüÄÖÜß]+)/g, (seg) => {
     if (!/^[a-zA-ZäöüÄÖÜß]+$/.test(seg)) return seg;
     return convertGriechischWord(seg);
@@ -1103,47 +1136,252 @@ function convertGriechischWord(w) {
   const len = w.length;
   const vRule = vowelRuleSelect.value;
 
+  const isVowelChar = (ch) => /[aeiouäöü]/i.test(ch);
+
   while (i < len) {
     const rem = w.slice(i);
-    const isEnd = (pos, clusterLen) => (pos + clusterLen >= len);
+    const isAtStart = (i === 0);
+    const isAtEnd = (i === len - 1);
     const matchCl = (rgx) => {
       const m = rem.match(rgx);
       return m && m.index === 0 ? m[0] : null;
     };
 
-    // 1. Ph / ph -> Ψ / ψ
-    let m = matchCl(/^ph/i);
+    // -------------------------------------------------------------
+    // A. ANLAUT MIT H (Ha, Hä, He, Hi, Ho, Hö, Hu, Hü)
+    // -------------------------------------------------------------
+    if (isAtStart) {
+      // 1. Hu / hu -> Οὑ / οὑ
+      let m = matchCl(/^hu/i);
+      if (m) {
+        res += (m === m.toUpperCase()) ? "ΟὙ" : (m[0] === m[0].toUpperCase() ? "Οὑ" : "οὑ");
+        i += 2;
+        continue;
+      }
+      // 2. Hä / hä -> Ἁ̈ / ἁ̈
+      m = matchCl(/^hä/i);
+      if (m) {
+        res += (m === m.toUpperCase() || m[0] === m[0].toUpperCase()) ? "Ἁ̈" : "ἁ̈";
+        i += 2;
+        continue;
+      }
+      // 3. Ha / ha -> Ἁ / ἁ
+      m = matchCl(/^ha/i);
+      if (m) {
+        res += (m === m.toUpperCase() || m[0] === m[0].toUpperCase()) ? "Ἁ" : "ἁ";
+        i += 2;
+        continue;
+      }
+      // 4. He / he -> Ἑ/ἑ (kurz) oder Ἡ/ἡ (lang)
+      m = matchCl(/^he/i);
+      if (m) {
+        let isLong = false;
+        if (vRule === "long") isLong = true;
+        else if (vRule === "short") isLong = false;
+        else isLong = checkVowelLength(w, 1);
+
+        const isUp = (m[0] === m[0].toUpperCase());
+        res += isLong ? (isUp ? "Ἡ" : "ἡ") : (isUp ? "Ἑ" : "ἑ");
+        i += 2;
+        continue;
+      }
+      // 5. Hi / hi -> Ἱ / ἱ
+      m = matchCl(/^hi/i);
+      if (m) {
+        res += (m === m.toUpperCase() || m[0] === m[0].toUpperCase()) ? "Ἱ" : "ἱ";
+        i += 2;
+        continue;
+      }
+      // 6. Hö / hö -> Ὁ̈ / ὁ̈
+      m = matchCl(/^hö/i);
+      if (m) {
+        res += (m === m.toUpperCase() || m[0] === m[0].toUpperCase()) ? "Ὁ̈" : "ὁ̈";
+        i += 2;
+        continue;
+      }
+      // 7. Ho / ho -> Ὁ/ὁ (kurz) oder Ὡ/ὡ (lang)
+      m = matchCl(/^ho/i);
+      if (m) {
+        let isLong = false;
+        if (vRule === "long") isLong = true;
+        else if (vRule === "short") isLong = false;
+        else isLong = checkVowelLength(w, 1);
+
+        const isUp = (m[0] === m[0].toUpperCase());
+        res += isLong ? (isUp ? "Ὡ" : "ὡ") : (isUp ? "Ὁ" : "ὁ");
+        i += 2;
+        continue;
+      }
+      // 8. Hü / hü -> Ὑ / ὑ
+      m = matchCl(/^hü/i);
+      if (m) {
+        res += (m === m.toUpperCase() || m[0] === m[0].toUpperCase()) ? "Ὑ" : "ὑ";
+        i += 2;
+        continue;
+      }
+    }
+
+    // -------------------------------------------------------------
+    // B. VOKAL-DOPPLUNG (Aa, Ee, Oo)
+    // -------------------------------------------------------------
+    let m = matchCl(/^aa/i);
     if (m) {
-      res += preserveCase(m, "Ψ", "ψ");
+      res += (m[0] === m[0].toUpperCase()) ? "ᾼ" : "ᾳ";
+      i += 2;
+      continue;
+    }
+    m = matchCl(/^ee/i);
+    if (m) {
+      res += (m[0] === m[0].toUpperCase()) ? "ῌ" : "ῃ";
+      i += 2;
+      continue;
+    }
+    m = matchCl(/^oo/i);
+    if (m) {
+      res += (m[0] === m[0].toUpperCase()) ? "ῼ" : "ῳ";
       i += 2;
       continue;
     }
 
-    // 2. Ch / ch -> Χ / χ
+    // -------------------------------------------------------------
+    // C. DEHNUNGS-E: Ie / ie (Ῑ / ῑ)
+    // -------------------------------------------------------------
+    m = matchCl(/^ie/i);
+    if (m) {
+      res += (m[0] === m[0].toUpperCase()) ? "Ῑ" : "ῑ";
+      i += 2;
+      continue;
+    }
+
+    // -------------------------------------------------------------
+    // D. DEHNUNGS-H NACH VOKAL (Ah, Äh, Eh, Ih, Oh, Öh, Uh, Üh)
+    // Greift NUR, wenn nach dem H kein weiterer Vokal folgt (Schutz für Heta in Uhu, Ahorn etc.)
+    // -------------------------------------------------------------
+    const hasVowelAfterH = (i + 2 < len) && isVowelChar(w[i + 2]);
+
+    if (!hasVowelAfterH) {
+      m = matchCl(/^äh/i);
+      if (m) {
+        res += (m[0] === m[0].toUpperCase()) ? "Α̈͂" : "α̈͂";
+        i += 2;
+        continue;
+      }
+      m = matchCl(/^ah/i);
+      if (m) {
+        res += (m[0] === m[0].toUpperCase()) ? "Α͂" : "ᾶ";
+        i += 2;
+        continue;
+      }
+      m = matchCl(/^eh/i);
+      if (m) {
+        res += (m[0] === m[0].toUpperCase()) ? "Η͂" : "ῆ";
+        i += 2;
+        continue;
+      }
+      m = matchCl(/^ih/i);
+      if (m) {
+        res += (m[0] === m[0].toUpperCase()) ? "Ι͂" : "ῖ";
+        i += 2;
+        continue;
+      }
+      m = matchCl(/^öh/i);
+      if (m) {
+        res += (m[0] === m[0].toUpperCase()) ? "Ο̈͂" : "ο̈͂";
+        i += 2;
+        continue;
+      }
+      m = matchCl(/^oh/i);
+      if (m) {
+        res += (m[0] === m[0].toUpperCase()) ? "Ω͂" : "ῶ";
+        i += 2;
+        continue;
+      }
+      m = matchCl(/^uh/i);
+      if (m) {
+        res += (m === m.toUpperCase()) ? "ΟΥ͂" : (m[0] === m[0].toUpperCase() ? "Οῦ" : "οῦ");
+        i += 2;
+        continue;
+      }
+      m = matchCl(/^üh/i);
+      if (m) {
+        res += (m[0] === m[0].toUpperCase()) ? "Υ͂" : "ῦ";
+        i += 2;
+        continue;
+      }
+    }
+
+    // -------------------------------------------------------------
+    // E. MEHRZEICHEN-KONSONANTEN
+    // -------------------------------------------------------------
+    // Anlautendes Rh / rh -> Rho mit Spiritus asper schluckt das h (z. B. Rhein, Rhythmus)
+    if (isAtStart) {
+      m = matchCl(/^rh/i);
+      if (m) {
+        res += (m[0] === m[0].toUpperCase()) ? "Ῥ" : "ῥ";
+        i += 2;
+        continue;
+      }
+    }
+
+    // Qu / qu -> Ϙυ / ϙυ
+    m = matchCl(/^qu/i);
+    if (m) {
+      res += (m === m.toUpperCase()) ? "ϘΥ" : (m[0] === m[0].toUpperCase() ? "Ϙυ" : "ϙυ");
+      i += 2;
+      continue;
+    }
+    // Ph / ph -> Φ̀ / φ̀
+    m = matchCl(/^ph/i);
+    if (m) {
+      res += (m[0] === m[0].toUpperCase()) ? "Φ̀" : "φ̀";
+      i += 2;
+      continue;
+    }
+    // Ps / ps -> Ψ / ψ
+    m = matchCl(/^ps/i);
+    if (m) {
+      res += (m[0] === m[0].toUpperCase()) ? "Ψ" : "ψ";
+      i += 2;
+      continue;
+    }
+    // Ch / ch -> Χ / χ
     m = matchCl(/^ch/i);
     if (m) {
-      res += preserveCase(m, "Χ", "χ");
+      res += (m[0] === m[0].toUpperCase()) ? "Χ" : "χ";
       i += 2;
       continue;
     }
-
-    // 3. St / st -> Ϛ / ϛ
+    // Th / th -> Θ / θ
+    m = matchCl(/^th/i);
+    if (m) {
+      res += (m[0] === m[0].toUpperCase()) ? "Θ" : "θ";
+      i += 2;
+      continue;
+    }
+    // St / st -> Ϛ / ϛ
     m = matchCl(/^st/i);
     if (m) {
-      res += preserveCase(m, "Ϛ", "ϛ");
+      res += (m[0] === m[0].toUpperCase()) ? "Ϛ" : "ϛ";
       i += 2;
       continue;
     }
-
-    // 4. Ss / ss -> Ϻ / ϻ
+    // Ss / ss -> Ϻ / ϻ
     m = matchCl(/^ss/i);
     if (m) {
-      res += preserveCase(m, "Ϻ", "ϻ");
+      res += (m[0] === m[0].toUpperCase()) ? "Ϻ" : "ϻ";
+      i += 2;
+      continue;
+    }
+    // Doppel-R im Inlaut: rr -> ῤῥ (mit Berücksichtigung von Großschreibung)
+    m = matchCl(/^rr/i);
+    if (m && !isAtStart) {
+      const isAllUp = (m === m.toUpperCase()) && (i + 2 < len ? w[i + 2] === w[i + 2].toUpperCase() : true);
+      res += isAllUp ? "ῬῬ" : (w[i] === w[i].toUpperCase() ? "Ῥῤ" : "ῤῥ");
       i += 2;
       continue;
     }
 
-    // 5. ẞ / ß -> Ϡ / ϡ
+    // ẞ / ß -> Ϡ / ϡ
     if (w[i] === 'ß') {
       res += "ϡ";
       i++;
@@ -1155,34 +1393,16 @@ function convertGriechischWord(w) {
       continue;
     }
 
-    // 6. Th / th -> Θ / θ
-    m = matchCl(/^th/i);
-    if (m) {
-      res += preserveCase(m, "Θ", "θ");
-      i += 2;
-      continue;
-    }
-
-    // 7. Q / Qu -> Ϙ / ϙ
-    m = matchCl(/^qu/i);
-    if (m) {
-      res += preserveCase(m, "Ϙ", "ϙ");
-      i += 2;
-      continue;
-    }
-    if (w[i].toLowerCase() === 'q') {
-      res += (w[i] === w[i].toUpperCase()) ? "Ϙ" : "ϙ";
-      i++;
-      continue;
-    }
-
-    // 8. C / c (vor e, i, ä, ö, ü, y als Τσ/τσ; sonst als Κ́/κ́)
+    // -------------------------------------------------------------
+    // F. C-REGEL (vor e, i, ä, ö, ü, y als Τ́σ / τ́σ; sonst als Κ́ / κ́)
+    // -------------------------------------------------------------
     if (w[i].toLowerCase() === 'c') {
       const nextC = (i + 1 < len) ? w[i + 1].toLowerCase() : "";
       const isTs = /[eiäöüy]/.test(nextC);
       const isUp = (w[i] === w[i].toUpperCase());
       if (isTs) {
-        res += isUp ? "Τσ" : "τσ";
+        const isNextUp = (i + 1 < len) && (w[i + 1] === w[i + 1].toUpperCase());
+        res += isUp ? (isNextUp ? "Τ́Σ" : "Τ́σ") : "τ́σ";
       } else {
         res += isUp ? "Κ́" : "κ́";
       }
@@ -1190,54 +1410,37 @@ function convertGriechischWord(w) {
       continue;
     }
 
-    // 9. E-Längenregel
-    if (w[i].toLowerCase() === 'e') {
+    // -------------------------------------------------------------
+    // G. H-REGEL: Heta (Ͱ / ͱ) isoliert im Inlaut vor Vokal (z. B. Uhu, Ahorn)
+    // sowie als sicherer Fallback für einzelne oder isolierte H
+    // -------------------------------------------------------------
+    if (w[i].toLowerCase() === 'h') {
       const isUp = (w[i] === w[i].toUpperCase());
-      let isLong = false;
-
-      if (vRule === "long") {
-        isLong = true;
-      } else if (vRule === "short") {
-        isLong = false;
-      } else {
-        isLong = checkVowelLength(w, i);
-      }
-
-      if (checkDehnungsH(w, i)) {
-        isLong = true; // Eta wählen, aber h NICHT schlucken für 100% Rückübersetzung!
-      }
-
-      res += isLong ? (isUp ? "Η" : "η") : (isUp ? "Ε" : "ε");
+      res += isUp ? "Ͱ" : "ͱ";
       i++;
       continue;
     }
 
-    // 10. O-Längenregel
-    if (w[i].toLowerCase() === 'o') {
+    // -------------------------------------------------------------
+    // H. R-REGEL (Anlaut Ῥ / ῥ; sonst Ρ / ρ)
+    // -------------------------------------------------------------
+    if (w[i].toLowerCase() === 'r') {
       const isUp = (w[i] === w[i].toUpperCase());
-      let isLong = false;
-
-      if (vRule === "long") {
-        isLong = true;
-      } else if (vRule === "short") {
-        isLong = false;
+      if (isAtStart) {
+        res += isUp ? "Ῥ" : "ῥ";
       } else {
-        isLong = checkVowelLength(w, i);
+        res += isUp ? "Ρ" : "ρ";
       }
-
-      if (checkDehnungsH(w, i)) {
-        isLong = true;
-      }
-
-      res += isLong ? (isUp ? "Ω" : "ω") : (isUp ? "Ο" : "ο");
       i++;
       continue;
     }
 
-    // 11. S / s (Auslaut ς vs Anlaut/Inlaut σ)
+    // -------------------------------------------------------------
+    // I. S-REGEL (Auslaut ς; An- und Inlaut Σ / σ)
+    // -------------------------------------------------------------
     if (w[i].toLowerCase() === 's') {
       const isUp = (w[i] === w[i].toUpperCase());
-      if (isEnd(i, 1)) {
+      if (isAtEnd) {
         res += isUp ? "Σ" : "ς";
       } else {
         res += isUp ? "Σ" : "σ";
@@ -1246,40 +1449,149 @@ function convertGriechischWord(w) {
       continue;
     }
 
-    // 12. Grundbuchstaben
+    // -------------------------------------------------------------
+    // J. EINZELVOKALE (Wortanlaut mit Spiritus lenis / Grundwert / Hiatus)
+    // -------------------------------------------------------------
+    const prevC = (i > 0) ? w[i - 1].toLowerCase() : "";
+    const nextC = (i + 1 < len) ? w[i + 1].toLowerCase() : "";
+    const isAfterVowel = isVowelChar(prevC);
     const ch = w[i];
     const low = ch.toLowerCase();
     const isUp = (ch === ch.toUpperCase());
 
-    const greekMap = {
-      'a': { maj: "Α", min: "α" },
-      'ä': { maj: "'A", min: "ά" },
+    // 1. A / a
+    if (low === 'a') {
+      if (isAtStart) res += isUp ? "Ἀ" : "ἀ";
+      else res += isUp ? "Α" : "α";
+      i++;
+      continue;
+    }
+
+    // 2. Ä / ä
+    if (low === 'ä') {
+      if (isAtStart) res += isUp ? "Ἀ̈" : "ἀ̈";
+      else res += isUp ? "Α̈" : "α̈";
+      i++;
+      continue;
+    }
+
+    // 3. E / e (kurz vs. lang)
+    if (low === 'e') {
+      let isLong = false;
+      if (vRule === "long") isLong = true;
+      else if (vRule === "short") isLong = false;
+      else isLong = checkVowelLength(w, i);
+
+      if (isAtStart) {
+        res += isLong ? (isUp ? "Ἠ" : "ἠ") : (isUp ? "Ἐ" : "ἐ");
+      } else {
+        res += isLong ? (isUp ? "Η" : "η") : (isUp ? "Ε" : "ε");
+      }
+      i++;
+      continue;
+    }
+
+    // 4. I / i
+    if (low === 'i') {
+      // 100% Hiatus nur vor Folgevokal (ia, io, iu) oder nach u (ui wie in Ruine)
+      // Diphthonge ai und ei werden strikt ausgeschlossen!
+      const isDiphthong = (prevC === 'a' || prevC === 'e');
+      const isHiatusI = !isDiphthong && (/[aouäöü]/.test(nextC) || prevC === 'u');
+
+      if (isAtStart) {
+        res += isUp ? "Ἰ" : "ἰ";
+      } else if (isHiatusI) {
+        res += isUp ? "Ϊ" : "ϊ";
+      } else {
+        res += isUp ? "Ι" : "ι";
+      }
+      i++;
+      continue;
+    }
+
+    // 5. O / o (kurz vs. lang)
+    if (low === 'o') {
+      let isLong = false;
+      if (vRule === "long") isLong = true;
+      else if (vRule === "short") isLong = false;
+      else isLong = checkVowelLength(w, i);
+
+      if (isAtStart) {
+        res += isLong ? (isUp ? "Ὠ" : "ὠ") : (isUp ? "Ὀ" : "ὀ");
+      } else {
+        res += isLong ? (isUp ? "Ω" : "ω") : (isUp ? "Ο" : "ο");
+      }
+      i++;
+      continue;
+    }
+
+    // 6. Ö / ö
+    if (low === 'ö') {
+      if (isAtStart) res += isUp ? "Ὀ̈" : "ὀ̈";
+      else res += isUp ? "Ο̈" : "ο̈";
+      i++;
+      continue;
+    }
+
+    // 7. U / u (ου / Οὐ / οϋ)
+    if (low === 'u') {
+      // Diphthonge au, eu, äu strikt schützen!
+      const isDiphthongBase = (prevC === 'a' || prevC === 'e' || prevC === 'ä');
+      // Hiatus bei Folgevokal ua, ue, uo (ui wird über das nachfolgende Iota mit Trema ϊ markiert!)
+      const isHiatusU = !isDiphthongBase && (/[aeoäöü]/.test(nextC) || (isAfterVowel && prevC !== 'a' && prevC !== 'e' && prevC !== 'ä'));
+
+      if (isAtStart) {
+        res += isUp ? "Οὐ" : "οὐ";
+      } else if (isHiatusU) {
+        res += isUp ? "ΟΫ" : "οϋ";
+      } else {
+        res += isUp ? "ΟΥ" : "ου";
+      }
+      i++;
+      continue;
+    }
+
+    // 8. Ü / ü (υ / ὐ / ϋ)
+    if (low === 'ü') {
+      // Ü bildet im Deutschen nie Diphthonge: Jeder Nachbarvokal davor oder danach ist 100% Hiatus
+      const isHiatusUe = isAfterVowel || isVowelChar(nextC);
+
+      if (isAtStart) {
+        res += isUp ? "Υ̓" : "ὐ";
+      } else if (isHiatusUe) {
+        res += isUp ? "Ϋ" : "ϋ";
+      } else {
+        res += isUp ? "Υ" : "υ";
+      }
+      i++;
+      continue;
+    }
+
+    // -------------------------------------------------------------
+    // K. REINE KONSONANTEN & RESTLICHE BUCHSTABEN
+    // -------------------------------------------------------------
+    const directMap = {
       'b': { maj: "Β", min: "β" },
       'd': { maj: "Δ", min: "δ" },
       'f': { maj: "Φ", min: "φ" },
       'g': { maj: "Γ", min: "γ" },
-      'h': { maj: "Ͱ", min: "ͱ" },
-      'i': { maj: "Ι", min: "ι" },
       'j': { maj: "Ί", min: "ί" },
       'k': { maj: "Κ", min: "κ" },
       'l': { maj: "Λ", min: "λ" },
       'm': { maj: "Μ", min: "μ" },
       'n': { maj: "Ν", min: "ν" },
-      'ö': { maj: "Ó", min: "ó" },
       'p': { maj: "Π", min: "π" },
-      'r': { maj: "Ρ", min: "ρ" },
+      'q': { maj: "Ϙ", min: "ϙ" },
       't': { maj: "Τ", min: "τ" },
-      'u': { maj: "ΟΥ", min: "ου" },
-      'ü': { maj: "Υ", min: "υ" },
       'v': { maj: "Φ́", min: "φ́" },
       'w': { maj: "Ϝ", min: "ϝ" },
       'x': { maj: "Ξ", min: "ξ" },
-      'y': { maj: "Ý", min: "ý" },
+      'y': { maj: "Ύ", min: "ύ" },
       'z': { maj: "Ζ", min: "ζ" }
     };
 
-    if (greekMap[low]) {
-      res += isUp ? greekMap[low].maj : greekMap[low].min;
+    if (directMap[low]) {
+      res += isUp ? directMap[low].maj : directMap[low].min;
     } else {
       res += ch;
     }
@@ -1291,11 +1603,13 @@ function convertGriechischWord(w) {
 function convertGriechischToDe(text) {
   if (!text) return "";
 
-  // Persische Zahlen erkennen & rückwandeln
-  let processed = text.replace(/[۰-۹]/g, d => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d)));
+  // 1. Persische Zahlen rückwandeln inkl. Negativ-Präfix ⊖ und Mittelpunkt ·
+  let processed = text.replace(/⊖(?=\s*\d)/g, '-');
+  processed = processed.replace(/[۰-۹]/g, d => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d)));
+  processed = processed.replace(/(?<=\d)·(?=\d)/g, ',');
 
-  // Griechische Zahlen erkennen (alle Zeichen der Milesischen Zahlenschrift)
-  processed = processed.replace(/(⊖)?([͵,]?[α-ωϛϟϡ]+Μ(?:\s*[͵,]?[α-ωϛϟϡ]+)?´|[͵,]?[α-ωϛϟϡ]+´)(?:·([͵,]?[α-ωϛϟϡ]+´|\d+))?/g, (match, neg, mainPart, decPart) => {
+  // 2. Griechische Zahlen (Milesisch mit Dexia Keraia, Myriaden, Aristeri Keraia, ⊖/- und ·)
+  processed = processed.replace(/([⊖\-])?([,͵]?[α-ωϛϟϡ]+Μ(?:\s*[,͵]?[α-ωϛϟϡ]+)?´|[,͵]?[α-ωϛϟϡ]+´)(?:·([,͵]?[α-ωϛϟϡ]+´|\d+))?/g, (match, neg, mainPart, decPart) => {
     let val = parseGreekNumber(mainPart);
     if (val === null) return match;
     let out = (neg ? "-" : "") + val;
@@ -1306,24 +1620,88 @@ function convertGriechischToDe(text) {
     return out;
   });
 
+  // 3. Buchstaben-Rückübersetzungsregeln nach System 4 (von längsten Zeichenketten zu kürzesten)
   const rev = [
-    { k: "ΟΥ", d: "U" }, { k: "ου", d: "u" }, { k: "Ου", d: "U" },
-    { k: "Τσ", d: "C", allUp: "C" }, { k: "τσ", d: "c" },
+    // Vokaldopplung (Iota subscriptum)
+    { k: "ᾼ", d: "Aa" }, { k: "ᾳ", d: "aa" },
+    { k: "ῌ", d: "Ee" }, { k: "ῃ", d: "ee" }, { k: "ῃͅ", d: "ee" },
+    { k: "ῼ", d: "Oo" }, { k: "ῳ", d: "oo" },
+
+    // Dehnungs-ie (Makron)
+    { k: "Ῑ", d: "Ie" }, { k: "ῑ", d: "ie" },
+
+    // Dehnungs-h mit Zirkumflex
+    { k: "Α̈͂", d: "Äh" }, { k: "α̈͂", d: "äh" },
+    { k: "Α͂", d: "Ah" }, { k: "ᾶ", d: "ah" },
+    { k: "Η͂", d: "Eh" }, { k: "ῆ", d: "eh" },
+    { k: "Ι͂", d: "Ih" }, { k: "ῖ", d: "ih" },
+    { k: "Ο̈͂", d: "Öh" }, { k: "ο̈͂", d: "öh" },
+    { k: "Ω͂", d: "Oh" }, { k: "ῶ", d: "oh" },
+    { k: "ΟΥ͂", d: "Uh" }, { k: "Οῦ", d: "Uh" }, { k: "οῦ", d: "uh" },
+    { k: "Υ͂", d: "Üh" }, { k: "ῦ", d: "üh" },
+
+    // Anlautendes Ha / Hä / He / Hi / Ho / Hö / Hu / Hü (Spiritus asper)
+    { k: "Ἁ̈", d: "Hä" }, { k: "ἁ̈", d: "hä" },
+    { k: "Ἁ", d: "Ha" }, { k: "ἁ", d: "ha" },
+    { k: "Ἑ", d: "He" }, { k: "ἑ", d: "he" },
+    { k: "Ἡ", d: "He" }, { k: "ἡ", d: "he" },
+    { k: "Ἱ", d: "Hi" }, { k: "ἱ", d: "hi" },
+    { k: "Ὁ̈", d: "Hö" }, { k: "ὁ̈", d: "hö" },
+    { k: "Ὁ", d: "Ho" }, { k: "ὁ", d: "ho" },
+    { k: "Ὡ", d: "Ho" }, { k: "ὡ", d: "ho" },
+    { k: "ΟὙ", d: "HU" }, { k: "Οὑ", d: "Hu" }, { k: "οὑ", d: "hu" },
+    { k: "Ὑ", d: "Hü" }, { k: "ὑ", d: "hü" },
+
+    // Wortanlaut ohne H (Spiritus lenis)
+    { k: "Ἀ̈", d: "Ä" }, { k: "ἀ̈", d: "ä" },
+    { k: "Ἀ", d: "A" }, { k: "ἀ", d: "a" },
+    { k: "Ἐ", d: "E" }, { k: "ἐ", d: "e" },
+    { k: "Ἠ", d: "E" }, { k: "ἠ", d: "e" },
+    { k: "Ἰ", d: "I" }, { k: "ἰ", d: "i" },
+    { k: "Ὀ̈", d: "Ö" }, { k: "ὀ̈", d: "ö" },
+    { k: "Ὀ", d: "O" }, { k: "ὀ", d: "o" },
+    { k: "Ὠ", d: "O" }, { k: "ὠ", d: "o" },
+    { k: "Οὐ", d: "U" }, { k: "οὐ", d: "u" },
+    { k: "Υ̓", d: "Ü" }, { k: "ὐ", d: "ü" },
+
+    // Umlaute & Hiatus
+    { k: "Α̈", d: "Ä" }, { k: "α̈", d: "ä" },
+    { k: "Ο̈", d: "Ö" }, { k: "ο̈", d: "ö" },
+    { k: "ΟΫ", d: "U" }, { k: "οϋ", d: "u" },
+    { k: "Ϊ", d: "I" }, { k: "ϊ", d: "i" },
+    { k: "Ϋ", d: "Ü" }, { k: "ϋ", d: "ü" },
+
+    // C / c (Τ́σ / τ́σ und Κ́ / κ́)
+    { k: "Τ́σ", d: "C" }, { k: "τ́σ", d: "c" }, { k: "Τ́Σ", d: "C" },
     { k: "Κ́", d: "C" }, { k: "κ́", d: "c" },
-    { k: "Φ́", d: "V" }, { k: "φ́", d: "v" },
-    { k: "'A", d: "Ä" }, { k: "ά", d: "ä" },
-    { k: "Ó", d: "Ö" }, { k: "ó", d: "ö" },
-    { k: "Ý", d: "Y" }, { k: "ý", d: "y" },
-    { k: "Ί", d: "J" }, { k: "ί", d: "j" },
-    { k: "Ϛ", d: "St", allUp: "ST" }, { k: "ϛ", d: "st" },
-    { k: "Ϻ", d: "Ss", allUp: "SS" }, { k: "ϻ", d: "ss" },
+
+    // Qu, Ph, Ps, Ch, Th, St, Ss, Eszett
+    { k: "ϘΥ", d: "QU" }, { k: "Ϙυ", d: "Qu" }, { k: "ϙυ", d: "qu" },
+    { k: "Ϙ", d: "Q" }, { k: "ϙ", d: "q" },
+    { k: "Φ̀", d: "Ph" }, { k: "φ̀", d: "ph" },
+    { k: "Ψ", d: "Ps" }, { k: "ψ", d: "ps" },
+    { k: "Χ", d: "Ch" }, { k: "χ", d: "ch" },
+    { k: "Θ", d: "Th" }, { k: "θ", d: "th" },
+    { k: "Ϛ", d: "St" }, { k: "ϛ", d: "st" },
+    { k: "Ϻ", d: "Ss" }, { k: "ϻ", d: "ss" },
     { k: "Ϡ", d: "ẞ" }, { k: "ϡ", d: "ß" },
-    { k: "Ψ", d: "Ph", allUp: "PH" }, { k: "ψ", d: "ph" },
-    { k: "Χ", d: "Ch", allUp: "CH" }, { k: "χ", d: "ch" },
-    { k: "Θ", d: "Th", allUp: "TH" }, { k: "θ", d: "th" },
-    { k: "Ϙ", d: "Qu", allUp: "QU" }, { k: "ϙ", d: "qu" },
-    { k: "Ϝ", d: "W" }, { k: "ϝ", d: "w" },
+
+    // R und Doppel-rr
+    { k: "ῤῥ", d: "rr" }, { k: "Ῥ", d: "R" }, { k: "ῥ", d: "r" },
+
+    // Heta
     { k: "Ͱ", d: "H" }, { k: "ͱ", d: "h" },
+
+    // Grundwert U
+    { k: "ΟΥ", d: "U" }, { k: "Ου", d: "U" }, { k: "ου", d: "u" },
+
+    // V, W, Y, J
+    { k: "Φ́", d: "V" }, { k: "φ́", d: "v" },
+    { k: "Ϝ", d: "W" }, { k: "ϝ", d: "w" },
+    { k: "Ύ", d: "Y" }, { k: "ύ", d: "y" },
+    { k: "Ί", d: "J" }, { k: "ί", d: "j" },
+
+    // Standard-Buchstaben
     { k: "Α", d: "A" }, { k: "α", d: "a" },
     { k: "Β", d: "B" }, { k: "β", d: "b" },
     { k: "Δ", d: "D" }, { k: "δ", d: "d" },
@@ -1383,7 +1761,6 @@ function convertKyrillischWord(w) {
       return m && m.index === 0 ? m[0] : null;
     };
 
-    // 1. Tsch / tsch -> Ч / ч
     let m = matchCl(/^tsch/i);
     if (m) {
       res += preserveCase(m, "Ч", "ч");
@@ -1391,7 +1768,6 @@ function convertKyrillischWord(w) {
       continue;
     }
 
-    // 2. Sch / sch -> Ш / ш
     m = matchCl(/^sch/i);
     if (m) {
       res += preserveCase(m, "Ш", "ш");
@@ -1399,7 +1775,6 @@ function convertKyrillischWord(w) {
       continue;
     }
 
-    // 3. St / st -> Щ / щ
     m = matchCl(/^st/i);
     if (m) {
       res += preserveCase(m, "Щ", "щ");
@@ -1407,7 +1782,6 @@ function convertKyrillischWord(w) {
       continue;
     }
 
-    // 4. Ch / ch -> Х / х
     m = matchCl(/^ch/i);
     if (m) {
       res += preserveCase(m, "Х", "х");
@@ -1415,7 +1789,6 @@ function convertKyrillischWord(w) {
       continue;
     }
 
-    // 5. Qu / qu -> ҀВ / ҁв
     m = matchCl(/^qu/i);
     if (m) {
       res += preserveCase(m, "ҀВ", "ҁв");
@@ -1428,7 +1801,6 @@ function convertKyrillischWord(w) {
       continue;
     }
 
-    // 6. Ja, Je, Jo, Ju
     m = matchCl(/^ja/i);
     if (m) {
       res += preserveCase(m, "Я", "я");
@@ -1454,7 +1826,6 @@ function convertKyrillischWord(w) {
       continue;
     }
 
-    // 7. C / c (vor e, i, ä, ö, ü, y als Ц́ / ц́; sonst als Κ́ / ќ)
     if (w[i].toLowerCase() === 'c') {
       const nextC = (i + 1 < len) ? w[i + 1].toLowerCase() : "";
       const isTs = /[eiäöüy]/.test(nextC);
@@ -1464,7 +1835,6 @@ function convertKyrillischWord(w) {
       continue;
     }
 
-    // 8. H / h (Х́ / х́ am Wortanfang und vor Vokal; sonst Ѓ / ѓ)
     if (w[i].toLowerCase() === 'h') {
       const nextC = (i + 1 < len) ? w[i + 1].toLowerCase() : "";
       const isUp = (w[i] === w[i].toUpperCase());
@@ -1479,7 +1849,6 @@ function convertKyrillischWord(w) {
       continue;
     }
 
-    // 9. E-Laut (Э/э kurz vs. É/é lang)
     if (w[i].toLowerCase() === 'e') {
       const isUp = (w[i] === w[i].toUpperCase());
       let isLong = false;
@@ -1487,15 +1856,11 @@ function convertKyrillischWord(w) {
       else if (vRule === "short") isLong = false;
       else isLong = checkVowelLength(w, i);
 
-      if (checkDehnungsH(w, i)) {
-        isLong = true; // Langes É, aber h regulär stehen lassen für 100% Rückübersetzung!
-      }
       res += isLong ? (isUp ? "É" : "é") : (isUp ? "Э" : "э");
       i++;
       continue;
     }
 
-    // 10. S-Laut (З/з stimmhaft vor Vokal im Silbenanlaut; С/с stimmlos)
     if (w[i].toLowerCase() === 's') {
       const isUp = (w[i] === w[i].toUpperCase());
       const nextC = (i + 1 < len) ? w[i + 1].toLowerCase() : "";
@@ -1511,7 +1876,6 @@ function convertKyrillischWord(w) {
       continue;
     }
 
-    // 11. V-Laut (Ф́/ф́ als f vs. В́/в́ als w)
     if (w[i].toLowerCase() === 'v') {
       const isUp = (w[i] === w[i].toUpperCase());
       let useW = false;
@@ -1528,7 +1892,6 @@ function convertKyrillischWord(w) {
       continue;
     }
 
-    // 12. Eszett (ẞ / ß -> Ж / ж)
     if (w[i] === 'ß') {
       res += "ж";
       i++;
@@ -1583,10 +1946,8 @@ function convertKyrillischWord(w) {
 function convertKyrillischToDe(text) {
   if (!text) return "";
 
-  // Persische Ziffern rückwandeln falls vorhanden
   let processed = text.replace(/[۰-۹]/g, d => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d)));
 
-  // Altkyrillische Zahlen erkennen (unter Einschluss aller historischen Zeichen Є, Ѕ, І, Ѳ, Ѯ, Ѵ, Ѡ)
   processed = processed.replace(/(⊖)?(҂*[А-ЦЄЅІѲѮѴѠ]+҃)(?:·([А-ЦЄЅІѲѮѴѠ]+҃|\d+))?/g, (m, neg, mainPart, decPart) => {
     let arabVal = parseCyrillicNumber(mainPart);
     if (arabVal === null) return m;
@@ -1730,12 +2091,9 @@ function convertArabischWord(w) {
 function convertArabischToDe(text) {
   if (!text) return "";
 
-  // Arabische Ziffern rückübersetzen
   let processed = text.replace(/[٠-٩]/g, d => String('٠١٢٣٤٥٦٧٨٩'.indexOf(d)));
   processed = processed.replace(/٫/g, ",");
 
-  // Kontextuelle Differenzierung von و (Wāw/Vāv): w vs. u
-  // Vor Vokal am Wortanfang oder nach z/sch -> w; sonst -> u
   processed = processed.replace(/(^|[\s\b.,!?;:"'«»()\[\]])و([اأعۆۏیۊ])/gi, '$1w_ph_$2');
   processed = processed.replace(/([ز]|(سچ))و([اأعۆۏیۊ])/gi, '$1w_ph_$2');
   processed = processed.replace(/([اأعۆۏیۊ])و([اأعۆۏیۊ])/gi, '$1w_ph_$2');
@@ -1774,8 +2132,6 @@ function convertArabischToDe(text) {
   ];
 
   let rawGerman = applyReverseRules(processed, rev);
-
-  // Da Arabisch keine Großbuchstaben kennt: Satzanfänge automatisch großschreiben!
   return capitalizeSentences(rawGerman);
 }
 
@@ -1785,7 +2141,7 @@ function convertArabischToDe(text) {
  * =============================================================
  */
 
-// --- 1. RÖMISCHES ZAHLENSYSTEM MIT VINCULUM (1 bis 3.999.999) ---
+// --- 1. RÖMISCHES ZAHLENSYSTEM MIT VINCULUM ---
 function toRomanNumber(numStr) {
   let isNeg = numStr.startsWith("-");
   let cleanStr = numStr.replace(/^-/, '').replace(/\./g, '');
@@ -1793,7 +2149,7 @@ function toRomanNumber(numStr) {
 
   let intVal = parseInt(parts[0], 10);
   if (isNaN(intVal) || intVal < 1 || intVal > 3999999) {
-    return numStr; // Fallback auf arabische Ziffern
+    return numStr;
   }
 
   let romanInt = intToRoman(intVal);
@@ -1856,7 +2212,6 @@ function romanToArabic(romanStr) {
 
   let intPart = parseRomanPart(parts[0]);
   if (intPart === null) return null;
-  // Validierung: Nur echte, wohlgeformte römische Zahlen rückwandeln!
   if (intToRoman(intPart) !== parts[0]) return null;
 
   let out = (isNeg ? "-" : "") + intPart;
@@ -1906,7 +2261,7 @@ function parseRomanPart(str) {
   return total > 0 ? total : null;
 }
 
-// --- 2. GRIECHISCHES ZAHLENSYSTEM & PERSISCHER FALLBACK ---
+// --- 2. GRIECHISCHES ZAHLENSYSTEM (SYSTEM 4) ---
 const G_ONES = ["", "α", "β", "γ", "δ", "ε", "ϛ", "ζ", "η", "θ"];
 const G_TENS = ["", "ι", "κ", "λ", "μ", "ν", "ξ", "ο", "π", "ϟ"];
 const G_HUND = ["", "ρ", "σ", "τ", "υ", "φ", "χ", "ψ", "ω", "ϡ"];
@@ -1924,12 +2279,21 @@ function toGreekNumberSystem(numStr) {
   let intVal = parseInt(parts[0], 10);
   if (isNaN(intVal)) return numStr;
 
-  if (intVal >= 100000000) {
-    return (isNeg ? "-" : "") + toPersianDigits(cleanStr);
+  // Null sowie Werte ab 100.000.000 im persischen Zahlensystem
+  if (intVal === 0) {
+    let res = (isNeg ? "⊖" : "") + "۰";
+    if (parts.length > 1 && parts[1].length > 0) {
+      res += "·" + toPersianDigits(parts[1]);
+    }
+    return res;
   }
 
-  if (intVal === 0) {
-    return (isNeg ? "⊖" : "") + "۰";
+  if (intVal >= 100000000) {
+    let res = (isNeg ? "⊖" : "") + toPersianDigits(parts[0]);
+    if (parts.length > 1 && parts[1].length > 0) {
+      res += "·" + toPersianDigits(parts[1]);
+    }
+    return res;
   }
 
   let greekInt = encodeGreekInt(intVal);
@@ -2155,12 +2519,6 @@ function checkVowelLength(word, idx) {
   return false;
 }
 
-function checkDehnungsH(word, idx) {
-  const next1 = (idx + 1 < word.length) ? word[idx + 1].toLowerCase() : "";
-  const next2 = (idx + 2 < word.length) ? word[idx + 2].toLowerCase() : "";
-  return (next1 === 'h' && /[mnlr]/.test(next2));
-}
-
 function preserveCase(orig, maj, min) {
   if (orig === orig.toUpperCase()) return maj;
   if (orig[0] === orig[0].toUpperCase()) {
@@ -2230,8 +2588,8 @@ function switchScript(scriptKey) {
     setPanelsTitles("Standard-Deutsch", "Wetzel'sche Kanzleischrift");
   } else if (scriptKey === "griechisch") {
     appHeaderTitle.innerText = "Griechisches Schriftsystem";
-    appHeaderDesc.innerText = "Klassisch-antike Transkription mit milesischem Zahlensystem & persischem Fallback";
-    numberRuleHint.innerText = "Zahlen 1 bis 99.999.999 ➔ Milesisch mit Keraia & Myriaden | Ab 100 Mio. ➔ Persisch (۰۱۲۳...)";
+    appHeaderDesc.innerText = "Historisch-diakritisches System mit Spiritus, Zirkumflex, Heta, Milesischen Ziffern & Persischem Fallback";
+    numberRuleHint.innerText = "1 bis 9.999 ➔ Milesisch mit Dexia Keraia (´) | 10.000 bis 99.999.999 ➔ Myriaden (Μ) | 0 & ab 100 Mio. ➔ Persisch (۰۱۲۳...)";
     setPanelsTitles("Standard-Deutsch", "Griechische Schrift");
   } else if (scriptKey === "kyrillisch") {
     appHeaderTitle.innerText = "Kyrillisches Schriftsystem";
@@ -2305,7 +2663,7 @@ function buildKeyboardTabs() {
   const container = document.getElementById("keyboardTabContainer");
   let numLabel = "";
   if (currentScript === "wetzel") numLabel = "Römische Ziffern";
-  else if (currentScript === "griechisch") numLabel = "Griechische Zahlen";
+  else if (currentScript === "griechisch") numLabel = "Griechische Zahlen (Milesisch & Persisch)";
   else if (currentScript === "kyrillisch") numLabel = "Kyrillische Zahlen (Titlo)";
   else numLabel = "Arabische Ziffern";
 
@@ -2418,29 +2776,16 @@ function renderDocumentation() {
         <p>In der Wetzel'schen Kanzleischrift werden Zahlenwerte durch das klassische römische Zahlensystem wiedergegeben. Für große Zahlenwerte über 3.999 kommt das historische <strong>Vinculum (Überstrich)</strong> zum Einsatz:</p>
         <ul>
           <li><strong>Grundziffern:</strong> <code>I</code> (1), <code>V</code> (5), <code>X</code> (10), <code>L</code> (50), <code>C</code> (100), <code>D</code> (500), <code>M</code> (1.000).</li>
-          <li><strong>Vinculum-Multiplikator (× 1.000):</strong> Ein Überstrich multipliziert den Zahlenwert mit 1.000: <code>V̅</code> = 5.000, <code>X̅</code> = 10.000, <code>L̅</code> = 50.000, <code>C̅</code> = 100.000, <code>D̅</code> = 500.000, <code>M̅</code> = 1.000.000. Beispiel: <code>1.425.210</code> = <code>M̅C̅D̅X̅X̅V̅CCX</code>.</li>
-          <li><strong>Negative Zahlen & Dezimalstellen:</strong> Negative Werte erhalten ein vorangestelltes Minuszeichen (z.&nbsp;B. <code>-14</code> ➔ <code>-XIV</code>). Dezimalstellen werden nach dem Komma präzise umgewandelt (z.&nbsp;B. <code>14,5</code> ➔ <code>XIV,V</code>).</li>
+          <li><strong>Vinculum-Multiplikator (× 1.000):</strong> Ein Überstrich multipliziert den Zahlenwert mit 1.000: <code>V̅</code> = 5.000, <code>X̅</code> = 10.000, <code>L̅</code> = 50.000, <code>C̅</code> = 100.000, <code>D̅</code> = 500.000, <code>M̅</code> = 1.000.000.</li>
+          <li><strong>Negative Zahlen & Dezimalstellen:</strong> Negative Werte erhalten ein vorangestelltes Minuszeichen (z.&nbsp;B. <code>-14</code> ➔ <code>-XIV</code>). Dezimalstellen werden mit Komma präzise umgewandelt (z.&nbsp;B. <code>14,5</code> ➔ <code>XIV,V</code>).</li>
           <li><strong>Fallback-Regel:</strong> Werte ab <code>4.000.000</code> weichen automatisch auf das indisch-arabische Standardsystem (0–9) aus.</li>
-        </ul>
-      </div>
-
-      <div class="rule-box">
-        <h3>Paläographische & Phonetische Glyphenregeln</h3>
-        <ul>
-          <li><strong>V́ / v́ (F):</strong> Labiodentaler Frikativ als V mit Akut.</li>
-          <li><strong>Ć / ć (G):</strong> Palatale Modifikation des gutturalen Stammkonsonanten.</li>
-          <li><strong>’ (H):</strong> Spiritus asper (Aspiration) als Hauchlaut.</li>
-          <li><strong>Ï / ï (IE):</strong> Dehnungs-Trema zur Vokalverschmelzung.</li>
-          <li><strong>I̧ / i̧ (SCH) & Ç / ç (S):</strong> Phonetische Zischlaut-Differenzierung mit Cedille.</li>
-          <li><strong>B́ / b́ (P) & D́ / d́ (T):</strong> Stimmlose Pendants zu B und D mit Akut.</li>
-          <li><strong>V̆ / v̆ (U) & V̀ / v̀ (W):</strong> Historische U/V-Wurzel mit Breve bzw. Gravis.</li>
         </ul>
       </div>
 
       <div class="table-container">
         <table class="rules-table">
           <thead>
-            <tr><th>Deutsch</th><th>Groß</th><th>Klein</th><th>Herkunft / Lautwert</th><th>Systematische Begründung</th></tr>
+            <tr><th>Deutsch</th><th>Groß</th><th>Klein</th><th>Lautwert</th><th>Systematische Begründung</th></tr>
           </thead>
           <tbody id="rulesTableBody"></tbody>
         </table>
@@ -2451,30 +2796,39 @@ function renderDocumentation() {
     container.innerHTML = `
       <h2 class="section-title">Ausführliches Regelwerk: Griechisches Schriftsystem</h2>
       <div class="rule-box" style="border-left-color: #f7e089;">
-        <h3>Milesisches Zahlensystem & Persischer Fallback</h3>
-        <p>Das griechische Zahlensystem verwendet die 24 klassischen Buchstaben sowie 3 archaische Zeichen (<em>Stigma ϛ, Koppa ϟ, Sampi ϡ</em>):</p>
+        <h3>Milesisches Zahlensystem mit Keraia, Myriaden (Μ) & Persischer Fallback</h3>
+        <p>Das Zahlensystem basiert auf den klassischen milesischen Buchstaben mit akzentuierter Unterscheidung sowie persischem Fallback:</p>
         <ul>
-          <li><strong>Zahlakzent Dexia Keraia (´):</strong> Kennzeichnet Buchstaben als Zahlen (z.&nbsp;B. <code>α´</code> = 1, <code>ι´</code> = 10, <code>ρ´</code> = 100).</li>
-          <li><strong>Tausender-Präfix Aristeri Keraia (,):</strong> <code>,α</code> = 1.000, <code>,β</code> = 2.000, <code>,θ</code> = 9.000.</li>
-          <li><strong>Myriaden (Μ):</strong> Für Werte von 10.000 bis 99.999.999 (z.&nbsp;B. <code>10.000</code> = <code>αΜ´</code>, <code>50.000</code> = <code>εΜ´</code>).</li>
-          <li><strong>Negative Zahlen & Dezimalstellen:</strong> Negative Werte werden durch <strong>⊖</strong> markiert (z.&nbsp;B. <code>-15</code> ➔ <code>⊖ιε´</code>). Dezimalstellen werden mit Mittelpunkt (<code>·</code>) angefügt.</li>
-          <li><strong>Persischer Fallback:</strong> Werte ab <code>100.000.000</code> werden in <strong>persischen Ziffern</strong> (<code>۰۱۲۳۴۵۶۷۸۹</code>) notiert.</li>
+          <li><strong>Zahlakzent Dexia Keraia (´):</strong> Kennzeichnet Zahlen von 1 bis 9.999 (z.&nbsp;B. <code>α´</code> = 1, <code>ι´</code> = 10, <code>ρ´</code> = 100, <code>ϡ´</code> = 900).</li>
+          <li><strong>Tausender mit Aristeri Keraia (,):</strong> Vorangestelltes Komma für Tausender (<code>,α</code> = 1.000, <code>,β</code> = 2.000 bis <code>,θ</code> = 9.000).</li>
+          <li><strong>Myriaden (Μ):</strong> Für Werte von 10.000 bis 99.999.999 (z.&nbsp;B. <code>10.000</code> = <code>αΜ´</code>, <code>250.000</code> = <code>κεΜ´</code>).</li>
+          <li><strong>Negative Zahlen:</strong> Werden verbindlich durch <strong>⊖</strong> gekennzeichnet (z.&nbsp;B. <code>-15</code> ➔ <code>⊖ιε´</code>).</li>
+          <li><strong>Dezimaltrenner:</strong> Dezimalstellen werden durch den Mittelpunkt <strong>·</strong> getrennt (z.&nbsp;B. <code>12,5</code> ➔ <code>ιβ´·ε´</code>).</li>
+          <li><strong>Persischer Fallback:</strong> Die Null (<code>۰</code>) sowie Werte ab <code>100.000.000</code> werden im <strong>persischen Zahlensystem</strong> (<code>۰۱۲۳۴۵۶۷۸۹</code>) notiert.</li>
         </ul>
       </div>
 
       <div class="rule-box">
-        <h3>Lautregeln & Vokal-Längen im Griechischen</h3>
+        <h3>Lautregeln, Diakritika & Phonetik</h3>
         <ul>
-          <li><strong>C / c:</strong> Vor hellen Vokalen (<code>e, i, ä, ö, ü, y</code>) als Affrikate <strong>Τσ / τσ</strong>; vor dunklen Vokalen und Konsonanten als <strong>Κ́ / κ́</strong>.</li>
-          <li><strong>E & O Vokallängen:</strong> Vor Dehnungs-H vor <code>m, n, l, r</code> sowie in offenen Silben lang: <strong>Η / η</strong> (Eta) bzw. <strong>Ω / ω</strong> (Omega); in geschlossenen Silben kurz: <strong>Ε / ε</strong> (Epsilon) bzw. <strong>Ο / ο</strong> (Omikron).</li>
-          <li><strong>S-Laute:</strong> Wort-/Silbenanlaut & Inlaut <strong>Σ / σ</strong>, absolutes Wortende <strong>ς</strong>, Doppel-SS <strong>Ϻ / ϻ</strong> (San), Eszett <strong>Ϡ / ϡ</strong> (Sampi), ST <strong>Ϛ / ϛ</strong> (Stigma).</li>
+          <li><strong>Wortanlaut ohne H (Spiritus lenis ᾿):</strong> Vokale am Wortanfang ohne H erhalten den Spiritus lenis (z.&nbsp;B. <code>Ἀ / ἀ</code>, <code>Ἀ̈ / ἀ̈</code>, <code>Ἐ / ἐ</code>, <code>Ἠ / ἠ</code>, <code>Ἰ / ἰ</code>, <code>Ὀ / ὀ</code>, <code>Ὠ / ὠ</code>, <code>Ὀ̈ / ὀ̈</code>, <code>Οὐ / οὐ</code>, <code>Υ̓ / ὐ</code>).</li>
+          <li><strong>Anlautendes H- (Spiritus asper ῾):</strong> Vor Vokalen entfällt das H als Buchstabe und wird zum Spiritus asper auf dem Vokal: <code>Ἁ / ἁ</code> (Ha), <code>Ἁ̈ / ἁ̈</code> (Hä), <code>Ἑ / ἑ</code> (kurzes He), <code>Ἡ / ἡ</code> (langes He), <code>Ἱ / ἱ</code> (Hi), <code>Ὁ / ὁ</code> (kurzes Ho), <code>Ὡ / ὡ</code> (langes Ho), <code>Ὁ̈ / ὁ̈</code> (Hö), <code>Οὑ / οὑ</code> (Hu), <code>Ὑ / ὑ</code> (Hü).</li>
+          <li><strong>Dehnungs-h (Zirkumflex ῀):</strong> Nach Vokal entfällt das Dehnungs-h und wird zum Zirkumflex auf dem Vokal: <code>Α͂ / ᾶ</code> (Ah), <code>Α̈͂ / α̈͂</code> (Äh), <code>Η͂ / ῆ</code> (Eh), <code>Ι͂ / ῖ</code> (Ih), <code>Ω͂ / ῶ</code> (Oh), <code>Ο̈͂ / ο̈͂</code> (Öh), <code>ΟΥ͂ / οῦ</code> (Uh), <code>Υ͂ / ῦ</code> (Üh).</li>
+          <li><strong>Vokaldopplung (Iota subscriptum ͅ):</strong> <code>ᾼ / ᾳ</code> (Aa), <code>ῌ / ῃͅ</code> (Ee), <code>ῼ / ῳ</code> (Oo).</li>
+          <li><strong>Dehnungs-e:</strong> <code>Ῑ / ῑ</code> (Ie mit Makron).</li>
+          <li><strong>Hiatus / Getrennte Vokalaussprache:</strong> Trema (<code>Ϊ / ϊ</code>, <code>Ϋ / ϋ</code>, <code>ΟΫ / οϋ</code>).</li>
+          <li><strong>Heta (Ͱ / ͱ):</strong> Nur als isolierter Konsonant im Inlaut vor Vokal (z.&nbsp;B. <em>Uhu</em> ➔ <code>Οὐͱου</code>, <em>Ahorn</em> ➔ <code>Ἀͱορν</code>).</li>
+          <li><strong>C / c:</strong> Vor <code>e, i, ä, ö, ü, y</code> als <strong>Τ́σ / τ́σ</strong> (Tau mit Akut); vor <code>a, o, u</code> und Konsonanten als <strong>Κ́ / κ́</strong>.</li>
+          <li><strong>R-Laute:</strong> Anlaut obligatorisch <strong>Ῥ / ῥ</strong> (mit Spiritus asper); In-/Auslaut <strong>Ρ / ρ</strong>; Doppel-R im Inlaut: <strong>ῤῥ</strong> (erstes Rho mit Lenis, zweites mit Asper).</li>
+          <li><strong>S-Laute:</strong> An-/Inlaut <strong>Σ / σ</strong>, absolutes Wortende <strong>ς</strong>, Doppel-SS <strong>Ϻ / ϻ</strong> (San), Eszett <strong>Ϡ / ϡ</strong> (Sampi), ST <strong>Ϛ / ϛ</strong> (Stigma).</li>
+          <li><strong>Weitere Sonderkonsonanten:</strong> <code>Ph</code> ➔ <strong>Φ̀ / φ̀</strong> (mit Gravis), <code>Ps</code> ➔ <strong>Ψ / ψ</strong>, <code>Qu</code> ➔ <strong>Ϙυ / ϙυ</strong>, <code>Q</code> ➔ <strong>Ϙ / ϙ</strong>, <code>Th</code> ➔ <strong>Θ / θ</strong>, <code>Ch</code> ➔ <strong>Χ / χ</strong>, <code>V</code> ➔ <strong>Φ́ / φ́</strong>, <code>W</code> ➔ <strong>Ϝ / ϝ</strong> (Digamma), <code>X</code> ➔ <strong>Ξ / ξ</strong>, <code>Y</code> ➔ <strong>Ύ / ύ</strong>, <code>J</code> ➔ <strong>Ί / ί</strong>.</li>
         </ul>
       </div>
 
       <div class="table-container">
         <table class="rules-table">
           <thead>
-            <tr><th>Deutsch</th><th>Groß</th><th>Klein</th><th>Griechisches Pendant</th><th>Phonetische Regel</th></tr>
+            <tr><th>Deutsch</th><th>Groß</th><th>Klein</th><th>Kategorie</th><th>Lautwert & Spezifikation</th></tr>
           </thead>
           <tbody id="rulesTableBody"></tbody>
         </table>
@@ -2488,29 +2842,19 @@ function renderDocumentation() {
         <h3>Altkyrillisches Zahlensystem mit Titlo ( ҃ ) & Tausendersymbol ( ҂ )</h3>
         <p>Das altkyrillische Zahlensystem basiert auf 27 Buchstaben mit dem Zahl-Titlo ( ҃ ):</p>
         <ul>
-          <li><strong>Einer (1–9):</strong> А, В, Г, Д, Є, Ѕ (Dzelo), З, И, Ѳ (Fita).</li>
-          <li><strong>Zehner (10–90):</strong> І, К, Л, М, Н, Ѯ (Ksi), О, П, Ч (Tschern).</li>
-          <li><strong>Hunderter (100–900):</strong> Р, С, Т, У, Ф, Х, Ѵ (Ischiza), Ѡ (Omega), Ц.</li>
-          <li><strong>Besonderheit bei 11–19:</strong> Nach der altkirchenslawischen Sprechweise „Einer auf Zehn“ stehen die Einer vor dem Zehner: <code>11</code> = <strong>АІ҃</strong>, <code>12</code> = <strong>ВІ҃</strong>, <code>15</code> = <strong>ЄІ҃</strong>.</li>
-          <li><strong>Tausenderzeichen ( ҂ ):</strong> Multipliziert den Buchstaben mit 1.000 (z.&nbsp;B. <code>҂А҃</code> = 1.000, <code>҂В҃</code> = 2.000).</li>
-          <li><strong>Fallback:</strong> Ab <code>1.000.000</code> wird auf persische Ziffern ausgewichen. Negative Zahlen erhalten das Präfix <strong>⊖</strong>.</li>
-        </ul>
-      </div>
-
-      <div class="rule-box">
-        <h3>Buchstaben- & Lautregeln</h3>
-        <ul>
-          <li><strong>H / h:</strong> Am Wortanfang und vor Vokalen als <strong>Х́ / х́</strong>; in allen anderen Fällen (vor Konsonanten, Wortende) als <strong>Ѓ / ѓ</strong>.</li>
-          <li><strong>C / c:</strong> Vor <code>e, i, ä, ö, ü, y</code> als <strong>Ц́ / ц́</strong>; sonst als <strong>Κ́ / ќ</strong>.</li>
-          <li><strong>S / s:</strong> Stimmhaft im Silbenanlaut vor Vokal als <strong>З / з</strong>; stimmlos als <strong>С / с</strong>.</li>
-          <li><strong>Iotierte Vokale & Ligaturen:</strong> <em>Ja</em> ➔ <strong>Я</strong>, <em>Je</em> ➔ <strong>Е</strong>, <em>Jo</em> ➔ <strong>Ё</strong>, <em>Ju</em> ➔ <strong>Ю</strong>, <em>Tsch</em> ➔ <strong>Ч</strong>, <em>Sch</em> ➔ <strong>Ш</strong>, <em>St</em> ➔ <strong>Щ</strong>.</li>
+          <li><strong>Einer (1–9):</strong> А, В, Г, Д, Є, Ѕ, З, И, Ѳ.</li>
+          <li><strong>Zehner (10–90):</strong> І, К, Л, М, Н, Ѯ, О, П, Ч.</li>
+          <li><strong>Hunderter (100–900):</strong> Р, С, Т, У, Ф, Х, Ѵ, Ѡ, Ц.</li>
+          <li><strong>Besonderheit bei 11–19:</strong> Einer vor dem Zehner: <code>11</code> = <strong>АІ҃</strong>, <code>12</code> = <strong>ВІ҃</strong>.</li>
+          <li><strong>Tausenderzeichen ( ҂ ):</strong> <code>҂А҃</code> = 1.000, <code>҂В҃</code> = 2.000.</li>
+          <li><strong>Fallback:</strong> Ab <code>1.000.000</code> persische Ziffern. Negative Zahlen erhalten <strong>⊖</strong>.</li>
         </ul>
       </div>
 
       <div class="table-container">
         <table class="rules-table">
           <thead>
-            <tr><th>Deutsch</th><th>Groß</th><th>Klein</th><th>Kyrillisches Zeichen</th><th>Regel & Lautwert</th></tr>
+            <tr><th>Deutsch</th><th>Groß</th><th>Klein</th><th>Zeichen</th><th>Regel & Lautwert</th></tr>
           </thead>
           <tbody id="rulesTableBody"></tbody>
         </table>
@@ -2522,12 +2866,10 @@ function renderDocumentation() {
       <h2 class="section-title">Ausführliches Regelwerk: Arabisch-Persisches Schriftsystem</h2>
       <div class="rule-box" style="border-left-color: #f7e089;">
         <h3>Die 30 deutschen Buchstaben in der Arebica & Arabische Ziffern</h3>
-        <p>Dieses System überträgt das deutsche Phonemsystem vollständig in die erweiterte arabisch-persische Schrift:</p>
         <ul>
-          <li><strong>Arabisches Zahlensystem:</strong> Es werden die originalen <strong>östlich-arabischen Standardziffern</strong> (<code>٠ ,١ ,٢ ,٣ ,٤ ,٥ ,٦ ,٧ ,٨ ,٩</code>) verwendet. Das Dezimaltrennzeichen ist das Fasila (<code>٫</code>).</li>
-          <li><strong>Umlaute:</strong> Ä = <strong>أ</strong> (Alif mit Hamza), Ö = <strong>ۏ</strong> (Wāw mit Strich), Ü = <strong>ۊ</strong> (Wāw mit 2 Punkten).</li>
+          <li><strong>Arabisches Zahlensystem:</strong> Östlich-arabische Standardziffern (<code>٠ ,١ ,٢ ,٣ ,٤ ,٥ ,٦ ,٧ ,٨ ,٩</code>) mit Fasila (<code>٫</code>).</li>
+          <li><strong>Umlaute:</strong> Ä = <strong>أ</strong>, Ö = <strong>ۏ</strong>, Ü = <strong>ۊ</strong>.</li>
           <li><strong>Konsonanten & Sonderlaute:</strong> P = <strong>پ</strong>, G = <strong>گ</strong>, C = <strong>چ</strong>, V = <strong>ڤ</strong>, W = <strong>و</strong>, J = <strong>ژ</strong>, X = <strong>کس</strong>, ß = <strong>ص</strong>.</li>
-          <li><strong>Satzanfangs-Automatik:</strong> Da das arabische Alphabet keine Groß- und Kleinschreibung kennt, stellt der Konverter bei der Rückübersetzung automatisch die Großschreibung am Satzanfang und nach Interpunktion her.</li>
         </ul>
       </div>
 
@@ -2616,7 +2958,7 @@ function showToast(msg) {
   setTimeout(() => toast.classList.remove("show"), 2000);
 }
 
-// Initialer Start
+// Initialisierung bei Aufruf
 window.addEventListener("DOMContentLoaded", () => {
   switchScript("wetzel");
   clearInput();
